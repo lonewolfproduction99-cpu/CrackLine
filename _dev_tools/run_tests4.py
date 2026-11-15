@@ -53,10 +53,11 @@ async def main():
             await asyncio.sleep(0.6)
         check('fissure branch direction is random (both seen in 8 crossings)', -1 in dirs and 1 in dirs, str(dirs))
         s = await X(page); check('each fissure triggers only once', all(f['used'] for f in s['fis']))
-        await tap(page, 'L'); await asyncio.sleep(0.05); x_mid = (await X(page))['x']
-        await page.evaluate(mk('Fissure', 0, 25))
-        s = await waitp(page, lambda p: True, 0); await asyncio.sleep(0.5); s = await X(page)
-        check('fissure mid-branch starts a fresh forced branch from the current spot', s['state'] == 'Playing' and abs(abs(s['x'] - x_mid) - 130) < 70, f"{x_mid:.0f} -> {s['x']:.0f}")
+        await hold_start(page, 'L'); await asyncio.sleep(0.1)
+        fid = await page.evaluate(mk('Fissure', 0, 40)); t0 = time.time(); s = await X(page)
+        while time.time() - t0 < 2 and not any(f['used'] and f['id'] == fid for f in s['fis']): await asyncio.sleep(0.01); s = await X(page)
+        x_hit = s['x']; await asyncio.sleep(0.1); during = await X(page); await asyncio.sleep(0.15); after = await X(page); await hold_end(page)
+        check('fissure jolt overrides steering, then steering resumes', s['dir'] != 0 and abs(abs(after['x'] - x_hit) - 130) < 90 and after['dir'] == 0, f"{x_hit:.0f} -> {after['x']:.0f}")
         # worms
         await page.evaluate(setnum('CrackWorldX', 650))
         wid = await page.evaluate(mk('Worm', 200, 900, "o.getVariables().get('Dir').setNumber(1); o.getVariables().get('Speed').setNumber(150);"))

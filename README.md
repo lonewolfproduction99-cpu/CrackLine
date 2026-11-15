@@ -11,7 +11,7 @@ and press **Preview** (▶). To keep your own editable copy, use **File → Save
 The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER**, or open the **SHOP**.
 - **Planet Breaker:** you start at the planet's core and travel up to its surface. The progress bar shows how far you have left. Planet 1 needs **1,000 m**, planet 2 needs 2,000 m, planet 3 needs 3,000 m, and so on. Each planet starts noticeably harder. When you reach the surface, the planet splits in two and the next one begins. The themes cycle Ember → Verdant (more crystals) → Frost (more barriers).
 - **Game over:** you can RESTART, go back to the MAIN MENU, or use **SIMULATE AD REVIVE (TEST)** once per run. The revive clears nearby obstacles and gives you 2 seconds of protection, shown as a cyan ring. You keep your score.
-- Tap the left or right half of the screen to make the crack branch that way.
+- **Hold** the left or right half of the screen and the crack travels diagonally that way. Let go and it goes straight up. You can slide your finger across the middle to switch direction.
 - The game gets **25% faster every 250 m** (180 → 225 → 281 → 352 px/s and so on). Endless tops out at 420 px/s, and Planet Breaker tops out at 520 px/s. Survive as long as you can and try to beat your best distance.
 - **Blue clock (Slow Time):** the world moves 40% slower for 4 seconds.
 - **Orange bolt (Crack Strength):** gives you 3 charges. Each charge smashes one rock or one cracked barrier.
@@ -30,7 +30,7 @@ The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER*
 | Scene setup, best-score loading, game-over buttons | External events `EV_GameState` |
 | Planet themes, surface progress, planet-split animation | `EV_PlanetMode` |
 | Revive (one per run) | `EV_Revive` |
-| Speed and difficulty, taps, branching, scrolling | `EV_CrackMovement` |
+| Speed and difficulty, hold-to-steer, scrolling | `EV_CrackMovement` |
 | Procedural obstacle rows and power-up spawning | `EV_ObstacleSpawner` |
 | Power-up pickup, timers and HUD | `EV_Powerups` |
 | Trail and sparks | `EV_Trail` |
@@ -64,7 +64,8 @@ Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"E
 | BaseSpeed / MaxSpeed | 180 / 420 | scroll speed range in px/s |
 | SpeedStepFactor / SpeedStepDistance / SpeedRampRate | 1.25 / 250 / 120 | +25% speed every 250 m; each jump eases in at 120 px/s per second |
 | DifficultyRampTime | 180 | seconds until maximum difficulty |
-| BranchDistance / BranchDuration / BranchCooldown | 130 / 0.15 / 0.08 | how one branch behaves |
+| HoldMinSpeed / HoldSpeedFactor / HoldAccel | 300 / 1.0 / 5000 | sideways steering speed = max(300, game speed × 1.0), so roughly 45°, and how fast steering ramps up |
+| BranchDistance / BranchDuration | 130 / 0.15 | size of the forced jolt from a ground gap |
 | RowGapStart / RowGapEnd | 280 / 210 | spacing between rows, easy to hard |
 | DensityStart / DensityEnd | 0.40 / 0.65 | chance that a lane gets an obstacle |
 | EmptyChance*, WallChance*, CrystalChance*, SolidChance*, BreakChance* | see editor | how often each row and obstacle type appears |

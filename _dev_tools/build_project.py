@@ -45,7 +45,8 @@ def boo(n, v): return {"name": n, "type": "boolean", "value": v}
 TUNING = [
     ("BaseSpeed", P["BaseSpeed"]), ("MaxSpeed", P["MaxSpeed"]), ("SpeedStepDistance", 250), ("SpeedStepFactor", 1.25), ("SpeedRampRate", 120), ("SpeedTarget", 180),
     ("DifficultyRampTime", P["DifficultyRampTime"]),
-    ("BranchDuration", 0.15), ("BranchDistance", 130), ("BranchCooldown", 0.08),
+    ("BranchDuration", 0.15), ("BranchDistance", 130), ("BranchCooldown", 0),
+    ("HoldMinSpeed", 300), ("HoldSpeedFactor", 1.0), ("HoldAccel", 5000),
     ("TipScreenRatio", 0.7), ("EdgeMargin", 30), ("PixelsPerMeter", 20),
     ("TrailStep", 14), ("TrailJitter", 8), ("TrailMaxSegments", 160),
     ("LaneCount", LANE_COUNT), ("SpawnMargin", 100), ("FirstRowOffset", P["FirstRowOffset"]),
@@ -70,7 +71,7 @@ TUNING = [
     ("ReviveInvulnerability", 2), ("ReviveClearBehind", 250), ("ReviveClearAhead", 750),
 ]
 STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLevel", "CrackWorldX", "CrackWorldY", "TipScreenY",
-         "BranchDirection", "BranchTimer", "BranchStartX", "CooldownTimer", "TrailLastX", "TrailLastWorldY", "TrailNewX",
+         "BranchDirection", "BranchTimer", "BranchStartX", "CooldownTimer", "Holding", "HoldId", "HoldDir", "LastHoldDir", "HoldSpeed", "LateralVel", "TrailLastX", "TrailLastWorldY", "TrailNewX",
          "NextRowWorldY", "RowWorldY", "RowGap", "SafeLane", "PrevSafeLane", "CorridorMin", "CorridorMax", "RowType", "RowRoll",
          "Density", "EmptyChance", "WallChance", "CrystalChance", "SolidChance", "BreakChance",
          "LaneIter", "LaneWidth", "BlockerChance", "CrackLane", "CorridorShift", "TypeRoll", "ObjType", "LaneX", "ObjWorldY",
@@ -155,7 +156,7 @@ objects = [
     textobj("BestText", "BEST: 0000 m", 26, rgb="255;220;160"),
     textobj("SlowText", "SLOW 4.0", 30, rgb="150;205;255"),
     textobj("StrengthText", "STRENGTH x3", 30, rgb="255;170;110"),
-    textobj("HintText", "TAP LEFT OR RIGHT TO BRANCH", 30, rgb="255;230;170"),
+    textobj("HintText", "HOLD LEFT OR RIGHT TO STEER", 30, rgb="255;230;170"),
     sprite("Overlay", "ui_overlay"),
     textobj("GameOverTitle", "GAME OVER", 84, rgb="255;214;120"),
     textobj("FinalDistanceText", "DISTANCE: 0000 m", 36),
@@ -333,18 +334,31 @@ ev_movement = [
             ev([isv("SlowTimeRemaining", ">", "0")], [setv("EffectiveSpeed", "=", "ScrollSpeed * SlowTimeFactor")]),
         ]),
     ]),
-    group("Input (tap / click)", [
-        comment("One tap = one branch. Taps during a branch or the short cooldown are ignored (no queueing). Left half = left, right half = right."),
-        ev([PLAYING, C("HasAnyTouchOrMouseStarted", ""), isv("BranchDirection", "=", "0"), isv("CooldownTimer", "<=", "0"),
-            C("CollisionPoint", "MuteButton", 'TouchX(StartedTouchOrMouseId(0), "HUD")', 'TouchY(StartedTouchOrMouseId(0), "HUD")', inv=True)], [snd("sfx_branch", "55", "RandomFloatInRange(0.9, 1.2)")], [
-            ev([cmp(TOUCHX, "<", "SceneWindowWidth() / 2")], [setv("BranchDirection", "=", "-1")]),
-            ev([cmp(TOUCHX, ">=", "SceneWindowWidth() / 2")], [setv("BranchDirection", "=", "1")]),
-            ev([], [setv("BranchTimer", "=", "0"), setv("BranchStartX", "=", "CrackWorldX"), A("Hide", "HintText")]),
-            spark_burst("5", "-BranchDirection * RandomFloatInRange(60, 200)", "RandomFloatInRange(-140, 40)"),
-        ]),
+    group("Input (hold to steer)", [
+        comment("HOLD to steer: while a finger (or the mouse button) is held on the left half the crack travels diagonally up-left, on the right half up-right; release to go straight up. Sliding the finger across the middle switches direction. A new touch takes over from the previous one. Taps on the speaker button are ignored."),
+        ev([PLAYING, C("HasAnyTouchOrMouseStarted", ""),
+            C("CollisionPoint", "MuteButton", 'TouchX(StartedTouchOrMouseId(0), "HUD")', 'TouchY(StartedTouchOrMouseId(0), "HUD")', inv=True)], [
+            setv("HoldId", "=", "StartedTouchOrMouseId(0)"), setv("Holding", "=", "1"), A("Hide", "HintText"),
+            snd("sfx_branch", "50", "RandomFloatInRange(0.9, 1.2)")]),
+        ev([isv("Holding", "=", "1"), C("HasTouchEnded", "", "HoldId")], [setv("Holding", "=", "0")]),
+        ev([isv("Holding", "=", "1")], [setv("HoldDir", "=", "1")], [ev([cmp('TouchX(HoldId, "")', "<", "SceneWindowWidth() / 2")], [setv("HoldDir", "=", "-1")])]),
+        ev([isv("Holding", "=", "0")], [setv("HoldDir", "=", "0")]),
+        ev([C("BuiltinCommonInstructions::CompareStrings", "GameState", "!=", '"Playing"')], [setv("Holding", "=", "0"), setv("HoldDir", "=", "0"), setv("LateralVel", "=", "0")]),
+        comment("Sparks when the steering direction changes."),
+        ev([isv("HoldDir", "!=", "0"), isv("HoldDir", "!=", "LastHoldDir")], [setv("LastHoldDir", "=", "HoldDir")],
+           [spark_burst("5", "-HoldDir * RandomFloatInRange(60, 200)", "RandomFloatInRange(-140, 40)")]),
+        ev([isv("HoldDir", "=", "0")], [setv("LastHoldDir", "=", "0")]),
     ]),
-    group("Branch motion", [
-        comment("Lateral offset follows an ease-out curve over BranchDuration (computed from elapsed time, so frame-rate independent). Clamped so the crack can never leave the screen or get stuck."),
+    group("Steering motion", [
+        comment("Lateral speed = max(HoldMinSpeed, ScrollSpeed x HoldSpeedFactor): at factor 1 the crack moves at 45 degrees and stays diagonal as the game speeds up (Slow Time does not slow steering). It ramps up/down at HoldAccel so it feels smooth but immediate. Clamped to the screen edges, so it can never get stuck."),
+        ev([PLAYING, isv("BranchDirection", "=", "0")], [
+            setv("HoldSpeed", "=", "max(HoldMinSpeed, ScrollSpeed * HoldSpeedFactor)"),
+            setv("LateralVel", "=", "LateralVel + clamp(HoldDir * HoldSpeed - LateralVel, -HoldAccel * TimeDelta(), HoldAccel * TimeDelta())"),
+            setv("CrackWorldX", "=", CLAMPX.format("CrackWorldX + LateralVel * TimeDelta()")),
+        ], [ev([cmp("abs(CrackWorldX - SceneWindowWidth() / 2)", ">=", "SceneWindowWidth() / 2 - EdgeMargin")], [setv("LateralVel", "=", "0")])]),
+    ]),
+    group("Fissure jolt", [
+        comment("Only used by ground gaps (fissures) now: a forced 130 px jolt with an ease-out curve over BranchDuration; steering input is ignored while it lasts. Clamped to the screen."),
         ev([isv("CooldownTimer", ">", "0")], [setv("CooldownTimer", "-", "TimeDelta()")]),
         ev([PLAYING, isv("BranchDirection", "!=", "0")], [setv("BranchTimer", "+", "TimeDelta()")], [
             ev([isv("BranchTimer", "<", "BranchDuration")],
@@ -555,7 +569,7 @@ ev_collisions = [
     ev([PLAYING, C("CollisionNP", "CrackHitbox", "Fissure", "", "", ""), C("BooleanObjectVariable", "Fissure", "Used", "False", "")], [
         A("SetBooleanObjectVariable", "Fissure", "Used", "True", ""),
         setv("BranchDirection", "=", "RandomInRange(0, 1) * 2 - 1"), setv("BranchTimer", "=", "0"), setv("BranchStartX", "=", "CrackWorldX"),
-        setv("CooldownTimer", "=", "0"), A("Hide", "HintText"), snd("sfx_fissure", "90"),
+        setv("CooldownTimer", "=", "0"), setv("LateralVel", "=", "0"), A("Hide", "HintText"), snd("sfx_fissure", "90"),
         create("ImpactFlash", "CrackWorldX", "TipScreenY"), color("ImpactFlash", "255;160;60"), A("SetZOrder", "ImpactFlash", "=", "12"),
     ], [spark_burst("8", "BranchDirection * RandomFloatInRange(100, 320)", "RandomFloatInRange(-200, 60)")]),
     comment("COLLISIONS — only the small hidden CrackHitbox at the tip is tested. Order matters: first Crack Strength breaks Breakable obstacles (rocks, breakable barriers), then anything still touched kills, unless InvulnerabilityRemaining > 0 (used by the revive in Phase 3)."),

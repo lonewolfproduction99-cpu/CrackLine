@@ -15,3 +15,4 @@ make_art5.py       - crack style art (trails, tips) and shop card
 run_tests5.py      - tests: crystals as points, shop buy/equip/persist, layouts
 assemble_assets.py - builds assets/ and audio/ from the human-made CC0 packs (Kenney, Beatscribe) + writes CREDITS.md
 run_tests6.py      - tests: sound files load, sounds fire, mute button
+gen_sim_hold.py    - safety search for hold-to-steer controls (6 runs x 220 s up to 520 px/s, fissure recovery from any spot)

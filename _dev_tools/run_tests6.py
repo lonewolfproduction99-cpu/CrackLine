@@ -31,8 +31,8 @@ async def main():
         check('tap again: sound back on', s['vol'] == 100)
         await to_scene(page, 'Gameplay', 'EndlessButton'); await page.evaluate(setnum('NextRowWorldY', '1e9'))
         before = (await snd(page))['count']; x0 = (await S(page))['x']
-        await tap(page, 'L'); await asyncio.sleep(0.3); s = await snd(page)
-        check('branch tap plays a sound', s['count'] > before, f"{before} -> {s['count']} sounds")
+        await hold(page, 'L', 0.3); await asyncio.sleep(0.1); s = await snd(page)
+        check('starting to steer plays a sound', s['count'] > before, f"{before} -> {s['count']} sounds")
         x1 = (await S(page))['x']; await click_obj(page, 'MuteButton'); await asyncio.sleep(0.4); x2 = (await S(page))['x']; s = await snd(page)
         check('HUD mute button works and is not treated as a branch tap', s['vol'] == 0 and abs(x2 - x1) < 0.01, f'x {x1:.0f} -> {x2:.0f}')
         await click_obj(page, 'MuteButton'); await asyncio.sleep(0.3)

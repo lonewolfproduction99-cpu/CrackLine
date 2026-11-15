@@ -62,6 +62,17 @@ async def tap(page, side, touch=False):
     vp = page.viewport_size; x = vp['width'] * (0.25 if side == 'L' else 0.75)
     if touch: await page.touchscreen.tap(x, vp['height'] * 0.5)
     else: await page.mouse.click(x, vp['height'] * 0.5)
+async def hold_start(page, side, touch=False):
+    vp = page.viewport_size; x = vp['width'] * (0.25 if side == 'L' else 0.75); y = vp['height'] * 0.5
+    if touch:
+        cdp = await page.context.new_cdp_session(page); page._cdp = cdp
+        await cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': x, 'y': y, 'id': 1}]})
+    else: await page.mouse.move(x, y); await page.mouse.down()
+async def hold_end(page, touch=False):
+    if touch: await page._cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
+    else: await page.mouse.up()
+async def hold(page, side, secs, touch=False):
+    await hold_start(page, side, touch); await asyncio.sleep(secs); await hold_end(page, touch)
 async def wait_state(page, cond, timeout):
     t0 = time.time()
     while time.time() - t0 < timeout:
@@ -91,10 +102,17 @@ async def main():
         a = await S(page); await asyncio.sleep(1); b = await S(page)
         sp = (b['wy'] - a['wy']) / ((b['t'] - a['t']) / 1000)
         check('starts at ~180 px/s', 165 < sp < 195, f'{sp:.1f} px/s')
-        x0 = b['x']; await tap(page, 'L'); await asyncio.sleep(0.3); c = await S(page)
-        check('tap left = 130 px branch', abs(x0 - c['x'] - 130) < 0.01, f'{x0:.0f}->{c["x"]:.0f}')
-        await tap(page, 'R'); await asyncio.sleep(0.3); c2 = await S(page)
-        check('tap right = 130 px branch', abs(c2['x'] - c['x'] - 130) < 0.01)
+        x0 = b['x']; await hold_start(page, 'L'); await asyncio.sleep(0.15); h1 = await S(page); await asyncio.sleep(0.35); h2 = await S(page)
+        lat = (h1['x'] - h2['x']) / ((h2['t'] - h1['t']) / 1000); fwd = (h2['wy'] - h1['wy']) / ((h2['t'] - h1['t']) / 1000)
+        check('holding LEFT steers up-left diagonally at ~300 px/s', h2['x'] < x0 and 270 < lat < 330, f'lateral {lat:.0f} px/s, forward {fwd:.0f} px/s')
+        await hold_end(page); await asyncio.sleep(0.15); r1 = await S(page); await asyncio.sleep(0.4); r2 = await S(page)
+        check('releasing goes straight up again', abs(r2['x'] - r1['x']) < 0.5, f"x {r1['x']:.1f} -> {r2['x']:.1f}")
+        await hold_start(page, 'R'); await asyncio.sleep(0.15); h1 = await S(page); await asyncio.sleep(0.35); h2 = await S(page); await hold_end(page)
+        lat = (h2['x'] - h1['x']) / ((h2['t'] - h1['t']) / 1000)
+        check('holding RIGHT steers up-right', 270 < lat < 330, f'{lat:.0f} px/s')
+        await hold_start(page, 'L'); await asyncio.sleep(0.2); await page.mouse.move(page.viewport_size['width'] * 0.75, page.viewport_size['height'] * 0.5)
+        await asyncio.sleep(0.15); h1 = await S(page); await asyncio.sleep(0.25); h2 = await S(page); await hold_end(page)
+        check('sliding the held finger across the middle switches direction', h2['x'] > h1['x'], f"{h1['x']:.0f} -> {h2['x']:.0f}")
         await page.screenshot(path=f'{SHOTS}/p2_01_start.png')
 
         # --- speed scaling: +25% every 250 m, eased in, capped at 420 ---
@@ -114,9 +132,10 @@ async def main():
         a = await S(page); await asyncio.sleep(1.0); b = await S(page)
         real = (b['wy'] - a['wy']) / ((b['t'] - a['t']) / 1000)
         check('Slow Time = 40% slower forward motion (distance follows real progress)', abs(real / b['speed'] - 0.6) < 0.06, f"{real:.0f} px/s vs speed {b['speed']:.0f}")
-        x0 = b['x']; await tap(page, 'L'); await asyncio.sleep(0.2); c = await S(page)
-        check('branching unaffected by Slow Time (full 130 px within 0.15 s)', abs(x0 - c['x'] - 130) < 0.01)
-        await tap(page, 'R'); await asyncio.sleep(0.3)
+        await hold_start(page, 'L'); await asyncio.sleep(0.15); h1 = await S(page); await asyncio.sleep(0.3); h2 = await S(page); await hold_end(page)
+        lat = (h1['x'] - h2['x']) / ((h2['t'] - h1['t']) / 1000)
+        exp = max(300, h2['speed']); check('steering speed unaffected by Slow Time (= full ScrollSpeed, not slowed)', abs(lat / exp - 1) < 0.1, f'{lat:.0f} px/s vs {exp:.0f}')
+        await hold(page, 'R', 0.45)
         st = await wait_state(page, lambda s: s['slow'] <= 0, 5)
         a = await S(page); await asyncio.sleep(0.8); b = await S(page)
         real = (b['wy'] - a['wy']) / ((b['t'] - a['t']) / 1000)
@@ -189,8 +208,9 @@ async def main():
 
         # --- touch + tall phone + tablet ---
         ctx, page, errors = await boot(browser, 360, 800, touch=True); allerr += errors
-        x0 = (await S(page))['x']; await tap(page, 'R', touch=True); await asyncio.sleep(0.3)
-        check('touchscreen tap branches', abs((await S(page))['x'] - x0 - 130) < 0.01)
+        x0 = (await S(page))['x']; await hold_start(page, 'R', touch=True); await asyncio.sleep(0.4); x1 = (await S(page))['x']
+        await hold_end(page, touch=True); await asyncio.sleep(0.15); x2 = (await S(page))['x']; await asyncio.sleep(0.3); x3 = (await S(page))['x']
+        check('touchscreen: hold steers, release straightens', x1 - x0 > 60 and abs(x3 - x2) < 0.5, f'{x0:.0f} -> {x1:.0f}, then {x2:.0f} -> {x3:.0f}')
         await ctx.close()
         ctx, page, errors = await boot(browser, 800, 1280); allerr += errors
         st = await S(page); check('tablet portrait: width 720, tip at 70%', st['w'] == 720 and abs(st['tipY'] - st['h'] * 0.7) < 0.5, f"{st['w']}x{st['h']:.0f}")

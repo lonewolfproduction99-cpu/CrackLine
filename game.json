@@ -5440,7 +5440,22 @@
         {
           "name": "BranchCooldown",
           "type": "number",
-          "value": 0.08
+          "value": 0
+        },
+        {
+          "name": "HoldMinSpeed",
+          "type": "number",
+          "value": 300
+        },
+        {
+          "name": "HoldSpeedFactor",
+          "type": "number",
+          "value": 1.0
+        },
+        {
+          "name": "HoldAccel",
+          "type": "number",
+          "value": 5000
         },
         {
           "name": "TipScreenRatio",
@@ -5799,6 +5814,36 @@
         },
         {
           "name": "CooldownTimer",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "Holding",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "HoldId",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "HoldDir",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "LastHoldDir",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "HoldSpeed",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "LateralVel",
           "type": "number",
           "value": 0
         },
@@ -8390,7 +8435,7 @@
           "variables": [],
           "effects": [],
           "behaviors": [],
-          "string": "TAP LEFT OR RIGHT TO BRANCH",
+          "string": "HOLD LEFT OR RIGHT TO STEER",
           "font": "",
           "textAlignment": "center",
           "characterSize": 30,
@@ -8413,7 +8458,7 @@
             "shadowOpacity": 120,
             "smoothed": true,
             "underlined": false,
-            "text": "TAP LEFT OR RIGHT TO BRANCH",
+            "text": "HOLD LEFT OR RIGHT TO STEER",
             "font": "",
             "textAlignment": "center",
             "characterSize": 30,
@@ -12815,7 +12860,7 @@
           "colorG": 176,
           "colorB": 228,
           "creationTime": 0,
-          "name": "Input (tap / click)",
+          "name": "Input (hold to steer)",
           "source": "",
           "events": [
             {
@@ -12828,7 +12873,7 @@
                 "textG": 0,
                 "textR": 0
               },
-              "comment": "One tap = one branch. Taps during a branch or the short cooldown are ignored (no queueing). Left half = left, right half = right.",
+              "comment": "HOLD to steer: while a finger (or the mouse button) is held on the left half the crack travels diagonally up-left, on the right half up-right; release to go straight up. Sliding the finger across the middle switches direction. A new touch takes over from the previous one. Taps on the speaker button are ignored.",
               "comment2": ""
             },
             {
@@ -12858,30 +12903,6 @@
                 },
                 {
                   "type": {
-                    "inverted": false,
-                    "value": "NumberVariable"
-                  },
-                  "parameters": [
-                    "BranchDirection",
-                    "=",
-                    "0"
-                  ],
-                  "subInstructions": []
-                },
-                {
-                  "type": {
-                    "inverted": false,
-                    "value": "NumberVariable"
-                  },
-                  "parameters": [
-                    "CooldownTimer",
-                    "<=",
-                    "0"
-                  ],
-                  "subInstructions": []
-                },
-                {
-                  "type": {
                     "inverted": true,
                     "value": "CollisionPoint"
                   },
@@ -12897,14 +12918,123 @@
                 {
                   "type": {
                     "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "HoldId",
+                    "=",
+                    "StartedTouchOrMouseId(0)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "Holding",
+                    "=",
+                    "1"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Hide"
+                  },
+                  "parameters": [
+                    "HintText"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
                     "value": "PlaySound"
                   },
                   "parameters": [
                     "",
                     "sfx_branch",
                     "",
-                    "55",
+                    "50",
                     "RandomFloatInRange(0.9, 1.2)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "Holding",
+                    "=",
+                    "1"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "HasTouchEnded"
+                  },
+                  "parameters": [
+                    "",
+                    "HoldId"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "Holding",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "Holding",
+                    "=",
+                    "1"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "HoldDir",
+                    "=",
+                    "1"
                   ],
                   "subInstructions": []
                 }
@@ -12919,7 +13049,7 @@
                         "value": "BuiltinCommonInstructions::CompareNumbers"
                       },
                       "parameters": [
-                        "TouchX(StartedTouchOrMouseId(0), \"\")",
+                        "TouchX(HoldId, \"\")",
                         "<",
                         "SceneWindowWidth() / 2"
                       ],
@@ -12933,7 +13063,7 @@
                         "value": "SetNumberVariable"
                       },
                       "parameters": [
-                        "BranchDirection",
+                        "HoldDir",
                         "=",
                         "-1"
                       ],
@@ -12941,80 +13071,153 @@
                     }
                   ],
                   "events": []
+                }
+              ]
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "Holding",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "HoldDir",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BuiltinCommonInstructions::CompareStrings"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "!=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "Holding",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
                 },
                 {
-                  "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "BuiltinCommonInstructions::CompareNumbers"
-                      },
-                      "parameters": [
-                        "TouchX(StartedTouchOrMouseId(0), \"\")",
-                        ">=",
-                        "SceneWindowWidth() / 2"
-                      ],
-                      "subInstructions": []
-                    }
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "HoldDir",
+                    "=",
+                    "0"
                   ],
-                  "actions": [
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "SetNumberVariable"
-                      },
-                      "parameters": [
-                        "BranchDirection",
-                        "=",
-                        "1"
-                      ],
-                      "subInstructions": []
-                    }
-                  ],
-                  "events": []
+                  "subInstructions": []
                 },
                 {
-                  "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [],
-                  "actions": [
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "SetNumberVariable"
-                      },
-                      "parameters": [
-                        "BranchTimer",
-                        "=",
-                        "0"
-                      ],
-                      "subInstructions": []
-                    },
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "SetNumberVariable"
-                      },
-                      "parameters": [
-                        "BranchStartX",
-                        "=",
-                        "CrackWorldX"
-                      ],
-                      "subInstructions": []
-                    },
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "Hide"
-                      },
-                      "parameters": [
-                        "HintText"
-                      ],
-                      "subInstructions": []
-                    }
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "LateralVel",
+                    "=",
+                    "0"
                   ],
-                  "events": []
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Sparks when the steering direction changes.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "HoldDir",
+                    "!=",
+                    "0"
+                  ],
+                  "subInstructions": []
                 },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "HoldDir",
+                    "!=",
+                    "LastHoldDir"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "LastHoldDir",
+                    "=",
+                    "HoldDir"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
                 {
                   "type": "BuiltinCommonInstructions::Repeat",
                   "repeatExpression": "5",
@@ -13054,7 +13257,7 @@
                         "Spark",
                         "VX",
                         "=",
-                        "-BranchDirection * RandomFloatInRange(60, 200)"
+                        "-HoldDir * RandomFloatInRange(60, 200)"
                       ],
                       "subInstructions": []
                     },
@@ -13088,6 +13291,38 @@
                   "events": []
                 }
               ]
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "HoldDir",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "LastHoldDir",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
             }
           ],
           "parameters": []
@@ -13098,7 +13333,7 @@
           "colorG": 176,
           "colorB": 228,
           "creationTime": 0,
-          "name": "Branch motion",
+          "name": "Steering motion",
           "source": "",
           "events": [
             {
@@ -13111,7 +13346,133 @@
                 "textG": 0,
                 "textR": 0
               },
-              "comment": "Lateral offset follows an ease-out curve over BranchDuration (computed from elapsed time, so frame-rate independent). Clamped so the crack can never leave the screen or get stuck.",
+              "comment": "Lateral speed = max(HoldMinSpeed, ScrollSpeed x HoldSpeedFactor): at factor 1 the crack moves at 45 degrees and stays diagonal as the game speeds up (Slow Time does not slow steering). It ramps up/down at HoldAccel so it feels smooth but immediate. Clamped to the screen edges, so it can never get stuck.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "BranchDirection",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "HoldSpeed",
+                    "=",
+                    "max(HoldMinSpeed, ScrollSpeed * HoldSpeedFactor)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "LateralVel",
+                    "=",
+                    "LateralVel + clamp(HoldDir * HoldSpeed - LateralVel, -HoldAccel * TimeDelta(), HoldAccel * TimeDelta())"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "CrackWorldX",
+                    "=",
+                    "clamp(CrackWorldX + LateralVel * TimeDelta(), EdgeMargin, SceneWindowWidth() - EdgeMargin)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "BuiltinCommonInstructions::CompareNumbers"
+                      },
+                      "parameters": [
+                        "abs(CrackWorldX - SceneWindowWidth() / 2)",
+                        ">=",
+                        "SceneWindowWidth() / 2 - EdgeMargin"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "LateralVel",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Fissure jolt",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Only used by ground gaps (fissures) now: a forced 130 px jolt with an ease-out curve over BranchDuration; steering input is ignored while it lasts. Clamped to the screen.",
               "comment2": ""
             },
             {
@@ -17767,6 +18128,18 @@
               },
               "parameters": [
                 "CooldownTimer",
+                "=",
+                "0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "LateralVel",
                 "=",
                 "0"
               ],
