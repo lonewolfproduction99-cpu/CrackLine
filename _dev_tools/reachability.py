@@ -4,7 +4,8 @@ import sys, math
 sys.path.insert(0, '/home/claude/tools')
 from patterns import *
 SPEED = float(sys.argv[1]) if len(sys.argv) > 1 else 180
-T, D, CD = 0.18, 65, 0.08
+import os
+T, D, CD = float(os.environ.get("BT", 0.15)), float(os.environ.get("BD", 130)), 0.08
 MINX, MAXX = 30, 690
 TIP_HALF_DIAG = 8.5      # 12x12 tip hitbox, conservative
 TIPY = 896               # screen y of tip at 1280 height (70%)

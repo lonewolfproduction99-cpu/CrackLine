@@ -44,14 +44,14 @@ def boo(n, v): return {"name": n, "type": "boolean", "value": v}
 scene_vars = [
     # --- tuning (edit these to change the feel) ---
     num("BaseSpeed", 180),        # starting scroll speed, px/s
-    num("BranchDuration", 0.18),  # seconds a branch lasts
-    num("BranchDistance", 65),    # lateral px per branch
+    num("BranchDuration", 0.15),  # seconds a branch lasts
+    num("BranchDistance", 130),    # lateral px per branch
     num("BranchCooldown", 0.08),  # seconds after a branch before the next tap is accepted
     num("TipScreenRatio", 0.7),   # crack tip height on screen (0 top .. 1 bottom)
     num("EdgeMargin", 30),        # crack can't go closer than this to the screen edges
     num("PixelsPerMeter", 20),    # distance unit: 20 world px = 1 m
     num("TrailStep", 14),         # new trail segment every N px travelled
-    num("TrailJitter", 6),        # random sideways offset per trail point (jaggedness)
+    num("TrailJitter", 8),        # random sideways offset per trail point (jaggedness)
     num("TrailMaxSegments", 160), # hard cap on live trail segments
     num("ChunkHeight", CHUNK_HEIGHT),
     num("ChunkCount", len(CHUNKS)),  # number of external layouts named Chunk0..ChunkN-1
@@ -109,8 +109,8 @@ objects = [
      "variables": [], "effects": [], "behaviors": []},
     sprite("RockSmall", "rock_small", origin=(38, 38), mask=octagon(38, 38, HIT_RADIUS["RockSmall"] / 0.9239), variables=obstacle_vars),
     sprite("RockMedium", "rock_medium", origin=(58, 58), mask=octagon(58, 58, HIT_RADIUS["RockMedium"] / 0.9239), variables=obstacle_vars),
-    sprite("TrailSegment", "trail_segment", origin=(0, 12), center=(0, 12), variables=[num("WorldY", 0)]),
-    sprite("CrackTip", "crack_tip", origin=(32, 32)),
+    sprite("TrailSegment", "trail_segment", origin=(0, 24), center=(0, 24), variables=[num("WorldY", 0)]),
+    sprite("CrackTip", "crack_tip", origin=(64, 64)),
     sprite("CrackHitbox", "crack_hitbox", origin=(6, 6)),
     sprite("Spark", "spark", origin=(6, 6), variables=[num("VX", 0), num("VY", 0), num("Life", 0.35)]),
     sprite("ImpactFlash", "impact_flash", origin=(64, 64)),

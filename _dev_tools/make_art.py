@@ -79,23 +79,23 @@ save(rock(76, (150, 112, 86), 1), 'rock_small.png')
 save(rock(116, (128, 120, 116), 2), 'rock_medium.png')
 
 # ---------- Crack tip (glow) 48x48 ----------
-S = 64 * 4; tip = Image.new('RGBA', (S, S), (0, 0, 0, 0))
+S = 128 * 4; tip = Image.new('RGBA', (S, S), (0, 0, 0, 0))
 for r, col in [(0.48, (255, 140, 30, 90)), (0.34, (255, 190, 60, 170)), (0.2, (255, 240, 170, 255)), (0.11, (255, 255, 255, 255))]:
     lay = Image.new('RGBA', (S, S), (0, 0, 0, 0)); ImageDraw.Draw(lay).ellipse([S/2 - r*S, S/2 - r*S, S/2 + r*S, S/2 + r*S], fill=col)
     tip = Image.alpha_composite(tip, lay.filter(ImageFilter.GaussianBlur(S * 0.04)))
-save(tip.resize((64, 64), Image.LANCZOS), 'crack_tip.png')
+save(tip.resize((128, 128), Image.LANCZOS), 'crack_tip.png')
 
 # ---------- Crack hitbox (debug only, hidden in game) 12x12 ----------
 hb = Image.new('RGBA', (12, 12), (255, 0, 255, 160)); save(hb, 'crack_hitbox.png')
 
 # ---------- Trail segment 32x18: dark jagged edges + golden core ----------
-TW, TH = 32, 24; S = 4
+TW, TH = 32, 48; S = 4
 seg = Image.new('RGBA', (TW * S, TH * S), (0, 0, 0, 0)); sd = ImageDraw.Draw(seg)
 cy = TH * S / 2
-sd.rectangle([0, cy - 10 * S, TW * S, cy + 10 * S], fill=(40, 20, 12, 230))       # dark fractured edge
-sd.rectangle([0, cy - 6 * S, TW * S, cy + 6 * S], fill=(232, 120, 28, 255))     # orange
-sd.rectangle([0, cy - 3 * S, TW * S, cy + 3 * S], fill=(255, 200, 70, 255))     # gold
-sd.rectangle([0, cy - 1.2 * S, TW * S, cy + 1.2 * S], fill=(255, 250, 215, 255)) # hot centre
+sd.rectangle([0, cy - 20 * S, TW * S, cy + 20 * S], fill=(40, 20, 12, 230))       # dark fractured edge
+sd.rectangle([0, cy - 12 * S, TW * S, cy + 12 * S], fill=(232, 120, 28, 255))     # orange
+sd.rectangle([0, cy - 6 * S, TW * S, cy + 6 * S], fill=(255, 200, 70, 255))     # gold
+sd.rectangle([0, cy - 2.4 * S, TW * S, cy + 2.4 * S], fill=(255, 250, 215, 255)) # hot centre
 seg = seg.resize((TW, TH), Image.LANCZOS)
 save(seg, 'trail_segment.png')
 

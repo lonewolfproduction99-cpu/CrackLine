@@ -58,15 +58,15 @@ async def main():
         check('distance counter increases with world distance', b['dist'] == math.floor(b['wy'] / 20) and b['dist'] > a['dist'], f"{a['dist']} -> {b['dist']} m")
         check('tip held at 70% of screen height', abs(st['tipY'] - st['h'] * 0.7) < 0.5, f"tipY={st['tipY']:.1f} h={st['h']}")
         x0 = (await state(page))['x']
-        await tap(page, 'L'); await asyncio.sleep(0.07); mid = await state(page); await asyncio.sleep(0.35); s1 = await state(page)
-        check('tap LEFT half branches left by BranchDistance', abs((x0 - s1['x']) - 65) < 0.01, f'{x0:.1f} -> {s1["x"]:.1f}')
-        check('branch is a smooth diagonal (partial offset mid-branch)', 0 < x0 - mid['x'] < 65 and mid['dir'] == -1, f'mid offset {x0 - mid["x"]:.1f}px')
+        await tap(page, 'L'); await asyncio.sleep(0.05); mid = await state(page); await asyncio.sleep(0.35); s1 = await state(page)
+        check('tap LEFT half branches left by BranchDistance', abs((x0 - s1['x']) - 130) < 0.01, f'{x0:.1f} -> {s1["x"]:.1f}')
+        check('branch is a smooth diagonal (partial offset mid-branch)', 0 < x0 - mid['x'] < 130 and mid['dir'] == -1, f'mid offset {x0 - mid["x"]:.1f}px')
         check('crack returns to straight movement after branch', s1['dir'] == 0)
         await page.screenshot(path=f'{SHOTS}/02_after_left.png')
         await tap(page, 'R'); await asyncio.sleep(0.4); s2 = await state(page)
-        check('tap RIGHT half branches right by BranchDistance', abs((s2['x'] - s1['x']) - 65) < 0.01, f'{s1["x"]:.1f} -> {s2["x"]:.1f}')
+        check('tap RIGHT half branches right by BranchDistance', abs((s2['x'] - s1['x']) - 130) < 0.01, f'{s1["x"]:.1f} -> {s2["x"]:.1f}')
         x0 = s2['x']; await tap(page, 'L'); await asyncio.sleep(0.05); await tap(page, 'L'); await asyncio.sleep(0.5); s3 = await state(page)
-        check('second tap during a branch is ignored (no queue)', abs((x0 - s3['x']) - 65) < 0.01, f'moved {x0 - s3["x"]:.1f}px for 2 rapid taps')
+        check('second tap during a branch is ignored (no queue)', abs((x0 - s3['x']) - 130) < 0.01, f'moved {x0 - s3["x"]:.1f}px for 2 rapid taps')
         await ctx.close()
 
         # ---------- 2. edge clamping ----------
@@ -75,7 +75,7 @@ async def main():
         se = await state(page)
         check('crack clamped at left edge (EdgeMargin=30)', abs(se['x'] - 30) < 0.01 or se['state'] == 'GameOver', f'x={se["x"]:.1f} state={se["state"]}')
         await tap(page, 'R'); await asyncio.sleep(0.35); se2 = await state(page)
-        check('not stuck at edge: right tap moves away', se2['x'] - se['x'] > 60 or se['state'] == 'GameOver', f'{se["x"]:.1f} -> {se2["x"]:.1f}')
+        check('not stuck at edge: right tap moves away', se2['x'] - se['x'] > 120 or se['state'] == 'GameOver', f'{se["x"]:.1f} -> {se2["x"]:.1f}')
         await ctx.close()
 
         # ---------- 3. idle -> death by centre rock, overlay, restart ----------
@@ -99,7 +99,7 @@ async def main():
         # ---------- 4. touch input + autopilot survival (tall phone) ----------
         ctx, page, errors2 = await boot(browser, 360, 800, touch=True); errors += errors2
         x0 = (await state(page))['x']; await tap(page, 'R', touch=True); await asyncio.sleep(0.35)
-        check('touchscreen tap (right) branches', abs((await state(page))['x'] - x0 - 65) < 0.01)
+        check('touchscreen tap (right) branches', abs((await state(page))['x'] - x0 - 130) < 0.01)
         await tap(page, 'L', touch=True); await asyncio.sleep(0.35)
         check('touchscreen tap (left) branches', abs((await state(page))['x'] - x0) < 0.01)
         t0 = time.time(); maxtrail = 0; maxobs = 0; shot = False; taps = 0

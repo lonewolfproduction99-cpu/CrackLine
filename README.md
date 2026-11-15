@@ -31,13 +31,13 @@ The scene's own event sheet only links these sheets, in this order.
 | Variable | Default | Meaning |
 |---|---|---|
 | BaseSpeed | 180 | scroll speed (px/s) |
-| BranchDistance | 65 | sideways px per tap |
-| BranchDuration | 0.18 | seconds per branch |
+| BranchDistance | 130 | sideways px per tap |
+| BranchDuration | 0.15 | seconds per branch |
 | BranchCooldown | 0.08 | lockout after a branch |
 | TipScreenRatio | 0.7 | tip height on screen |
 | EdgeMargin | 30 | closest the crack gets to the screen edge |
 | PixelsPerMeter | 20 | distance unit |
-| TrailStep / TrailJitter / TrailMaxSegments | 14 / 6 / 160 | trail density, jaggedness and cap |
+| TrailStep / TrailJitter / TrailMaxSegments | 14 / 8 / 160 | trail density, jaggedness and cap |
 | ChunkHeight / ChunkCount / ChunkLoopStart | 640 / 9 / 1 | obstacle chunk system |
 
 ## Editing obstacle chunks

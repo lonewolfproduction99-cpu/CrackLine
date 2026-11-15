@@ -208,12 +208,12 @@
         {
           "name": "BranchDuration",
           "type": "number",
-          "value": 0.18
+          "value": 0.15
         },
         {
           "name": "BranchDistance",
           "type": "number",
-          "value": 65
+          "value": 130
         },
         {
           "name": "BranchCooldown",
@@ -243,7 +243,7 @@
         {
           "name": "TrailJitter",
           "type": "number",
-          "value": 6
+          "value": 8
         },
         {
           "name": "TrailMaxSegments",
@@ -735,13 +735,13 @@
                       "originPoint": {
                         "name": "origine",
                         "x": 0,
-                        "y": 12
+                        "y": 24
                       },
                       "centerPoint": {
                         "automatic": false,
                         "name": "centre",
                         "x": 0,
-                        "y": 12
+                        "y": 24
                       },
                       "customCollisionMask": []
                     }
@@ -775,8 +775,8 @@
                       "points": [],
                       "originPoint": {
                         "name": "origine",
-                        "x": 32,
-                        "y": 32
+                        "x": 64,
+                        "y": 64
                       },
                       "centerPoint": {
                         "automatic": true,
