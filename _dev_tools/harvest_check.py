@@ -5,7 +5,7 @@ from gen_sim import hit, ease, clampx, T, D, CD, dt
 from gen_params import HIT
 H = json.load(open(sys.argv[1]))
 for label, h in H.items():
-    obs = [tuple(o) for o in h['objs'] if o[0] in HIT]
+    obs = [tuple(o) for o in h['objs'] if o[0] in HIT and o[0] not in ('Crystal', 'Worm')]   # crystals are collectibles; moving worms are covered by gen_sim3
     pows = [o for o in h['objs'] if o[0].startswith('Power')]
     sp = sorted(h['speeds']); ws = [s[0] for s in sp]
     def speed(wy): i = min(len(sp) - 1, bisect.bisect(ws, wy)); return sp[i][1]

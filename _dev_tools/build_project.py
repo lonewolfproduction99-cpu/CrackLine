@@ -66,6 +66,7 @@ TUNING = [
     ("PlanetDistanceStep", 1000), ("ThemeCount", 3),
     ("PlanetDifficultyStart", 0.15), ("PlanetDifficultyStep", 0.2), ("PlanetProgressDifficulty", 0.2),
     ("PlanetMaxSpeed", 520), ("BreakDuration", 2.0),
+    ("GemChance", 0.5), ("RiskyGemChance", 0.15), ("RestartFromShop", 0),
     ("ReviveInvulnerability", 2), ("ReviveClearBehind", 250), ("ReviveClearAhead", 750),
 ]
 STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLevel", "CrackWorldX", "CrackWorldY", "TipScreenY",
@@ -75,15 +76,22 @@ STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLeve
          "LaneIter", "LaneWidth", "BlockerChance", "CrackLane", "CorridorShift", "TypeRoll", "ObjType", "LaneX", "ObjWorldY",
          "PowerupCooldown", "SlowTimeRemaining", "StrengthCharges", "InvulnerabilityRemaining", "GameOverTime",
          "TotalDistance", "PlanetIndex", "PlanetTheme", "PlanetsBroken", "PlanetTargetDistance", "PlanetDistance", "PlanetStartWorldY",
-         "ThemeCrystalBonus", "ThemeWallBonus", "ThemeSolidBonus", "WormChance", "FissureChance", "WormSpeed", "BreakTime", "SplitOffset", "PlanetCX", "PlanetCY"]
+         "ThemeCrystalBonus", "ThemeWallBonus", "ThemeSolidBonus", "WormChance", "FissureChance", "WormSpeed", "RunCrystals", "GemSize", "GemRoll", "BreakTime", "SplitOffset", "PlanetCX", "PlanetCY"]
 scene_vars = [num(n, v) for n, v in TUNING] + [st("GameState", "Playing"), st("RockTint", "255;255;255"), st("PlanetName", "EMBER")] + [num(n, 0) for n in STATE] + \
     [boo("ReviveUsed", False), boo("RequestRevive", False), boo("PlanetSetupPending", True), boo("BreakBurstDone", False)]
-global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("BestPlanetsBroken", 0)]
+STYLES = ["Classic", "Frostbite", "Venom", "Amethyst", "Inferno", "Shadow"]
+STYLE_PRICES = [0, 150, 300, 500, 800, 1200]
+STYLE_SPARKS = ["255;210;110", "150;230;255", "180;255;120", "220;160;255", "255;130;90", "170;120;255"]
+def arr(n, typ, vals): return {"name": n, "type": "array", "children": [{"type": typ, "value": v} for v in vals]}
+global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("BestPlanetsBroken", 0),
+               num("CrystalWallet", 0), num("EquippedStyle", 0), st("OwnedStyles", "100000"),
+               arr("StyleNames", "string", [s.upper() for s in STYLES]), arr("StylePrices", "number", STYLE_PRICES), arr("StyleSparkColors", "string", STYLE_SPARKS)]
 
 # ---------------------------------------------------------------- resources & objects
-IMAGES = ["bg_soil", "rock_small", "rock_medium", "crack_tip", "crack_hitbox", "trail_segment", "spark", "impact_flash", "ui_overlay",
+IMAGES = ["bg_soil", "rock_small", "rock_medium", "crack_hitbox", "ui_card", "spark", "impact_flash", "ui_overlay",
           "ui_button", "barrier_solid", "barrier_breakable", "crystal_purple", "crystal_pink", "crystal_cyan", "powerup_slow", "powerup_strength",
-          "bg_verdant", "bg_frost", "shield_glow", "ui_white", "ui_button_blue", "worm", "fissure"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")]
+          "bg_verdant", "bg_frost", "shield_glow", "ui_white", "ui_button_blue", "worm", "fissure"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")] + \
+    [f"{k}_{s.lower()}" for s in ["Classic", "Frostbite", "Venom", "Amethyst", "Inferno", "Shadow"] for k in ("trail", "tip")]
 resources = [{"alwaysLoaded": False, "file": f"assets/{n}.png", "kind": "image", "metadata": "", "name": n, "smoothed": True, "userAdded": True} for n in IMAGES]
 
 import math
@@ -121,14 +129,17 @@ objects = [
     sprite("RockMedium", "rock_medium", origin=(58, 58), mask=octagon(58, 58, HIT["RockMedium"][1]), variables=wvar),
     sprite("BarrierBreakable", "barrier_breakable", origin=(56, 32), mask=rect(56, 32, HIT["BarrierBreakable"][1], HIT["BarrierBreakable"][2]), variables=wvar),
     sprite("BarrierSolid", "barrier_solid", origin=(56, 32), mask=rect(56, 32, HIT["BarrierSolid"][1], HIT["BarrierSolid"][2]), variables=wvar),
-    sprite("Crystal", "crystal_purple", origin=(48, 54), mask=octagon(48, 54, HIT["Crystal"][1]), variables=wvar,
+    sprite("Crystal", "crystal_purple", origin=(48, 54), mask=octagon(48, 54, 30), variables=wvar + [num("Value", 1)],
            anims=[("Purple", "crystal_purple"), ("Pink", "crystal_pink"), ("Cyan", "crystal_cyan")]),
     sprite("Worm", "worm", origin=(70, 33), mask=rect(70, 33, HIT["Worm"][1], HIT["Worm"][2]), variables=wvar + [num("Dir", 1), num("Speed", 150)]),
     sprite("Fissure", "fissure", origin=(0, 32), mask=rect(360, 32, 360, 12), variables=wvar + [boo("Used", False)]),
     sprite("PowerSlow", "powerup_slow", origin=(40, 40), mask=octagon(40, 40, 36), variables=wvar),
     sprite("PowerStrength", "powerup_strength", origin=(40, 40), mask=octagon(40, 40, 36), variables=wvar),
-    sprite("TrailSegment", "trail_segment", origin=(0, 24), center=(0, 24), variables=wvar),
-    sprite("CrackTip", "crack_tip", origin=(64, 64)),
+    sprite("TrailSegment", "trail_classic", origin=(0, 24), center=(0, 24), variables=wvar, anims=[(s, f"trail_{s.lower()}") for s in STYLES]),
+    sprite("CrackTip", "tip_classic", origin=(64, 64), anims=[(s, f"tip_{s.lower()}") for s in STYLES]),
+    sprite("GemIcon", "crystal_cyan", origin=(48, 54)),
+    textobj("GemText", "0", 34, rgb="160;240;255", align="left"),
+    textobj("GameOverGemsText", "CRYSTALS +0", 28, rgb="160;240;255"),
     sprite("CrackHitbox", "crack_hitbox", origin=(6, 6)),
     sprite("Spark", "spark", origin=(6, 6), variables=[num("VX", 0), num("VY", 0), num("Life", 0.35)]),
     sprite("ImpactFlash", "impact_flash", origin=(64, 64)),
@@ -139,16 +150,16 @@ objects = [
     textobj("HintText", "TAP LEFT OR RIGHT TO BRANCH", 30, rgb="255;230;170"),
     sprite("Overlay", "ui_overlay"),
     textobj("GameOverTitle", "GAME OVER", 84, rgb="255;214;120"),
-    textobj("FinalDistanceText", "DISTANCE: 0000 m", 44),
-    textobj("GameOverBestText", "BEST: 0000 m", 34, rgb="255;220;160"),
-    textobj("NewBestText", "NEW BEST!", 40, rgb="120;255;160"),
+    textobj("FinalDistanceText", "DISTANCE: 0000 m", 36),
+    textobj("GameOverBestText", "BEST: 0000 m", 30, rgb="255;220;160"),
+    textobj("NewBestText", "NEW BEST!", 34, rgb="120;255;160"),
     sprite("RestartButton", "ui_button", origin=(180, 55)),
     textobj("RestartLabel", "RESTART", 48, rgb="80;26;6"),
     sprite("ReviveButton", "ui_button_blue", origin=(180, 55)),
     textobj("ReviveLabel", "SIMULATE AD REVIVE (TEST)", 20, rgb="255;255;255"),
     sprite("MenuButton", "ui_button", origin=(180, 55)),
     textobj("MenuLabel", "MAIN MENU", 40, rgb="80;26;6"),
-    textobj("GameOverPlanetsText", "PLANETS BROKEN: 0", 40, rgb="255;240;214"),
+    textobj("GameOverPlanetsText", "PLANETS BROKEN: 0", 34, rgb="255;240;214"),
     sprite("ShieldGlow", "shield_glow", origin=(70, 70)),
     sprite("ProgressBack", "ui_white"), sprite("ProgressFill", "ui_white"),
     textobj("PlanetHudText", "EMBER  0 / 500 m", 26, rgb="255;240;214"),
@@ -160,14 +171,15 @@ folders = {"folderName": "__ROOT", "children": [
     {"folderName": "World", "children": [{"objectName": "BgEmber"}, {"objectName": "BgVerdant"}, {"objectName": "BgFrost"}]},
     {"folderName": "Planet", "children": [{"objectName": n} for n in ["PlanetLeft", "PlanetRight", "PlanetBrokenText", "ShieldGlow"]]},
     {"folderName": "Crack", "children": [{"objectName": n} for n in ["CrackTip", "CrackHitbox", "TrailSegment", "Spark", "ImpactFlash"]]},
-    {"folderName": "Obstacles", "children": [{"objectName": n} for n in ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Crystal", "Worm", "Fissure"]]},
+    {"folderName": "Obstacles", "children": [{"objectName": n} for n in ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Worm", "Fissure"]]},
+    {"folderName": "Collectibles", "children": [{"objectName": "Crystal"}, {"objectName": "GemIcon"}]},
     {"folderName": "Powerups", "children": [{"objectName": "PowerSlow"}, {"objectName": "PowerStrength"}]},
     {"folderName": "UI", "children": [{"objectName": n} for n in ["DistanceText", "BestText", "SlowText", "StrengthText", "HintText", "Overlay",
                                                                    "GameOverTitle", "FinalDistanceText", "GameOverBestText", "NewBestText", "RestartButton", "RestartLabel",
-                                                                   "ReviveButton", "ReviveLabel", "MenuButton", "MenuLabel", "GameOverPlanetsText", "ProgressBack", "ProgressFill", "PlanetHudText"]]},
+                                                                   "ReviveButton", "ReviveLabel", "MenuButton", "MenuLabel", "GemText", "GameOverGemsText", "GameOverPlanetsText", "ProgressBack", "ProgressFill", "PlanetHudText"]]},
 ]}
 def grp(name, objs): return {"name": name, "objects": [{"name": o} for o in objs]}
-groups = [grp("Obstacles", ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Crystal", "Worm"]),
+groups = [grp("Obstacles", ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Worm"]),
           grp("Breakable", ["RockSmall", "RockMedium", "BarrierBreakable", "Worm"]),
           grp("Powerups", ["PowerSlow", "PowerStrength"]),
           grp("Backgrounds", ["BgEmber", "BgVerdant", "BgFrost"]), grp("Rocks", ["RockSmall", "RockMedium"])]
@@ -183,6 +195,7 @@ instances = [
     inst("DistanceText", 140, 40, layer="HUD", z=1), inst("BestText", 250, 104, layer="HUD", z=1),
     inst("SlowText", 30, 150, layer="HUD", z=1), inst("StrengthText", 470, 150, layer="HUD", z=1),
     inst("HintText", 90, 1040, layer="HUD", z=1),
+    inst("GemIcon", 610, 66, layer="HUD", z=1), inst("GemText", 636, 44, layer="HUD", z=1), inst("GameOverGemsText", 200, 600, layer="GameOver", z=1),
     inst("Overlay", 0, -400, layer="GameOver", z=0, w=720, h=3000),
     inst("GameOverTitle", 130, 300, layer="GameOver", z=1), inst("FinalDistanceText", 150, 430, layer="GameOver", z=1),
     inst("GameOverBestText", 220, 500, layer="GameOver", z=1), inst("NewBestText", 250, 560, layer="GameOver", z=1),
@@ -208,11 +221,22 @@ TOUCHX = 'TouchX(StartedTouchOrMouseId(0), "")'
 def screen_y(world): return f"TipScreenY - ({world} - CrackWorldY)"
 def pad4(v): return f'StrRepeat("0", max(0, 4 - StrLength(ToString({v})))) + ToString({v})'
 SAVE, KEY, KEYP = '"CracklineSave"', '"BestEndlessDistance"', '"BestPlanetsBroken"'
+KW, KO, KE = '"CrystalWallet"', '"OwnedStyles"', '"EquippedStyle"'
+def load_profile():
+    """Loads everything saved on the device (shared by MainMenu, Shop and Gameplay)."""
+    return [
+        ev([C("GroupExists", SAVE, KEY)], [A("ReadNumberFromStorage", SAVE, KEY, "", "BestEndlessDistance")]),
+        ev([C("GroupExists", SAVE, KEYP)], [A("ReadNumberFromStorage", SAVE, KEYP, "", "BestPlanetsBroken")]),
+        ev([C("GroupExists", SAVE, KW)], [A("ReadNumberFromStorage", SAVE, KW, "", "CrystalWallet")]),
+        ev([C("GroupExists", SAVE, KE)], [A("ReadNumberFromStorage", SAVE, KE, "", "EquippedStyle")]),
+        ev([C("GroupExists", SAVE, KO)], [A("ReadStringFromStorage", SAVE, KO, "", "OwnedStyles")]),
+    ]
+def save_wallet(): return A("EcrireFichierExp", SAVE, KW, "CrystalWallet")
 ENDLESS = iss("GameMode", '"Endless"')
 def color(obj, rgb): return A("ChangeColor", obj, f'"{rgb}"')
 
 spark_burst = lambda count, vx, vy, x="CrackWorldX", y="TipScreenY": repeat(count, [
-    create("Spark", x, y), setov("Spark", "VX", "=", vx), setov("Spark", "VY", "=", vy),
+    create("Spark", x, y), A("ChangeColor", "Spark", "StyleSparkColors[EquippedStyle]"), setov("Spark", "VX", "=", vx), setov("Spark", "VY", "=", vy),
     setov("Spark", "Life", "=", "RandomFloatInRange(0.2, 0.4)")])
 
 ev_gamestate = [
@@ -232,21 +256,22 @@ ev_gamestate = [
             A("Hide", "CrackHitbox"), A("Hide", "SlowText"), A("Hide", "StrengthText"), A("Hide", "NewBestText"),
             opacity("Overlay", "=", "170"),
             sety("HintText", "SceneWindowHeight() * 0.82"),
-            sety("GameOverTitle", "SceneWindowHeight() / 2 - 320"),
-            sety("FinalDistanceText", "SceneWindowHeight() / 2 - 140"),
-            sety("GameOverBestText", "SceneWindowHeight() / 2 - 80"),
-            sety("NewBestText", "SceneWindowHeight() / 2 - 30"),
-            sety("RestartButton", "SceneWindowHeight() / 2 + 80"),
-            sety("RestartLabel", "RestartButton.Y() - 32"),
-            sety("ReviveButton", "SceneWindowHeight() / 2 + 192"), sety("ReviveLabel", "ReviveButton.Y() - 12"),
-            sety("MenuButton", "SceneWindowHeight() / 2 + 302"), sety("MenuLabel", "MenuButton.Y() - 24"),
-            sety("GameOverPlanetsText", "SceneWindowHeight() / 2 - 200"),
+            sety("GameOverTitle", "SceneWindowHeight() / 2 - 338"),
+            sety("FinalDistanceText", "SceneWindowHeight() / 2 - 170"),
+            sety("GameOverBestText", "SceneWindowHeight() / 2 - 118"),
+            sety("NewBestText", "SceneWindowHeight() / 2 - 73"),
+            sety("RestartButton", "SceneWindowHeight() / 2 + 86"), scale("RestartButton", "=", "0.9"), scale("ReviveButton", "=", "0.9"), scale("MenuButton", "=", "0.9"),
+            sety("RestartLabel", "RestartButton.Y() - 32"), A("SetCenterX", "RestartLabel", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "MenuLabel", "=", "SceneWindowWidth() / 2"),
+            sety("ReviveButton", "SceneWindowHeight() / 2 + 193"), sety("ReviveLabel", "ReviveButton.Y() - 12"),
+            sety("MenuButton", "SceneWindowHeight() / 2 + 300"), sety("MenuLabel", "MenuButton.Y() - 24"),
+            sety("GameOverPlanetsText", "SceneWindowHeight() / 2 - 222"), sety("GameOverGemsText", "SceneWindowHeight() / 2 - 23"),
             color("ProgressBack", "40;20;12"), opacity("ProgressBack", "=", "170"),
         ], [
             ev([iss("GameMode", '""')], [sets("GameMode", '"Endless"')]),
             comment("Load the personal best saved on this device (GDevelop storage). NOTE: Playgama requires its Bridge storage instead; this gets swapped when the SDK is integrated."),
-            ev([C("GroupExists", SAVE, KEY)], [A("ReadNumberFromStorage", SAVE, KEY, "", "BestEndlessDistance")]),
-            ev([C("GroupExists", SAVE, KEYP)], [A("ReadNumberFromStorage", SAVE, KEYP, "", "BestPlanetsBroken")]),
+            *load_profile(),
+            comment("Equipped crack style (bought in the Shop) recolours the tip, trail and sparks."),
+            ev([], [A("AnimatableCapability::AnimatableBehavior::SetIndex", "CrackTip", "Animation", "=", "EquippedStyle"), scale("GemIcon", "=", "0.36")]),
             comment("Planet-mode HUD (surface progress bar) only in Planet Breaker; Endless shows only the Ember background."),
             ev([iss("GameMode", '"Endless"')], [A("Hide", "ProgressBack"), A("Hide", "ProgressFill"), A("Hide", "PlanetHudText"), A("Hide", "BgVerdant"), A("Hide", "BgFrost")]),
         ]),
@@ -330,6 +355,7 @@ ev_trail = [
             setv("TrailNewX", "=", "CrackWorldX + RandomFloatInRange(-TrailJitter, TrailJitter)"),
             create("TrailSegment", "TrailLastX", screen_y("TrailLastWorldY")),
             setov("TrailSegment", "WorldY", "=", "TrailLastWorldY"),
+            A("AnimatableCapability::AnimatableBehavior::SetIndex", "TrailSegment", "Animation", "=", "EquippedStyle"),
             A("SetAngle", "TrailSegment", "=", "ToDeg(atan2(-(CrackWorldY - TrailLastWorldY), TrailNewX - TrailLastX))"),
             scalex("TrailSegment", "=", "(DistanceBetweenPositions(TrailLastX, TrailLastWorldY, TrailNewX, CrackWorldY) + 2) / 32"),
             scaley("TrailSegment", "=", "RandomFloatInRange(0.75, 1.15)"),
@@ -351,6 +377,13 @@ ev_trail = [
 def spawn(obj, wy, extra=()):
     return [create(obj, "LaneX", screen_y(wy)), setov(obj, "WorldY", "=", wy), A("SetZOrder", obj, "=", "5")] + list(extra)
 L = lambda a, b: f"lerp({a}, {b}, DifficultyLevel)"
+def gem_spawn():
+    """Create a collectible crystal at (LaneX, ObjWorldY) with size GemSize: 0 small = 5 pts, 1 medium = 3 pts, 2 large = 1 pt."""
+    # size events are SUB-events of the Create event, so they only affect the crystal just created
+    return [ev([], spawn("Crystal", "ObjWorldY", [A("AnimatableCapability::AnimatableBehavior::SetIndex", "Crystal", "Animation", "=", "RandomInRange(0, 2)")]), [
+            ev([isv("GemSize", "=", "0")], [setov("Crystal", "Value", "=", "5"), scale("Crystal", "=", "0.45")]),
+            ev([isv("GemSize", "=", "1")], [setov("Crystal", "Value", "=", "3"), scale("Crystal", "=", "0.7")]),
+            ev([isv("GemSize", "=", "2")], [setov("Crystal", "Value", "=", "1"), scale("Crystal", "=", "1")])])]
 ev_spawner = [
     comment("PROCEDURAL OBSTACLE ROWS with a guaranteed safe route. The screen is split into LaneCount (7) lanes. Every row keeps a 2-lane wide CORRIDOR free (SafeLane and SafeLane+1). The corridor drifts by at most one lane per row (on most rows), and on a drift row the lanes of both the old and new corridor stay free, so the corridor is continuous. A 2-lane gap is always wider than one branch (130 px), so a branch can always land inside it. This rule was validated offline by brute-force searching every tap timing over 60 random 5-minute runs at the real speeds (tools: gen_sim.py)."),
     comment("Row types: EMPTY (nothing), WALL (every lane outside the corridor gets a reinforced barrier, a share of them breakable), SCATTER (each lane outside the corridor gets an obstacle with probability Density). Density, row spacing and the share of crystals/solid barriers rise with DifficultyLevel; empty rows become rarer."),
@@ -412,12 +445,23 @@ ev_spawner = [
                                                        [ev([cmp("RandomFloat(1)", ">=", "0.5")], [setv("ObjType", "=", "2")])])]),
                     ev([isv("ObjType", "=", "1")], spawn("RockSmall", "ObjWorldY", [A("ChangeColor", "RockSmall", "RockTint")])),
                     ev([isv("ObjType", "=", "2")], spawn("RockMedium", "ObjWorldY", [A("ChangeColor", "RockMedium", "RockTint")])),
-                    ev([isv("ObjType", "=", "3")], spawn("Crystal", "ObjWorldY", [A("AnimatableCapability::AnimatableBehavior::SetIndex", "Crystal", "Animation", "=", "RandomInRange(0, 2)")])),
+                    comment("ObjType 3 used to be a hazard crystal; crystals are now collectibles, so this slot is a medium rock."),
+                    ev([isv("ObjType", "=", "3")], spawn("RockMedium", "ObjWorldY", [A("ChangeColor", "RockMedium", "RockTint")])),
+                    comment("Risky crystal: sometimes a free lane outside the safe corridor gets a crystal (usually a small, valuable one) right between the obstacles."),
+                    ev([isv("ObjType", "=", "0"), isv("RowType", "=", "2"), cmp("RandomFloat(1)", "<", "RiskyGemChance")],
+                       [setv("GemSize", "=", "0"), setv("ObjWorldY", "=", "RowWorldY")], [ev([cmp("RandomFloat(1)", "<", "0.3")], [setv("GemSize", "=", "1")]), *gem_spawn()]),
                     ev([isv("ObjType", "=", "4")], spawn("BarrierBreakable", "RowWorldY")),
                     ev([isv("ObjType", "=", "5")], spawn("BarrierSolid", "RowWorldY")),
                 ]),
                 ev([], [setv("LaneIter", "+", "1")]),
             ]),
+            comment("Corridor crystal: GemChance per row (Verdant planets get more), placed in the safe corridor between this row and the next, so it is always reachable. Sizes: small (5 points, small pickup area), medium (3), large (1)."),
+            ev([isv("RowType", "<=", "2"), cmp("RandomFloat(1)", "<", "GemChance + ThemeCrystalBonus")], [
+                setv("LaneX", "=", "(SafeLane + RandomInRange(0, 1) + 0.5) * LaneWidth"), setv("ObjWorldY", "=", "RowWorldY + RowGap * 0.28"),
+                setv("GemRoll", "=", "RandomFloat(1)"), setv("GemSize", "=", "2")], [
+                ev([isv("GemRoll", "<", "0.55")], [setv("GemSize", "=", "1")]),
+                ev([isv("GemRoll", "<", "0.2")], [setv("GemSize", "=", "0")]),
+                *gem_spawn()]),
             comment("Power-ups: uncommon (PowerupChance per row, then a PowerupCooldownTime cooldown). Placed in the middle of the safe corridor, halfway to the next row, so they are always reachable and never inside an obstacle."),
             ev([isv("PowerupCooldown", "<=", "0"), cmp("RandomFloat(1)", "<", "PowerupChance")], [
                 setv("PowerupCooldown", "=", "PowerupCooldownTime"),
@@ -436,7 +480,8 @@ ev_spawner = [
         ev([], [sety("Obstacles", screen_y("Obstacles.WorldY")), sety("Powerups", screen_y("Powerups.WorldY"))]),
         ev([posy("Obstacles", ">", "SceneWindowHeight() + 120")], [delete("Obstacles")]),
         ev([posy("Powerups", ">", "SceneWindowHeight() + 120")], [delete("Powerups")]),
-        ev([], [sety("Fissure", screen_y("Fissure.WorldY"))]),
+        ev([], [sety("Fissure", screen_y("Fissure.WorldY")), sety("Crystal", screen_y("Crystal.WorldY"))]),
+        ev([posy("Crystal", ">", "SceneWindowHeight() + 80")], [delete("Crystal")]),
         ev([posy("Fissure", ">", "SceneWindowHeight() + 80")], [delete("Fissure")]),
     ]),
     group("Burrowing worms", [
@@ -459,6 +504,15 @@ ev_powerups = [
         ev([PLAYING, C("CollisionNP", "CrackHitbox", "PowerStrength", "", "", "")], [
             setv("StrengthCharges", "=", "StrengthMaxCharges"), create("ImpactFlash", "PowerStrength.X()", "PowerStrength.Y()"),
             color("ImpactFlash", "255;140;60"), A("SetZOrder", "ImpactFlash", "=", "12"), delete("PowerStrength")]),
+    ]),
+    group("Crystals (points)", [
+        comment("Collecting a crystal adds its Value to RunCrystals (this run) and CrystalWallet (saved; spent in the Shop)."),
+        ev([PLAYING, C("CollisionNP", "CrackHitbox", "Crystal", "", "", "")], [
+            setv("RunCrystals", "+", "Crystal.Value"), setv("CrystalWallet", "+", "Crystal.Value"),
+            create("ImpactFlash", "Crystal.X()", "Crystal.Y()"), color("ImpactFlash", "150;235;255"), scale("ImpactFlash", "=", "0.5"), A("SetZOrder", "ImpactFlash", "=", "12"),
+            delete("Crystal")]),
+        ev([], [text("GemText", "ToString(RunCrystals)"), A("AnimatableCapability::AnimatableBehavior::SetIndex", "GemIcon", "Animation", "=", "0"),
+                scale("Crystal", "+", "0")]),
     ]),
     group("Timers and HUD", [
         ev([PLAYING, isv("PowerupCooldown", ">", "0")], [setv("PowerupCooldown", "-", "TimeDelta()")]),
@@ -493,7 +547,8 @@ ev_collisions = [
         create("ImpactFlash", "CrackWorldX", "TipScreenY"), A("SetZOrder", "ImpactFlash", "=", "12"),
         color("CrackTip", "255;90;70"),
         text("FinalDistanceText", '"DISTANCE: " + ToString(Distance) + " m"'),
-        A("Hide", "HintText"),
+        A("Hide", "HintText"), save_wallet(),
+        text("GameOverGemsText", '"CRYSTALS +" + ToString(RunCrystals) + "   (TOTAL " + ToString(CrystalWallet) + ")"'),
     ], [
         spark_burst("12", "RandomFloatInRange(-260, 260)", "RandomFloatInRange(-320, 120)"),
         ev([C("BooleanVariable", "ReviveUsed", "True", "")], [A("Hide", "ReviveButton"), A("Hide", "ReviveLabel")]),
@@ -508,7 +563,7 @@ ev_collisions = [
            [ev([cmp("PlanetsBroken", ">", "BestPlanetsBroken")], [
                 setv("BestPlanetsBroken", "=", "PlanetsBroken"), A("EcrireFichierExp", SAVE, KEYP, "BestPlanetsBroken"),
                 A("Show", "NewBestText", ""), text("GameOverBestText", '"BEST: " + ToString(BestPlanetsBroken) + " PLANETS"')])]),
-        ev([], [A("SetCenterX", "GameOverPlanetsText", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "ReviveLabel", "=", "SceneWindowWidth() / 2"),
+        ev([], [A("SetCenterX", "GameOverPlanetsText", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "GameOverGemsText", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "ReviveLabel", "=", "SceneWindowWidth() / 2"),
                 A("SetCenterX", "FinalDistanceText", "=", "SceneWindowWidth() / 2"),
                 A("SetCenterX", "GameOverBestText", "=", "SceneWindowWidth() / 2"),
                 A("SetCenterX", "NewBestText", "=", "SceneWindowWidth() / 2"),
@@ -562,7 +617,7 @@ ev_planet = [
         ev([PLANET, PLAYING, cmp("PlanetDistance", ">=", "PlanetTargetDistance")], [
             sets("GameState", '"PlanetBreak"'), setv("BreakTime", "=", "0"), A("SetBooleanVariable", "BreakBurstDone", "False", ""),
             setv("BranchDirection", "=", "0"), setv("SlowTimeRemaining", "=", "0"),
-            delete("Obstacles"), delete("Powerups"),
+            delete("Obstacles"), delete("Powerups"), delete("Crystal"), save_wallet(),
             setv("PlanetCX", "=", "SceneWindowWidth() / 2"), setv("PlanetCY", "=", "SceneWindowHeight() * 0.42"),
             A("AnimatableCapability::AnimatableBehavior::SetIndex", "PlanetLeft", "Animation", "=", "PlanetTheme"),
             A("AnimatableCapability::AnimatableBehavior::SetIndex", "PlanetRight", "Animation", "=", "PlanetTheme"),
@@ -629,44 +684,119 @@ layout = {"b": 40, "disableInputWhenNotFocused": True, "mangledName": "Gameplay"
 
 
 # ---------------------------------------------------------------- MAIN MENU scene
+CY = "SceneWindowHeight() / 2"
 menu_objects = [
     {"assetStoreId": "", "name": "MenuBg", "type": "TiledSpriteObject::TiledSprite", "texture": "bg_soil", "width": 720, "height": 3000, "variables": [], "effects": [], "behaviors": []},
     textobj("TitleText", "CRACKLINE", 110, rgb="255;214;120"),
     textobj("SubtitleText", "SPLIT THE WORLD", 34, rgb="255;240;214"),
-    sprite("MenuTip", "crack_tip", origin=(64, 64)),
+    textobj("MenuBestText", "BEST: 0 m   |   0 PLANETS", 28, rgb="255;220;160"),
+    textobj("MenuWalletText", "CRYSTALS: 0", 30, rgb="160;240;255"),
     sprite("EndlessButton", "ui_button", origin=(180, 55)), textobj("EndlessLabel", "ENDLESS DEPTH", 40, rgb="80;26;6"),
     sprite("PlanetButton", "ui_button", origin=(180, 55)), textobj("PlanetLabel", "PLANET BREAKER", 38, rgb="80;26;6"),
-    textobj("MenuBestText", "BEST: 0 m   |   0 PLANETS", 28, rgb="255;220;160"),
+    sprite("ShopButton", "ui_button_blue", origin=(180, 55)), textobj("ShopLabel", "SHOP", 44, rgb="255;255;255"),
 ]
 menu_instances = [inst("MenuBg", 0, -800, z=-10, w=720, h=3200), inst("TitleText", 60, 220, z=2), inst("SubtitleText", 210, 350, z=2),
-                  inst("MenuTip", 360, 470, z=2), inst("EndlessButton", 360, 620, z=2), inst("EndlessLabel", 210, 594, z=3),
-                  inst("PlanetButton", 360, 790, z=2), inst("PlanetLabel", 200, 765, z=3), inst("MenuBestText", 150, 930, z=2)]
-def tapped(obj): return [C("HasAnyTouchOrMouseStarted", ""), C("CollisionPoint", obj, 'TouchX(StartedTouchOrMouseId(0), "")', 'TouchY(StartedTouchOrMouseId(0), "")')]
+                  inst("MenuBestText", 150, 420, z=2), inst("MenuWalletText", 240, 460, z=2),
+                  inst("EndlessButton", 360, 620, z=2), inst("EndlessLabel", 210, 594, z=3),
+                  inst("PlanetButton", 360, 750, z=2), inst("PlanetLabel", 200, 725, z=3),
+                  inst("ShopButton", 360, 880, z=2), inst("ShopLabel", 300, 852, z=3)]
+def tapped(obj, layer='""'): return [C("HasAnyTouchOrMouseStarted", ""), C("CollisionPoint", obj, f'TouchX(StartedTouchOrMouseId(0), {layer})', f'TouchY(StartedTouchOrMouseId(0), {layer})')]
+def center_all(*objs): return [A("SetCenterX", o, "=", "SceneWindowWidth() / 2") for o in objs]
 menu_events = [
-    comment("MAIN MENU — pick a mode. Both buttons open the same Gameplay scene; only the global GameMode differs."),
+    comment("MAIN MENU — pick a mode or open the Shop. Both modes open the same Gameplay scene; only the global GameMode differs."),
     comment("Positions are offsets from the screen centre so the menu fits any portrait height (and a square window)."),
     ev([C("SceneJustBegins", "")], [
-        sety("TitleText", "SceneWindowHeight() / 2 - 330"), sety("SubtitleText", "SceneWindowHeight() / 2 - 195"), sety("MenuTip", "SceneWindowHeight() / 2 - 92"),
-        sety("EndlessButton", "SceneWindowHeight() / 2 + 20"), sety("EndlessLabel", "EndlessButton.Y() - 24"),
-        sety("PlanetButton", "SceneWindowHeight() / 2 + 150"), sety("PlanetLabel", "PlanetButton.Y() - 24"),
-        sety("MenuBestText", "SceneWindowHeight() / 2 + 230"),
-    ], [
-        ev([C("GroupExists", SAVE, KEY)], [A("ReadNumberFromStorage", SAVE, KEY, "", "BestEndlessDistance")]),
-        ev([C("GroupExists", SAVE, KEYP)], [A("ReadNumberFromStorage", SAVE, KEYP, "", "BestPlanetsBroken")]),
-        ev([], [text("MenuBestText", '"BEST: " + ToString(BestEndlessDistance) + " m   |   " + ToString(BestPlanetsBroken) + " PLANETS"')]),
+        sety("TitleText", f"{CY} - 340"), sety("SubtitleText", f"{CY} - 205"),
+        sety("MenuBestText", f"{CY} - 145"), sety("MenuWalletText", f"{CY} - 100"),
+        sety("EndlessButton", f"{CY} + 25"), sety("EndlessLabel", "EndlessButton.Y() - 24"),
+        sety("PlanetButton", f"{CY} + 150"), sety("PlanetLabel", "PlanetButton.Y() - 24"),
+        sety("ShopButton", f"{CY} + 275"), sety("ShopLabel", "ShopButton.Y() - 27"),
+    ], load_profile() + [
+        ev([], [text("MenuBestText", '"BEST: " + ToString(BestEndlessDistance) + " m   |   " + ToString(BestPlanetsBroken) + " PLANETS"'),
+                text("MenuWalletText", '"CRYSTALS: " + ToString(CrystalWallet)')]),
     ]),
-    ev([], [A("TiledSpriteObject::YOffset", "MenuBg", "=", "-TimeFromStart() * 60"), scale("MenuTip", "=", "0.75 + 0.08 * sin(TimeFromStart() * 5)"),
-            A("SetCenterX", "TitleText", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "SubtitleText", "=", "SceneWindowWidth() / 2"),
-            A("SetCenterX", "EndlessLabel", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "PlanetLabel", "=", "SceneWindowWidth() / 2"),
-            A("SetCenterX", "MenuBestText", "=", "SceneWindowWidth() / 2")]),
+    ev([], [A("TiledSpriteObject::YOffset", "MenuBg", "=", "-TimeFromStart() * 60")] +
+            center_all("TitleText", "SubtitleText", "EndlessLabel", "PlanetLabel", "ShopLabel", "MenuBestText", "MenuWalletText")),
     ev(tapped("EndlessButton"), [sets("GameMode", '"Endless"'), A("Scene", "", '"Gameplay"', "")]),
     ev(tapped("PlanetButton"), [sets("GameMode", '"Planet"'), A("Scene", "", '"Gameplay"', "")]),
+    ev(tapped("ShopButton"), [A("Scene", "", '"Shop"', "")]),
 ]
-menu_layout = {"b": 40, "disableInputWhenNotFocused": True, "mangledName": "MainMenu", "name": "MainMenu", "r": 110, "standardSortMethod": True,
-               "stopSoundsOnStartup": True, "title": "", "v": 60, "uiSettings": ui_settings, "objectsGroups": [], "variables": [],
-               "instances": menu_instances, "objects": menu_objects,
-               "objectsFolderStructure": {"folderName": "__ROOT", "children": [{"objectName": o["name"]} for o in menu_objects]},
-               "events": menu_events, "layers": [layer("")], "behaviorsSharedData": []}
+def simple_layout(name, objs, insts, events, groups=(), variables=()):
+    return {"b": 40, "disableInputWhenNotFocused": True, "mangledName": name, "name": name, "r": 110, "standardSortMethod": True,
+            "stopSoundsOnStartup": True, "title": "", "v": 60, "uiSettings": ui_settings, "objectsGroups": list(groups), "variables": list(variables),
+            "instances": insts, "objects": objs,
+            "objectsFolderStructure": {"folderName": "__ROOT", "children": [{"objectName": o["name"]} for o in objs]},
+            "events": events, "layers": [layer("")], "behaviorsSharedData": []}
+menu_layout = simple_layout("MainMenu", menu_objects, menu_instances, menu_events)
+
+# ---------------------------------------------------------------- SHOP scene
+def sidx(): return [num("StyleIndex", 0)]
+shop_objects = [
+    {"assetStoreId": "", "name": "ShopBg", "type": "TiledSpriteObject::TiledSprite", "texture": "bg_soil", "width": 720, "height": 3000, "variables": [], "effects": [], "behaviors": []},
+    textobj("ShopTitle", "CRACK STYLES", 46, rgb="255;214;120", align="left"),
+    textobj("WalletText", "CRYSTALS: 0", 30, rgb="160;240;255", align="left"),
+    sprite("ShopCard", "ui_card", origin=(150, 100), variables=sidx()),
+    sprite("ShopTrail", "trail_classic", origin=(0, 24), variables=sidx(), anims=[(s, f"trail_{s.lower()}") for s in STYLES]),
+    sprite("ShopTip", "tip_classic", origin=(64, 64), variables=sidx(), anims=[(s, f"tip_{s.lower()}") for s in STYLES]),
+    textobj("ShopName", "CLASSIC", 28, rgb="255;240;214"),
+    textobj("ShopPrice", "EQUIPPED", 22, rgb="255;220;120"),
+    sprite("BackButton", "ui_button", origin=(180, 55)), textobj("BackLabel", "BACK", 44, rgb="80;26;6"),
+    textobj("ShopMsg", "", 30, rgb="255;255;255"),
+]
+for o in shop_objects:
+    if o["name"] in ("ShopName", "ShopPrice"): o["variables"] = sidx()
+def sinst(name, k, z):
+    d = inst(name, 0, 0, z=z); d["persistentUuid"] = uid(f"shop-{name}-{k}")
+    d["initialVariables"] = [{"name": "StyleIndex", "type": "number", "value": k}]; return d
+shop_instances = [inst("ShopBg", 0, -800, z=-10, w=720, h=3200), inst("ShopTitle", 30, 20, z=2), inst("WalletText", 420, 30, z=2),
+                  inst("BackButton", 360, 1180, z=2), inst("BackLabel", 300, 1150, z=3), inst("ShopMsg", 200, 1080, z=4)] + \
+                 [sinst(n, k, z) for k in range(len(STYLES)) for n, z in (("ShopCard", 1), ("ShopTrail", 2), ("ShopTip", 3), ("ShopName", 4), ("ShopPrice", 4))]
+COLX = "(190 + mod({o}.StyleIndex, 2) * 340)"
+ROWY = f"({CY} - 205 + floor({{o}}.StyleIndex / 2) * 170)"
+def place(o, dx, dy, center=False):
+    acts = [sety(o, ROWY.format(o=o) + f" + {dy}")]
+    acts.append(A("SetCenterX", o, "=", COLX.format(o=o) + f" + {dx}") if center else setx(o, COLX.format(o=o) + f" + {dx}"))
+    return acts
+shop_events = [
+    comment("SHOP — crack styles. Prices and names live in the global arrays StylePrices / StyleNames (index = StyleIndex 0-5). Owned styles are a string of 0/1 flags (OwnedStyles, e.g. \"110000\"); EquippedStyle is the index in use. Everything is saved on the device. NOTE: Playgama will require its Bridge storage instead."),
+    ev([C("SceneJustBegins", "")], [scale("ShopCard", "=", "0.8"), scale("ShopTip", "=", "0.55"), scalex("ShopTrail", "=", "6.5"), scaley("ShopTrail", "=", "0.55"),
+        scale("BackButton", "=", "0.7"), sety("ShopTitle", f"{CY} - 352"), sety("WalletText", f"{CY} - 342"),
+        sety("BackButton", f"{CY} + 312"), sety("BackLabel", "BackButton.Y() - 27"), sety("ShopMsg", f"{CY} + 222")]
+       + place("ShopCard", 0, 0) + place("ShopTrail", -104, -6) + place("ShopTip", 0, -6)
+       + [A("AnimatableCapability::AnimatableBehavior::SetIndex", "ShopTrail", "Animation", "=", "ShopTrail.StyleIndex"),
+          A("AnimatableCapability::AnimatableBehavior::SetIndex", "ShopTip", "Animation", "=", "ShopTip.StyleIndex")],
+       load_profile()),
+    comment("Card texts, refreshed every frame: name, and EQUIPPED / OWNED / price."),
+    {"type": "BuiltinCommonInstructions::ForEach", "object": "ShopName", "conditions": [], "actions": [text("ShopName", "StyleNames[ShopName.StyleIndex]")] + place("ShopName", 0, -66, center=True), "events": []},
+    {"type": "BuiltinCommonInstructions::ForEach", "object": "ShopPrice", "conditions": [], "actions": [
+        text("ShopPrice", '"PRICE: " + ToString(StylePrices[ShopPrice.StyleIndex])'), A("TextObject::ChangeColor", "ShopPrice", '"160;240;255"')], "events": [
+        ev([C("BuiltinCommonInstructions::CompareStrings", "SubStr(OwnedStyles, ShopPrice.StyleIndex, 1)", "=", '"1"')], [text("ShopPrice", '"OWNED: TAP TO USE"'), A("TextObject::ChangeColor", "ShopPrice", '"255;240;214"')]),
+        ev([C("NumberObjectVariable", "ShopPrice", "StyleIndex", "=", "EquippedStyle")], [text("ShopPrice", '"EQUIPPED"'), A("TextObject::ChangeColor", "ShopPrice", '"120;255;160"')]),
+        ev([], place("ShopPrice", 0, 34, center=True))]},
+    ev([], [color("ShopCard", "255;255;255"), text("WalletText", '"CRYSTALS: " + ToString(CrystalWallet)'), A("SetCenterX", "BackLabel", "=", "SceneWindowWidth() / 2"),
+            A("SetCenterX", "ShopMsg", "=", "SceneWindowWidth() / 2"), A("SetX", "WalletText", "=", "SceneWindowWidth() - 30 - WalletText.Width()")]),
+    ev([C("NumberObjectVariable", "ShopCard", "StyleIndex", "=", "EquippedStyle")], [color("ShopCard", "140;255;170")]),
+    comment("Tap a card: equip it if owned; otherwise buy it if you have enough crystals (then equip and save); otherwise say how many more you need."),
+    ev(tapped("ShopCard"), [setv("ShopSel", "=", "ShopCard.StyleIndex"), setv("ShopOwned", "=", "0"), setv("MsgTime", "=", "1.8")], [
+        ev([C("BuiltinCommonInstructions::CompareStrings", "SubStr(OwnedStyles, ShopSel, 1)", "=", '"1"')], [setv("ShopOwned", "=", "1")]),
+        ev([isv("ShopOwned", "=", "1")], [setv("EquippedStyle", "=", "ShopSel"), A("EcrireFichierExp", SAVE, KE, "EquippedStyle"),
+                                          text("ShopMsg", 'StyleNames[ShopSel] + " EQUIPPED"')]),
+        ev([isv("ShopOwned", "=", "0"), cmp("CrystalWallet", ">=", "StylePrices[ShopSel]")], [
+            setv("CrystalWallet", "-", "StylePrices[ShopSel]"),
+            sets("OwnedStyles", 'SubStr(OwnedStyles, 0, ShopSel) + "1" + SubStr(OwnedStyles, ShopSel + 1, 99)'),
+            setv("EquippedStyle", "=", "ShopSel"),
+            A("EcrireFichierExp", SAVE, KW, "CrystalWallet"), A("EcrireFichierTxt", SAVE, KO, "OwnedStyles"), A("EcrireFichierExp", SAVE, KE, "EquippedStyle"),
+            text("ShopMsg", '"UNLOCKED " + StyleNames[ShopSel] + "!"')]),
+        ev([isv("ShopOwned", "=", "0"), cmp("CrystalWallet", "<", "StylePrices[ShopSel]")], [
+            text("ShopMsg", '"NEED " + ToString(StylePrices[ShopSel] - CrystalWallet) + " MORE CRYSTALS"')]),
+    ]),
+    ev([isv("MsgTime", ">", "0")], [setv("MsgTime", "-", "TimeDelta()"), opacity("ShopMsg", "=", "255 * clamp(MsgTime / 0.4, 0, 1)")]),
+    ev([isv("MsgTime", "<=", "0")], [opacity("ShopMsg", "=", "0")]),
+    ev([], [A("TiledSpriteObject::YOffset", "ShopBg", "=", "-TimeFromStart() * 30")]),
+    ev(tapped("BackButton"), [A("Scene", "", '"MainMenu"', "")]),
+]
+shop_layout = simple_layout("Shop", shop_objects, shop_instances, shop_events,
+                            variables=[num("ShopSel", 0), num("ShopOwned", 0), num("MsgTime", 0)])
 
 project = {
     "firstLayout": "MainMenu",
@@ -686,7 +816,7 @@ project = {
         "authorIds": [], "authorUsernames": [], "categories": [], "playableDevices": ["mobile"], "extensionProperties": [],
         "platforms": [{"name": "GDevelop JS platform"}], "currentPlatform": "GDevelop JS platform"},
     "resources": {"resources": resources, "resourceFolders": []},
-    "objects": [], "objectsGroups": [], "variables": global_vars, "layouts": [menu_layout, layout],
+    "objects": [], "objectsGroups": [], "variables": global_vars, "layouts": [menu_layout, shop_layout, layout],
     "externalEvents": [{"associatedLayout": "Gameplay", "lastChangeTimeStamp": 0, "name": n, "events": e} for n, e in external_events],
     "eventsFunctionsExtensions": [], "externalLayouts": [], "externalSourceFiles": [],
 }

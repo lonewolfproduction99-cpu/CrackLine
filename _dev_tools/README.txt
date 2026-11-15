@@ -11,3 +11,5 @@ run_tests3.py      - Phase 3 play-tests: menu, planets, split, revive, resolutio
 gen_sim3.py        - generator safety search incl. worms and fissures (any-position recovery), up to 520 px/s
 make_art4.py       - worm and fissure art
 run_tests4.py      - tests: 1k planet progression, fissures, worms
+make_art5.py       - crack style art (trails, tips) and shop card
+run_tests5.py      - tests: crystals as points, shop buy/equip/persist, layouts

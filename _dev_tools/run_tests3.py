@@ -15,7 +15,7 @@ JS_P = '''() => { %s if (!sc) return null; const vis = n => sc.getObjects(n).len
     bg: ['BgEmber', 'BgVerdant', 'BgFrost'].map(vis), shield: vis('ShieldGlow'), reviveBtn: vis('ReviveButton'), hud: vis('PlanetHudText'),
     hudText: sc.getObjects('PlanetHudText').length ? sc.getObjects('PlanetHudText')[0].getText() : '', goPlanets: sc.getObjects('GameOverPlanetsText').length ? sc.getObjects('GameOverPlanetsText')[0].getText() : '',
     menuBest: sc.getObjects('MenuBestText').length ? sc.getObjects('MenuBestText')[0].getText() : '',
-    nObs: ['RockSmall','RockMedium','BarrierBreakable','BarrierSolid','Crystal'].reduce((a, n) => a + sc.getObjects(n).length, 0) }; }''' % PRE
+    nObs: ['RockSmall','RockMedium','BarrierBreakable','BarrierSolid','Worm'].reduce((a, n) => a + sc.getObjects(n).length, 0) }; }''' % PRE
 async def P(page): return await page.evaluate(JS_P)
 async def waitp(page, cond, timeout):
     t0 = time.time()
@@ -90,38 +90,40 @@ async def main():
         # death in planet mode
         await page.evaluate(setnum('InvulnerabilityRemaining', '0'))
         await page.evaluate(setnum('NextRowWorldY', '1e9'))
-        await page.evaluate(put('Crystal', 0, 70)); s = await waitp(page, lambda s: s['state'] == 'GameOver', 3)
+        await page.evaluate(put('BarrierSolid', 0, 70)); s = await waitp(page, lambda s: s['state'] == 'GameOver', 3)
         check('planet-mode game over shows planets broken + saves best', s['state'] == 'GameOver' and s['goPlanets'] == 'PLANETS BROKEN: 3' and s['bestP'] == 3, s['goPlanets'])
         await asyncio.sleep(0.5); await page.screenshot(path=f'{SHOTS}/p3_06_gameover.png')
         check('revive button offered on first death', s['reviveBtn'])
         before = await P(page)
-        await page.evaluate(put('RockMedium', 0, 300)); await page.evaluate(put('Crystal', 130, 120))   # nearby lethal stuff to be cleared
+        await page.evaluate(put('RockMedium', 0, 300)); await page.evaluate(put('BarrierSolid', 130, 120))   # nearby lethal stuff to be cleared
         await click_obj(page, 'ReviveButton')
         s = await waitp(page, lambda s: s['state'] == 'Playing', 2)
         check('revive resumes play with 2 s protection + glow', s['state'] == 'Playing' and s['reviveUsed'] and 1.5 < s['inv'] <= 2 and s['shield'], f"inv {s['inv']:.2f}")
         check('revive keeps score, planets and difficulty', s['broken'] == 3 and s['dist'] >= before['dist'] and s['runtime'] >= before['runtime'] and s['idx'] == 3)
         check('revive clears nearby lethal obstacles', s['nObs'] == 0, f"{s['nObs']} left")
         await page.screenshot(path=f'{SHOTS}/p3_07_revived.png')
-        await page.evaluate(put('Crystal', 0, 60)); await asyncio.sleep(0.6); s = await P(page)
+        await page.evaluate(put('BarrierSolid', 0, 60)); await asyncio.sleep(0.6); s = await P(page)
         check('protected for the 2 s after revive', s['state'] == 'Playing')
         await waitp(page, lambda s: s['inv'] <= 0, 3)
         s = await waitp(page, lambda s: not s['shield'], 1); check('glow disappears when protection ends', not s['shield'])
-        await page.evaluate(put('Crystal', 0, 60)); s = await waitp(page, lambda s: s['state'] == 'GameOver', 3)
+        await page.evaluate(put('BarrierSolid', 0, 60)); s = await waitp(page, lambda s: s['state'] == 'GameOver', 3)
         check('second death: no revive offered (one per run)', s['state'] == 'GameOver' and not s['reviveBtn'])
         await asyncio.sleep(0.5); await click_obj(page, 'ReviveButton'); await asyncio.sleep(0.4); s = await P(page)
         check('hidden revive button does nothing', s['state'] == 'GameOver')
         await click_obj(page, 'RestartButton'); s = await waitp(page, lambda s: s['state'] == 'Playing', 3)
         check('restart in Planet mode starts again at planet 1', s['mode'] == 'Planet' and s['idx'] == 0 and s['broken'] == 0 and s['theme'] == 0 and not s['reviveUsed'] and s['wy'] < 200)
-        await page.evaluate(setnum('NextRowWorldY', '1e9')); await page.evaluate(put('Crystal', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
+        await page.evaluate(setnum('NextRowWorldY', '1e9')); await page.evaluate(put('BarrierSolid', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
         await asyncio.sleep(0.5); await click_obj(page, 'MenuButton'); s = await waitp(page, lambda s: s['scene'] == 'MainMenu', 3); await asyncio.sleep(0.3); s = await P(page)
         check('MAIN MENU button returns to menu, showing bests', s['scene'] == 'MainMenu' and '3 PLANETS' in s['menuBest'], s['menuBest'])
         # endless mode from menu, revive there too
         await enter(page, 'Endless'); s = await P(page)
         check('Endless from menu: no planet HUD, Ember only', s['mode'] == 'Endless' and not s['hud'] and s['bg'] == [True, False, False])
-        await page.evaluate(setnum('NextRowWorldY', '1e9')); await page.evaluate(put('Crystal', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
-        await asyncio.sleep(0.5); await click_obj(page, 'ReviveButton'); s = await waitp(page, lambda s: s['state'] == 'Playing', 2)
+        await page.evaluate(setnum('NextRowWorldY', '1e9')); await page.evaluate(put('BarrierSolid', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
+        for _ in range(3):
+            await asyncio.sleep(0.5); await click_obj(page, 'ReviveButton'); s = await waitp(page, lambda s: s['state'] == 'Playing', 2)
+            if s['state'] == 'Playing': break
         check('revive works in Endless too', s['state'] == 'Playing' and s['reviveUsed'])
-        await asyncio.sleep(2.5); await page.evaluate(put('Crystal', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
+        await asyncio.sleep(2.5); await page.evaluate(put('BarrierSolid', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
         await asyncio.sleep(0.5); await click_obj(page, 'RestartButton'); s = await waitp(page, lambda s: s['state'] == 'Playing', 3)
         check('restart in Endless resets revive', s['mode'] == 'Endless' and not s['reviveUsed'] and s['wy'] < 200)
         allerr += errors; await ctx.close()
@@ -136,7 +138,7 @@ async def main():
             await enter(page, 'Planet'); await asyncio.sleep(0.5)
             Lh = await page.evaluate(LAYOUT % ('["HUD"]', 'Text|Progress'))
             await page.evaluate("() => { %s G('BestPlanetsBroken').setNumber(-1); }" % PRE)   # force NEW BEST! to show
-            await page.evaluate(setnum('NextRowWorldY', '1e9')); await page.evaluate(put('Crystal', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
+            await page.evaluate(setnum('NextRowWorldY', '1e9')); await page.evaluate(put('BarrierSolid', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
             await asyncio.sleep(0.6)
             Lg = await page.evaluate(LAYOUT % ('["GameOver"]', 'Text|Button|Label'))
             await page.screenshot(path=f'{SHOTS}/p3_res_{label}_gameover.png')

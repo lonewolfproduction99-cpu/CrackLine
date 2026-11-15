@@ -95,15 +95,6 @@
       },
       {
         "alwaysLoaded": false,
-        "file": "assets/crack_tip.png",
-        "kind": "image",
-        "metadata": "",
-        "name": "crack_tip",
-        "smoothed": true,
-        "userAdded": true
-      },
-      {
-        "alwaysLoaded": false,
         "file": "assets/crack_hitbox.png",
         "kind": "image",
         "metadata": "",
@@ -113,10 +104,10 @@
       },
       {
         "alwaysLoaded": false,
-        "file": "assets/trail_segment.png",
+        "file": "assets/ui_card.png",
         "kind": "image",
         "metadata": "",
-        "name": "trail_segment",
+        "name": "ui_card",
         "smoothed": true,
         "userAdded": true
       },
@@ -335,6 +326,114 @@
         "name": "planet_frost_right",
         "smoothed": true,
         "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/trail_classic.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "trail_classic",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/tip_classic.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "tip_classic",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/trail_frostbite.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "trail_frostbite",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/tip_frostbite.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "tip_frostbite",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/trail_venom.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "trail_venom",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/tip_venom.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "tip_venom",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/trail_amethyst.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "trail_amethyst",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/tip_amethyst.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "tip_amethyst",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/trail_inferno.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "trail_inferno",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/tip_inferno.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "tip_inferno",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/trail_shadow.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "trail_shadow",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/tip_shadow.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "tip_shadow",
+        "smoothed": true,
+        "userAdded": true
       }
     ],
     "resourceFolders": []
@@ -356,6 +455,111 @@
       "name": "BestPlanetsBroken",
       "type": "number",
       "value": 0
+    },
+    {
+      "name": "CrystalWallet",
+      "type": "number",
+      "value": 0
+    },
+    {
+      "name": "EquippedStyle",
+      "type": "number",
+      "value": 0
+    },
+    {
+      "name": "OwnedStyles",
+      "type": "string",
+      "value": "100000"
+    },
+    {
+      "name": "StyleNames",
+      "type": "array",
+      "children": [
+        {
+          "type": "string",
+          "value": "CLASSIC"
+        },
+        {
+          "type": "string",
+          "value": "FROSTBITE"
+        },
+        {
+          "type": "string",
+          "value": "VENOM"
+        },
+        {
+          "type": "string",
+          "value": "AMETHYST"
+        },
+        {
+          "type": "string",
+          "value": "INFERNO"
+        },
+        {
+          "type": "string",
+          "value": "SHADOW"
+        }
+      ]
+    },
+    {
+      "name": "StylePrices",
+      "type": "array",
+      "children": [
+        {
+          "type": "number",
+          "value": 0
+        },
+        {
+          "type": "number",
+          "value": 150
+        },
+        {
+          "type": "number",
+          "value": 300
+        },
+        {
+          "type": "number",
+          "value": 500
+        },
+        {
+          "type": "number",
+          "value": 800
+        },
+        {
+          "type": "number",
+          "value": 1200
+        }
+      ]
+    },
+    {
+      "name": "StyleSparkColors",
+      "type": "array",
+      "children": [
+        {
+          "type": "string",
+          "value": "255;210;110"
+        },
+        {
+          "type": "string",
+          "value": "150;230;255"
+        },
+        {
+          "type": "string",
+          "value": "180;255;120"
+        },
+        {
+          "type": "string",
+          "value": "220;160;255"
+        },
+        {
+          "type": "string",
+          "value": "255;130;90"
+        },
+        {
+          "type": "string",
+          "value": "170;120;255"
+        }
+      ]
     }
   ],
   "layouts": [
@@ -439,11 +643,27 @@
           "height": 0,
           "layer": "",
           "locked": false,
-          "name": "MenuTip",
-          "persistentUuid": "3376bec0-397b-5761-ac51-8e342fb34225",
+          "name": "MenuBestText",
+          "persistentUuid": "78c85084-06dd-58cc-8850-e637318fd2d8",
           "width": 0,
-          "x": 360,
-          "y": 470,
+          "x": 150,
+          "y": 420,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "MenuWalletText",
+          "persistentUuid": "8d3a1d23-1a56-5d91-b5e1-ef53f5522583",
+          "width": 0,
+          "x": 240,
+          "y": 460,
           "zOrder": 2,
           "numberProperties": [],
           "stringProperties": [],
@@ -491,7 +711,7 @@
           "persistentUuid": "5269d110-ee3c-5394-bbf8-36e8aa0f31e6",
           "width": 0,
           "x": 360,
-          "y": 790,
+          "y": 750,
           "zOrder": 2,
           "numberProperties": [],
           "stringProperties": [],
@@ -507,7 +727,7 @@
           "persistentUuid": "38e341fc-3496-5d56-b7fe-5925be780f5f",
           "width": 0,
           "x": 200,
-          "y": 765,
+          "y": 725,
           "zOrder": 3,
           "numberProperties": [],
           "stringProperties": [],
@@ -519,12 +739,28 @@
           "height": 0,
           "layer": "",
           "locked": false,
-          "name": "MenuBestText",
-          "persistentUuid": "78c85084-06dd-58cc-8850-e637318fd2d8",
+          "name": "ShopButton",
+          "persistentUuid": "895551ab-dfec-5ded-b524-8ccd116140c2",
           "width": 0,
-          "x": 150,
-          "y": 930,
+          "x": 360,
+          "y": 880,
           "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopLabel",
+          "persistentUuid": "eaac2371-73b7-558a-a40d-2899ce2c094d",
+          "width": 0,
+          "x": 300,
+          "y": 852,
+          "zOrder": 3,
           "numberProperties": [],
           "stringProperties": [],
           "initialVariables": []
@@ -625,45 +861,86 @@
           }
         },
         {
-          "adaptCollisionMaskAutomatically": false,
           "assetStoreId": "",
-          "name": "MenuTip",
-          "type": "Sprite",
-          "updateIfNotVisible": false,
+          "bold": true,
+          "italic": false,
+          "name": "MenuBestText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
           "variables": [],
           "effects": [],
           "behaviors": [],
-          "animations": [
-            {
-              "name": "",
-              "useMultipleDirections": false,
-              "directions": [
-                {
-                  "looping": false,
-                  "timeBetweenFrames": 0.08,
-                  "sprites": [
-                    {
-                      "hasCustomCollisionMask": false,
-                      "image": "crack_tip",
-                      "points": [],
-                      "originPoint": {
-                        "name": "origine",
-                        "x": 64,
-                        "y": 64
-                      },
-                      "centerPoint": {
-                        "automatic": true,
-                        "name": "centre",
-                        "x": 0,
-                        "y": 0
-                      },
-                      "customCollisionMask": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          "string": "BEST: 0 m   |   0 PLANETS",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 28,
+          "color": {
+            "r": 255,
+            "g": 220,
+            "b": 160
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "BEST: 0 m   |   0 PLANETS",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 28,
+            "color": "255;220;160"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "MenuWalletText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "CRYSTALS: 0",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 30,
+          "color": {
+            "r": 160,
+            "g": 240,
+            "b": 255
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "CRYSTALS: 0",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 30,
+            "color": "160;240;255"
+          }
         },
         {
           "adaptCollisionMaskAutomatically": false,
@@ -830,24 +1107,65 @@
           }
         },
         {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "ShopButton",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_button_blue",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 180,
+                        "y": 55
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
           "assetStoreId": "",
           "bold": true,
           "italic": false,
-          "name": "MenuBestText",
+          "name": "ShopLabel",
           "smoothed": true,
           "type": "TextObject::Text",
           "underlined": false,
           "variables": [],
           "effects": [],
           "behaviors": [],
-          "string": "BEST: 0 m   |   0 PLANETS",
+          "string": "SHOP",
           "font": "",
           "textAlignment": "center",
-          "characterSize": 28,
+          "characterSize": 44,
           "color": {
             "r": 255,
-            "g": 220,
-            "b": 160
+            "g": 255,
+            "b": 255
           },
           "content": {
             "bold": true,
@@ -863,11 +1181,11 @@
             "shadowOpacity": 120,
             "smoothed": true,
             "underlined": false,
-            "text": "BEST: 0 m   |   0 PLANETS",
+            "text": "SHOP",
             "font": "",
             "textAlignment": "center",
-            "characterSize": 28,
-            "color": "255;220;160"
+            "characterSize": 44,
+            "color": "255;255;255"
           }
         }
       ],
@@ -884,7 +1202,10 @@
             "objectName": "SubtitleText"
           },
           {
-            "objectName": "MenuTip"
+            "objectName": "MenuBestText"
+          },
+          {
+            "objectName": "MenuWalletText"
           },
           {
             "objectName": "EndlessButton"
@@ -899,7 +1220,10 @@
             "objectName": "PlanetLabel"
           },
           {
-            "objectName": "MenuBestText"
+            "objectName": "ShopButton"
+          },
+          {
+            "objectName": "ShopLabel"
           }
         ]
       },
@@ -914,7 +1238,7 @@
             "textG": 0,
             "textR": 0
           },
-          "comment": "MAIN MENU \u2014 pick a mode. Both buttons open the same Gameplay scene; only the global GameMode differs.",
+          "comment": "MAIN MENU \u2014 pick a mode or open the Shop. Both modes open the same Gameplay scene; only the global GameMode differs.",
           "comment2": ""
         },
         {
@@ -953,7 +1277,7 @@
               "parameters": [
                 "TitleText",
                 "=",
-                "SceneWindowHeight() / 2 - 330"
+                "SceneWindowHeight() / 2 - 340"
               ],
               "subInstructions": []
             },
@@ -965,7 +1289,7 @@
               "parameters": [
                 "SubtitleText",
                 "=",
-                "SceneWindowHeight() / 2 - 195"
+                "SceneWindowHeight() / 2 - 205"
               ],
               "subInstructions": []
             },
@@ -975,9 +1299,21 @@
                 "value": "SetY"
               },
               "parameters": [
-                "MenuTip",
+                "MenuBestText",
                 "=",
-                "SceneWindowHeight() / 2 - 92"
+                "SceneWindowHeight() / 2 - 145"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "MenuWalletText",
+                "=",
+                "SceneWindowHeight() / 2 - 100"
               ],
               "subInstructions": []
             },
@@ -989,7 +1325,7 @@
               "parameters": [
                 "EndlessButton",
                 "=",
-                "SceneWindowHeight() / 2 + 20"
+                "SceneWindowHeight() / 2 + 25"
               ],
               "subInstructions": []
             },
@@ -1035,9 +1371,21 @@
                 "value": "SetY"
               },
               "parameters": [
-                "MenuBestText",
+                "ShopButton",
                 "=",
-                "SceneWindowHeight() / 2 + 230"
+                "SceneWindowHeight() / 2 + 275"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "ShopLabel",
+                "=",
+                "ShopButton.Y() - 27"
               ],
               "subInstructions": []
             }
@@ -1109,6 +1457,102 @@
             },
             {
               "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"CrystalWallet\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"CrystalWallet\"",
+                    "",
+                    "CrystalWallet"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"EquippedStyle\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"EquippedStyle\"",
+                    "",
+                    "EquippedStyle"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"OwnedStyles\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadStringFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"OwnedStyles\"",
+                    "",
+                    "OwnedStyles"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
               "conditions": [],
               "actions": [
                 {
@@ -1121,6 +1565,19 @@
                     "Text",
                     "=",
                     "\"BEST: \" + ToString(BestEndlessDistance) + \" m   |   \" + ToString(BestPlanetsBroken) + \" PLANETS\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "MenuWalletText",
+                    "Text",
+                    "=",
+                    "\"CRYSTALS: \" + ToString(CrystalWallet)"
                   ],
                   "subInstructions": []
                 }
@@ -1142,19 +1599,6 @@
                 "MenuBg",
                 "=",
                 "-TimeFromStart() * 60"
-              ],
-              "subInstructions": []
-            },
-            {
-              "type": {
-                "inverted": false,
-                "value": "ScalableCapability::ScalableBehavior::SetValue"
-              },
-              "parameters": [
-                "MenuTip",
-                "Scale",
-                "=",
-                "0.75 + 0.08 * sin(TimeFromStart() * 5)"
               ],
               "subInstructions": []
             },
@@ -1212,7 +1656,31 @@
                 "value": "SetCenterX"
               },
               "parameters": [
+                "ShopLabel",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
                 "MenuBestText",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "MenuWalletText",
                 "=",
                 "SceneWindowWidth() / 2"
               ],
@@ -1328,6 +1796,2857 @@
             }
           ],
           "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "HasAnyTouchOrMouseStarted"
+              },
+              "parameters": [
+                ""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "CollisionPoint"
+              },
+              "parameters": [
+                "ShopButton",
+                "TouchX(StartedTouchOrMouseId(0), \"\")",
+                "TouchY(StartedTouchOrMouseId(0), \"\")"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "Scene"
+              },
+              "parameters": [
+                "",
+                "\"Shop\"",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        }
+      ],
+      "layers": [
+        {
+          "ambientLightColorB": 200,
+          "ambientLightColorG": 200,
+          "ambientLightColorR": 200,
+          "camera3DFarPlaneDistance": 10000,
+          "camera3DFieldOfView": 45,
+          "camera3DNearPlaneDistance": 3,
+          "cameraType": "",
+          "followBaseLayerCamera": false,
+          "isLightingLayer": false,
+          "isLocked": false,
+          "name": "",
+          "renderingType": "",
+          "visibility": true,
+          "cameras": [
+            {
+              "defaultSize": true,
+              "defaultViewport": true,
+              "height": 0,
+              "viewportBottom": 1,
+              "viewportLeft": 0,
+              "viewportRight": 1,
+              "viewportTop": 0,
+              "width": 0
+            }
+          ],
+          "effects": []
+        }
+      ],
+      "behaviorsSharedData": []
+    },
+    {
+      "b": 40,
+      "disableInputWhenNotFocused": true,
+      "mangledName": "Shop",
+      "name": "Shop",
+      "r": 110,
+      "standardSortMethod": true,
+      "stopSoundsOnStartup": true,
+      "title": "",
+      "v": 60,
+      "uiSettings": {
+        "grid": false,
+        "gridType": "rectangular",
+        "gridWidth": 32,
+        "gridHeight": 32,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      },
+      "objectsGroups": [],
+      "variables": [
+        {
+          "name": "ShopSel",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "ShopOwned",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "MsgTime",
+          "type": "number",
+          "value": 0
+        }
+      ],
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 3200,
+          "layer": "",
+          "locked": false,
+          "name": "ShopBg",
+          "persistentUuid": "97915e61-e9cc-50c5-9349-37b952eda320",
+          "width": 720,
+          "x": 0,
+          "y": -800,
+          "zOrder": -10,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTitle",
+          "persistentUuid": "a875a9d5-3a09-59a8-aaa5-3a38f602d9b2",
+          "width": 0,
+          "x": 30,
+          "y": 20,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "WalletText",
+          "persistentUuid": "4308f40d-2840-5c6e-aec4-c7993df09c3f",
+          "width": 0,
+          "x": 420,
+          "y": 30,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "BackButton",
+          "persistentUuid": "5a17ab8f-5cb8-5e74-9538-8b2f11d1e70f",
+          "width": 0,
+          "x": 360,
+          "y": 1180,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "BackLabel",
+          "persistentUuid": "d72a5726-6233-5029-961d-f5472cfa79d0",
+          "width": 0,
+          "x": 300,
+          "y": 1150,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopMsg",
+          "persistentUuid": "c6e97f54-9fa2-506c-965e-bb3894dbe1f5",
+          "width": 0,
+          "x": 200,
+          "y": 1080,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopCard",
+          "persistentUuid": "98562531-4217-57b3-826b-3664dea2e30d",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTrail",
+          "persistentUuid": "ce00d778-fd6e-5275-a897-a19b5a004d00",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTip",
+          "persistentUuid": "3db18b82-b68d-5c84-a33b-80a1fa75e2cf",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopName",
+          "persistentUuid": "bcef4844-04fc-5427-b2e3-6500e569afc5",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopPrice",
+          "persistentUuid": "dabd71de-7981-5872-844d-5008332a4926",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopCard",
+          "persistentUuid": "9b3d3d34-5248-51de-bc1c-4e461ec34fe6",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTrail",
+          "persistentUuid": "a1cb28b9-b068-5fc9-94e8-6b6a451b134b",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTip",
+          "persistentUuid": "9c3811c3-b4c2-522c-9eab-fa8f98a56482",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopName",
+          "persistentUuid": "9b185cad-9c44-54c4-8664-052e153cce91",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopPrice",
+          "persistentUuid": "5bf0a176-ff9a-5d3f-82e8-fe3a2bff43a3",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopCard",
+          "persistentUuid": "8b077ffb-eb63-5b2f-a1e6-4998be0ce801",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTrail",
+          "persistentUuid": "42b22e03-e5fb-56aa-a743-1028a1365beb",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTip",
+          "persistentUuid": "1eaf3433-ec71-5faa-8e1b-e59302dc0b5e",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopName",
+          "persistentUuid": "2f9827f4-c31b-566e-aa5d-4a61524e4b4a",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopPrice",
+          "persistentUuid": "b9aae584-fa11-557e-8cc2-c9be885833ff",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopCard",
+          "persistentUuid": "6d3d0bea-ec5d-5613-8468-cea7f8c747c4",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTrail",
+          "persistentUuid": "6361acdf-9583-5dc1-87c8-f3bd71388a63",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTip",
+          "persistentUuid": "8e27b7b3-4f61-5a39-b213-705e74f35641",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopName",
+          "persistentUuid": "b5857a72-c3d5-561c-b766-e80ef1f13a32",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopPrice",
+          "persistentUuid": "d5fb74f9-c4ca-5c5b-b17d-63830b51b7ac",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopCard",
+          "persistentUuid": "f857a860-0620-5722-8cc6-8d0525711c65",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTrail",
+          "persistentUuid": "8a9b3a23-61ae-5776-93f2-b7d191f961b1",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTip",
+          "persistentUuid": "baba1e76-054f-5e83-8b65-6417d159058e",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopName",
+          "persistentUuid": "842ce476-89fc-59fb-88c0-4a37ea9d773f",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopPrice",
+          "persistentUuid": "429be2a9-ba2d-5abb-853d-682a5bb26e42",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopCard",
+          "persistentUuid": "8e13b4ca-4dcd-546a-a2a6-09fe0c56dc08",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 5
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTrail",
+          "persistentUuid": "76652712-c9ba-5979-a3fe-ce93ba00b38f",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 5
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTip",
+          "persistentUuid": "c8676acc-0db5-5c86-9af7-df41ecc03084",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 5
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopName",
+          "persistentUuid": "797c0de5-a2bd-57ef-8a34-db75972e47dc",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 5
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopPrice",
+          "persistentUuid": "a323e174-4c7f-581b-b97f-6009f483f963",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 5
+            }
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "assetStoreId": "",
+          "name": "ShopBg",
+          "type": "TiledSpriteObject::TiledSprite",
+          "texture": "bg_soil",
+          "width": 720,
+          "height": 3000,
+          "variables": [],
+          "effects": [],
+          "behaviors": []
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "ShopTitle",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "CRACK STYLES",
+          "font": "",
+          "textAlignment": "left",
+          "characterSize": 46,
+          "color": {
+            "r": 255,
+            "g": 214,
+            "b": 120
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "CRACK STYLES",
+            "font": "",
+            "textAlignment": "left",
+            "characterSize": 46,
+            "color": "255;214;120"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "WalletText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "CRYSTALS: 0",
+          "font": "",
+          "textAlignment": "left",
+          "characterSize": 30,
+          "color": {
+            "r": 160,
+            "g": 240,
+            "b": 255
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "CRYSTALS: 0",
+            "font": "",
+            "textAlignment": "left",
+            "characterSize": 30,
+            "color": "160;240;255"
+          }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "ShopCard",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_card",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 150,
+                        "y": 100
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "ShopTrail",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "Classic",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_classic",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frostbite",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_frostbite",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Venom",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_venom",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Amethyst",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_amethyst",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Inferno",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_inferno",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Shadow",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_shadow",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "ShopTip",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "Classic",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_classic",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frostbite",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_frostbite",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Venom",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_venom",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Amethyst",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_amethyst",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Inferno",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_inferno",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Shadow",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_shadow",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "ShopName",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "string": "CLASSIC",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 28,
+          "color": {
+            "r": 255,
+            "g": 240,
+            "b": 214
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "CLASSIC",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 28,
+            "color": "255;240;214"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "ShopPrice",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 0
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "string": "EQUIPPED",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 22,
+          "color": {
+            "r": 255,
+            "g": 220,
+            "b": 120
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "EQUIPPED",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 22,
+            "color": "255;220;120"
+          }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "BackButton",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_button",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 180,
+                        "y": 55
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "BackLabel",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "BACK",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 44,
+          "color": {
+            "r": 80,
+            "g": 26,
+            "b": 6
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "BACK",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 44,
+            "color": "80;26;6"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "ShopMsg",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 30,
+          "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 30,
+            "color": "255;255;255"
+          }
+        }
+      ],
+      "objectsFolderStructure": {
+        "folderName": "__ROOT",
+        "children": [
+          {
+            "objectName": "ShopBg"
+          },
+          {
+            "objectName": "ShopTitle"
+          },
+          {
+            "objectName": "WalletText"
+          },
+          {
+            "objectName": "ShopCard"
+          },
+          {
+            "objectName": "ShopTrail"
+          },
+          {
+            "objectName": "ShopTip"
+          },
+          {
+            "objectName": "ShopName"
+          },
+          {
+            "objectName": "ShopPrice"
+          },
+          {
+            "objectName": "BackButton"
+          },
+          {
+            "objectName": "BackLabel"
+          },
+          {
+            "objectName": "ShopMsg"
+          }
+        ]
+      },
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "SHOP \u2014 crack styles. Prices and names live in the global arrays StylePrices / StyleNames (index = StyleIndex 0-5). Owned styles are a string of 0/1 flags (OwnedStyles, e.g. \"110000\"); EquippedStyle is the index in use. Everything is saved on the device. NOTE: Playgama will require its Bridge storage instead.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SceneJustBegins"
+              },
+              "parameters": [
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "ScalableCapability::ScalableBehavior::SetValue"
+              },
+              "parameters": [
+                "ShopCard",
+                "Scale",
+                "=",
+                "0.8"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ScalableCapability::ScalableBehavior::SetValue"
+              },
+              "parameters": [
+                "ShopTip",
+                "Scale",
+                "=",
+                "0.55"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ScalableCapability::ScalableBehavior::SetX"
+              },
+              "parameters": [
+                "ShopTrail",
+                "Scale",
+                "=",
+                "6.5"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ScalableCapability::ScalableBehavior::SetY"
+              },
+              "parameters": [
+                "ShopTrail",
+                "Scale",
+                "=",
+                "0.55"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ScalableCapability::ScalableBehavior::SetValue"
+              },
+              "parameters": [
+                "BackButton",
+                "Scale",
+                "=",
+                "0.7"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "ShopTitle",
+                "=",
+                "SceneWindowHeight() / 2 - 352"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "WalletText",
+                "=",
+                "SceneWindowHeight() / 2 - 342"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "BackButton",
+                "=",
+                "SceneWindowHeight() / 2 + 312"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "BackLabel",
+                "=",
+                "BackButton.Y() - 27"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "ShopMsg",
+                "=",
+                "SceneWindowHeight() / 2 + 222"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "ShopCard",
+                "=",
+                "(SceneWindowHeight() / 2 - 205 + floor(ShopCard.StyleIndex / 2) * 170) + 0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetX"
+              },
+              "parameters": [
+                "ShopCard",
+                "=",
+                "(190 + mod(ShopCard.StyleIndex, 2) * 340) + 0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "ShopTrail",
+                "=",
+                "(SceneWindowHeight() / 2 - 205 + floor(ShopTrail.StyleIndex / 2) * 170) + -6"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetX"
+              },
+              "parameters": [
+                "ShopTrail",
+                "=",
+                "(190 + mod(ShopTrail.StyleIndex, 2) * 340) + -104"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "ShopTip",
+                "=",
+                "(SceneWindowHeight() / 2 - 205 + floor(ShopTip.StyleIndex / 2) * 170) + -6"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetX"
+              },
+              "parameters": [
+                "ShopTip",
+                "=",
+                "(190 + mod(ShopTip.StyleIndex, 2) * 340) + 0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+              },
+              "parameters": [
+                "ShopTrail",
+                "Animation",
+                "=",
+                "ShopTrail.StyleIndex"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+              },
+              "parameters": [
+                "ShopTip",
+                "Animation",
+                "=",
+                "ShopTip.StyleIndex"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"BestEndlessDistance\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"BestEndlessDistance\"",
+                    "",
+                    "BestEndlessDistance"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"BestPlanetsBroken\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"BestPlanetsBroken\"",
+                    "",
+                    "BestPlanetsBroken"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"CrystalWallet\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"CrystalWallet\"",
+                    "",
+                    "CrystalWallet"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"EquippedStyle\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"EquippedStyle\"",
+                    "",
+                    "EquippedStyle"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"OwnedStyles\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadStringFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"OwnedStyles\"",
+                    "",
+                    "OwnedStyles"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ]
+        },
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "Card texts, refreshed every frame: name, and EQUIPPED / OWNED / price.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::ForEach",
+          "object": "ShopName",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+              },
+              "parameters": [
+                "ShopName",
+                "Text",
+                "=",
+                "StyleNames[ShopName.StyleIndex]"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "ShopName",
+                "=",
+                "(SceneWindowHeight() / 2 - 205 + floor(ShopName.StyleIndex / 2) * 170) + -66"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "ShopName",
+                "=",
+                "(190 + mod(ShopName.StyleIndex, 2) * 340) + 0"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::ForEach",
+          "object": "ShopPrice",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+              },
+              "parameters": [
+                "ShopPrice",
+                "Text",
+                "=",
+                "\"PRICE: \" + ToString(StylePrices[ShopPrice.StyleIndex])"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "TextObject::ChangeColor"
+              },
+              "parameters": [
+                "ShopPrice",
+                "\"160;240;255\""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BuiltinCommonInstructions::CompareStrings"
+                  },
+                  "parameters": [
+                    "SubStr(OwnedStyles, ShopPrice.StyleIndex, 1)",
+                    "=",
+                    "\"1\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ShopPrice",
+                    "Text",
+                    "=",
+                    "\"OWNED: TAP TO USE\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextObject::ChangeColor"
+                  },
+                  "parameters": [
+                    "ShopPrice",
+                    "\"255;240;214\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberObjectVariable"
+                  },
+                  "parameters": [
+                    "ShopPrice",
+                    "StyleIndex",
+                    "=",
+                    "EquippedStyle"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ShopPrice",
+                    "Text",
+                    "=",
+                    "\"EQUIPPED\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextObject::ChangeColor"
+                  },
+                  "parameters": [
+                    "ShopPrice",
+                    "\"120;255;160\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "ShopPrice",
+                    "=",
+                    "(SceneWindowHeight() / 2 - 205 + floor(ShopPrice.StyleIndex / 2) * 170) + 34"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetCenterX"
+                  },
+                  "parameters": [
+                    "ShopPrice",
+                    "=",
+                    "(190 + mod(ShopPrice.StyleIndex, 2) * 340) + 0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ]
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "ChangeColor"
+              },
+              "parameters": [
+                "ShopCard",
+                "\"255;255;255\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+              },
+              "parameters": [
+                "WalletText",
+                "Text",
+                "=",
+                "\"CRYSTALS: \" + ToString(CrystalWallet)"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "BackLabel",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "ShopMsg",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetX"
+              },
+              "parameters": [
+                "WalletText",
+                "=",
+                "SceneWindowWidth() - 30 - WalletText.Width()"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "NumberObjectVariable"
+              },
+              "parameters": [
+                "ShopCard",
+                "StyleIndex",
+                "=",
+                "EquippedStyle"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "ChangeColor"
+              },
+              "parameters": [
+                "ShopCard",
+                "\"140;255;170\""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "Tap a card: equip it if owned; otherwise buy it if you have enough crystals (then equip and save); otherwise say how many more you need.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "HasAnyTouchOrMouseStarted"
+              },
+              "parameters": [
+                ""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "CollisionPoint"
+              },
+              "parameters": [
+                "ShopCard",
+                "TouchX(StartedTouchOrMouseId(0), \"\")",
+                "TouchY(StartedTouchOrMouseId(0), \"\")"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "ShopSel",
+                "=",
+                "ShopCard.StyleIndex"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "ShopOwned",
+                "=",
+                "0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "MsgTime",
+                "=",
+                "1.8"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BuiltinCommonInstructions::CompareStrings"
+                  },
+                  "parameters": [
+                    "SubStr(OwnedStyles, ShopSel, 1)",
+                    "=",
+                    "\"1\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "ShopOwned",
+                    "=",
+                    "1"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "ShopOwned",
+                    "=",
+                    "1"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "EquippedStyle",
+                    "=",
+                    "ShopSel"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "EcrireFichierExp"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"EquippedStyle\"",
+                    "EquippedStyle"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ShopMsg",
+                    "Text",
+                    "=",
+                    "StyleNames[ShopSel] + \" EQUIPPED\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "ShopOwned",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BuiltinCommonInstructions::CompareNumbers"
+                  },
+                  "parameters": [
+                    "CrystalWallet",
+                    ">=",
+                    "StylePrices[ShopSel]"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "CrystalWallet",
+                    "-",
+                    "StylePrices[ShopSel]"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetStringVariable"
+                  },
+                  "parameters": [
+                    "OwnedStyles",
+                    "=",
+                    "SubStr(OwnedStyles, 0, ShopSel) + \"1\" + SubStr(OwnedStyles, ShopSel + 1, 99)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "EquippedStyle",
+                    "=",
+                    "ShopSel"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "EcrireFichierExp"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"CrystalWallet\"",
+                    "CrystalWallet"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "EcrireFichierTxt"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"OwnedStyles\"",
+                    "OwnedStyles"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "EcrireFichierExp"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"EquippedStyle\"",
+                    "EquippedStyle"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ShopMsg",
+                    "Text",
+                    "=",
+                    "\"UNLOCKED \" + StyleNames[ShopSel] + \"!\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "ShopOwned",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BuiltinCommonInstructions::CompareNumbers"
+                  },
+                  "parameters": [
+                    "CrystalWallet",
+                    "<",
+                    "StylePrices[ShopSel]"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ShopMsg",
+                    "Text",
+                    "=",
+                    "\"NEED \" + ToString(StylePrices[ShopSel] - CrystalWallet) + \" MORE CRYSTALS\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ]
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "NumberVariable"
+              },
+              "parameters": [
+                "MsgTime",
+                ">",
+                "0"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "MsgTime",
+                "-",
+                "TimeDelta()"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "OpacityCapability::OpacityBehavior::SetValue"
+              },
+              "parameters": [
+                "ShopMsg",
+                "Opacity",
+                "=",
+                "255 * clamp(MsgTime / 0.4, 0, 1)"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "NumberVariable"
+              },
+              "parameters": [
+                "MsgTime",
+                "<=",
+                "0"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "OpacityCapability::OpacityBehavior::SetValue"
+              },
+              "parameters": [
+                "ShopMsg",
+                "Opacity",
+                "=",
+                "0"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "TiledSpriteObject::YOffset"
+              },
+              "parameters": [
+                "ShopBg",
+                "=",
+                "-TimeFromStart() * 30"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "HasAnyTouchOrMouseStarted"
+              },
+              "parameters": [
+                ""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "CollisionPoint"
+              },
+              "parameters": [
+                "BackButton",
+                "TouchX(StartedTouchOrMouseId(0), \"\")",
+                "TouchY(StartedTouchOrMouseId(0), \"\")"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "Scene"
+              },
+              "parameters": [
+                "",
+                "\"MainMenu\"",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
         }
       ],
       "layers": [
@@ -1400,9 +4719,6 @@
             },
             {
               "name": "BarrierSolid"
-            },
-            {
-              "name": "Crystal"
             },
             {
               "name": "Worm"
@@ -1770,6 +5086,21 @@
           "value": 2.0
         },
         {
+          "name": "GemChance",
+          "type": "number",
+          "value": 0.5
+        },
+        {
+          "name": "RiskyGemChance",
+          "type": "number",
+          "value": 0.15
+        },
+        {
+          "name": "RestartFromShop",
+          "type": "number",
+          "value": 0
+        },
+        {
           "name": "ReviveInvulnerability",
           "type": "number",
           "value": 2
@@ -2085,6 +5416,21 @@
           "value": 0
         },
         {
+          "name": "RunCrystals",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "GemSize",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "GemRoll",
+          "type": "number",
+          "value": 0
+        },
+        {
           "name": "BreakTime",
           "type": "number",
           "value": 0
@@ -2297,6 +5643,54 @@
           "width": 0,
           "x": 90,
           "y": 1040,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "HUD",
+          "locked": false,
+          "name": "GemIcon",
+          "persistentUuid": "4ca7f103-668c-5fbf-b164-880aa49aff42",
+          "width": 0,
+          "x": 610,
+          "y": 66,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "HUD",
+          "locked": false,
+          "name": "GemText",
+          "persistentUuid": "47c2af6b-fc66-5269-9d4f-ec844f091b6d",
+          "width": 0,
+          "x": 636,
+          "y": 44,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "GameOverGemsText",
+          "persistentUuid": "3398fa7e-07ee-5d3b-af65-62433681ff58",
+          "width": 0,
+          "x": 200,
+          "y": 600,
           "zOrder": 1,
           "numberProperties": [],
           "stringProperties": [],
@@ -2932,6 +6326,11 @@
               "name": "WorldY",
               "type": "number",
               "value": 0
+            },
+            {
+              "name": "Value",
+              "type": "number",
+              "value": 1
             }
           ],
           "effects": [],
@@ -2963,36 +6362,36 @@
                       "customCollisionMask": [
                         [
                           {
-                            "x": 76.0,
-                            "y": 65.6
+                            "x": 78.0,
+                            "y": 66.43
                           },
                           {
-                            "x": 59.6,
-                            "y": 82.0
+                            "x": 60.43,
+                            "y": 84.0
                           },
                           {
-                            "x": 36.4,
-                            "y": 82.0
+                            "x": 35.57,
+                            "y": 84.0
                           },
                           {
-                            "x": 20.0,
-                            "y": 65.6
+                            "x": 18.0,
+                            "y": 66.43
                           },
                           {
-                            "x": 20.0,
-                            "y": 42.4
+                            "x": 18.0,
+                            "y": 41.57
                           },
                           {
-                            "x": 36.4,
-                            "y": 26.0
+                            "x": 35.57,
+                            "y": 24.0
                           },
                           {
-                            "x": 59.6,
-                            "y": 26.0
+                            "x": 60.43,
+                            "y": 24.0
                           },
                           {
-                            "x": 76.0,
-                            "y": 42.4
+                            "x": 78.0,
+                            "y": 41.57
                           }
                         ]
                       ]
@@ -3027,36 +6426,36 @@
                       "customCollisionMask": [
                         [
                           {
-                            "x": 76.0,
-                            "y": 65.6
+                            "x": 78.0,
+                            "y": 66.43
                           },
                           {
-                            "x": 59.6,
-                            "y": 82.0
+                            "x": 60.43,
+                            "y": 84.0
                           },
                           {
-                            "x": 36.4,
-                            "y": 82.0
+                            "x": 35.57,
+                            "y": 84.0
                           },
                           {
-                            "x": 20.0,
-                            "y": 65.6
+                            "x": 18.0,
+                            "y": 66.43
                           },
                           {
-                            "x": 20.0,
-                            "y": 42.4
+                            "x": 18.0,
+                            "y": 41.57
                           },
                           {
-                            "x": 36.4,
-                            "y": 26.0
+                            "x": 35.57,
+                            "y": 24.0
                           },
                           {
-                            "x": 59.6,
-                            "y": 26.0
+                            "x": 60.43,
+                            "y": 24.0
                           },
                           {
-                            "x": 76.0,
-                            "y": 42.4
+                            "x": 78.0,
+                            "y": 41.57
                           }
                         ]
                       ]
@@ -3091,36 +6490,36 @@
                       "customCollisionMask": [
                         [
                           {
-                            "x": 76.0,
-                            "y": 65.6
+                            "x": 78.0,
+                            "y": 66.43
                           },
                           {
-                            "x": 59.6,
-                            "y": 82.0
+                            "x": 60.43,
+                            "y": 84.0
                           },
                           {
-                            "x": 36.4,
-                            "y": 82.0
+                            "x": 35.57,
+                            "y": 84.0
                           },
                           {
-                            "x": 20.0,
-                            "y": 65.6
+                            "x": 18.0,
+                            "y": 66.43
                           },
                           {
-                            "x": 20.0,
-                            "y": 42.4
+                            "x": 18.0,
+                            "y": 41.57
                           },
                           {
-                            "x": 36.4,
-                            "y": 26.0
+                            "x": 35.57,
+                            "y": 24.0
                           },
                           {
-                            "x": 59.6,
-                            "y": 26.0
+                            "x": 60.43,
+                            "y": 24.0
                           },
                           {
-                            "x": 76.0,
-                            "y": 42.4
+                            "x": 78.0,
+                            "y": 41.57
                           }
                         ]
                       ]
@@ -3459,7 +6858,7 @@
           "behaviors": [],
           "animations": [
             {
-              "name": "",
+              "name": "Classic",
               "useMultipleDirections": false,
               "directions": [
                 {
@@ -3468,7 +6867,152 @@
                   "sprites": [
                     {
                       "hasCustomCollisionMask": false,
-                      "image": "trail_segment",
+                      "image": "trail_classic",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": false,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frostbite",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_frostbite",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": false,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Venom",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_venom",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": false,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Amethyst",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_amethyst",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": false,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Inferno",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_inferno",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": false,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Shadow",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_shadow",
                       "points": [],
                       "originPoint": {
                         "name": "origine",
@@ -3500,7 +7044,7 @@
           "behaviors": [],
           "animations": [
             {
-              "name": "",
+              "name": "Classic",
               "useMultipleDirections": false,
               "directions": [
                 {
@@ -3509,7 +7053,152 @@
                   "sprites": [
                     {
                       "hasCustomCollisionMask": false,
-                      "image": "crack_tip",
+                      "image": "tip_classic",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frostbite",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_frostbite",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Venom",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_venom",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Amethyst",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_amethyst",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Inferno",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_inferno",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Shadow",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_shadow",
                       "points": [],
                       "originPoint": {
                         "name": "origine",
@@ -3529,6 +7218,129 @@
               ]
             }
           ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "GemIcon",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "crystal_cyan",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 48,
+                        "y": 54
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "GemText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "0",
+          "font": "",
+          "textAlignment": "left",
+          "characterSize": 34,
+          "color": {
+            "r": 160,
+            "g": 240,
+            "b": 255
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "0",
+            "font": "",
+            "textAlignment": "left",
+            "characterSize": 34,
+            "color": "160;240;255"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "GameOverGemsText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "CRYSTALS +0",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 28,
+          "color": {
+            "r": 160,
+            "g": 240,
+            "b": 255
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "CRYSTALS +0",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 28,
+            "color": "160;240;255"
+          }
         },
         {
           "adaptCollisionMaskAutomatically": false,
@@ -3970,7 +7782,7 @@
           "string": "DISTANCE: 0000 m",
           "font": "",
           "textAlignment": "center",
-          "characterSize": 44,
+          "characterSize": 36,
           "color": {
             "r": 255,
             "g": 240,
@@ -3993,7 +7805,7 @@
             "text": "DISTANCE: 0000 m",
             "font": "",
             "textAlignment": "center",
-            "characterSize": 44,
+            "characterSize": 36,
             "color": "255;240;214"
           }
         },
@@ -4011,7 +7823,7 @@
           "string": "BEST: 0000 m",
           "font": "",
           "textAlignment": "center",
-          "characterSize": 34,
+          "characterSize": 30,
           "color": {
             "r": 255,
             "g": 220,
@@ -4034,7 +7846,7 @@
             "text": "BEST: 0000 m",
             "font": "",
             "textAlignment": "center",
-            "characterSize": 34,
+            "characterSize": 30,
             "color": "255;220;160"
           }
         },
@@ -4052,7 +7864,7 @@
           "string": "NEW BEST!",
           "font": "",
           "textAlignment": "center",
-          "characterSize": 40,
+          "characterSize": 34,
           "color": {
             "r": 120,
             "g": 255,
@@ -4075,7 +7887,7 @@
             "text": "NEW BEST!",
             "font": "",
             "textAlignment": "center",
-            "characterSize": 40,
+            "characterSize": 34,
             "color": "120;255;160"
           }
         },
@@ -4339,7 +8151,7 @@
           "string": "PLANETS BROKEN: 0",
           "font": "",
           "textAlignment": "center",
-          "characterSize": 40,
+          "characterSize": 34,
           "color": {
             "r": 255,
             "g": 240,
@@ -4362,7 +8174,7 @@
             "text": "PLANETS BROKEN: 0",
             "font": "",
             "textAlignment": "center",
-            "characterSize": 40,
+            "characterSize": 34,
             "color": "255;240;214"
           }
         },
@@ -4840,13 +8652,21 @@
                 "objectName": "BarrierSolid"
               },
               {
-                "objectName": "Crystal"
-              },
-              {
                 "objectName": "Worm"
               },
               {
                 "objectName": "Fissure"
+              }
+            ]
+          },
+          {
+            "folderName": "Collectibles",
+            "children": [
+              {
+                "objectName": "Crystal"
+              },
+              {
+                "objectName": "GemIcon"
               }
             ]
           },
@@ -4911,6 +8731,12 @@
               },
               {
                 "objectName": "MenuLabel"
+              },
+              {
+                "objectName": "GemText"
+              },
+              {
+                "objectName": "GameOverGemsText"
               },
               {
                 "objectName": "GameOverPlanetsText"
@@ -5415,7 +9241,7 @@
                   "parameters": [
                     "GameOverTitle",
                     "=",
-                    "SceneWindowHeight() / 2 - 320"
+                    "SceneWindowHeight() / 2 - 338"
                   ],
                   "subInstructions": []
                 },
@@ -5427,7 +9253,7 @@
                   "parameters": [
                     "FinalDistanceText",
                     "=",
-                    "SceneWindowHeight() / 2 - 140"
+                    "SceneWindowHeight() / 2 - 170"
                   ],
                   "subInstructions": []
                 },
@@ -5439,7 +9265,7 @@
                   "parameters": [
                     "GameOverBestText",
                     "=",
-                    "SceneWindowHeight() / 2 - 80"
+                    "SceneWindowHeight() / 2 - 118"
                   ],
                   "subInstructions": []
                 },
@@ -5451,7 +9277,7 @@
                   "parameters": [
                     "NewBestText",
                     "=",
-                    "SceneWindowHeight() / 2 - 30"
+                    "SceneWindowHeight() / 2 - 73"
                   ],
                   "subInstructions": []
                 },
@@ -5463,7 +9289,46 @@
                   "parameters": [
                     "RestartButton",
                     "=",
-                    "SceneWindowHeight() / 2 + 80"
+                    "SceneWindowHeight() / 2 + 86"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "RestartButton",
+                    "Scale",
+                    "=",
+                    "0.9"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ReviveButton",
+                    "Scale",
+                    "=",
+                    "0.9"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "MenuButton",
+                    "Scale",
+                    "=",
+                    "0.9"
                   ],
                   "subInstructions": []
                 },
@@ -5482,12 +9347,36 @@
                 {
                   "type": {
                     "inverted": false,
+                    "value": "SetCenterX"
+                  },
+                  "parameters": [
+                    "RestartLabel",
+                    "=",
+                    "SceneWindowWidth() / 2"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetCenterX"
+                  },
+                  "parameters": [
+                    "MenuLabel",
+                    "=",
+                    "SceneWindowWidth() / 2"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
                     "value": "SetY"
                   },
                   "parameters": [
                     "ReviveButton",
                     "=",
-                    "SceneWindowHeight() / 2 + 192"
+                    "SceneWindowHeight() / 2 + 193"
                   ],
                   "subInstructions": []
                 },
@@ -5511,7 +9400,7 @@
                   "parameters": [
                     "MenuButton",
                     "=",
-                    "SceneWindowHeight() / 2 + 302"
+                    "SceneWindowHeight() / 2 + 300"
                   ],
                   "subInstructions": []
                 },
@@ -5535,7 +9424,19 @@
                   "parameters": [
                     "GameOverPlanetsText",
                     "=",
-                    "SceneWindowHeight() / 2 - 200"
+                    "SceneWindowHeight() / 2 - 222"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "GameOverGemsText",
+                    "=",
+                    "SceneWindowHeight() / 2 - 23"
                   ],
                   "subInstructions": []
                 },
@@ -5668,6 +9569,148 @@
                         "\"BestPlanetsBroken\"",
                         "",
                         "BestPlanetsBroken"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "GroupExists"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"CrystalWallet\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ReadNumberFromStorage"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"CrystalWallet\"",
+                        "",
+                        "CrystalWallet"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "GroupExists"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"EquippedStyle\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ReadNumberFromStorage"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"EquippedStyle\"",
+                        "",
+                        "EquippedStyle"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "GroupExists"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"OwnedStyles\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ReadStringFromStorage"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"OwnedStyles\"",
+                        "",
+                        "OwnedStyles"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Comment",
+                  "color": {
+                    "b": 109,
+                    "g": 230,
+                    "r": 255,
+                    "textB": 0,
+                    "textG": 0,
+                    "textR": 0
+                  },
+                  "comment": "Equipped crack style (bought in the Shop) recolours the tip, trail and sparks.",
+                  "comment2": ""
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                      },
+                      "parameters": [
+                        "CrackTip",
+                        "Animation",
+                        "=",
+                        "EquippedStyle"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ScalableCapability::ScalableBehavior::SetValue"
+                      },
+                      "parameters": [
+                        "GemIcon",
+                        "Scale",
+                        "=",
+                        "0.36"
                       ],
                       "subInstructions": []
                     }
@@ -6958,6 +11001,29 @@
                 {
                   "type": {
                     "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "Crystal",
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "EcrireFichierExp"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"CrystalWallet\"",
+                    "CrystalWallet"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
                     "value": "SetNumberVariable"
                   },
                   "parameters": [
@@ -7329,6 +11395,17 @@
                             "PlanetCX",
                             "PlanetCY",
                             "\"\""
+                          ],
+                          "subInstructions": []
+                        },
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "ChangeColor"
+                          },
+                          "parameters": [
+                            "Spark",
+                            "StyleSparkColors[EquippedStyle]"
                           ],
                           "subInstructions": []
                         },
@@ -7901,6 +11978,17 @@
                         "CrackWorldX",
                         "TipScreenY",
                         "\"\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ChangeColor"
+                      },
+                      "parameters": [
+                        "Spark",
+                        "StyleSparkColors[EquippedStyle]"
                       ],
                       "subInstructions": []
                     },
@@ -9657,6 +13745,19 @@
                           "events": []
                         },
                         {
+                          "type": "BuiltinCommonInstructions::Comment",
+                          "color": {
+                            "b": 109,
+                            "g": 230,
+                            "r": 255,
+                            "textB": 0,
+                            "textG": 0,
+                            "textR": 0
+                          },
+                          "comment": "ObjType 3 used to be a hazard crystal; crystals are now collectibles, so this slot is a medium rock.",
+                          "comment2": ""
+                        },
+                        {
                           "type": "BuiltinCommonInstructions::Standard",
                           "conditions": [
                             {
@@ -9680,7 +13781,7 @@
                               },
                               "parameters": [
                                 "",
-                                "Crystal",
+                                "RockMedium",
                                 "LaneX",
                                 "TipScreenY - (ObjWorldY - CrackWorldY)",
                                 "\"\""
@@ -9693,7 +13794,7 @@
                                 "value": "SetNumberObjectVariable"
                               },
                               "parameters": [
-                                "Crystal",
+                                "RockMedium",
                                 "WorldY",
                                 "=",
                                 "ObjWorldY"
@@ -9706,7 +13807,7 @@
                                 "value": "SetZOrder"
                               },
                               "parameters": [
-                                "Crystal",
+                                "RockMedium",
                                 "=",
                                 "5"
                               ],
@@ -9715,18 +13816,328 @@
                             {
                               "type": {
                                 "inverted": false,
-                                "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                                "value": "ChangeColor"
                               },
                               "parameters": [
-                                "Crystal",
-                                "Animation",
-                                "=",
-                                "RandomInRange(0, 2)"
+                                "RockMedium",
+                                "RockTint"
                               ],
                               "subInstructions": []
                             }
                           ],
                           "events": []
+                        },
+                        {
+                          "type": "BuiltinCommonInstructions::Comment",
+                          "color": {
+                            "b": 109,
+                            "g": 230,
+                            "r": 255,
+                            "textB": 0,
+                            "textG": 0,
+                            "textR": 0
+                          },
+                          "comment": "Risky crystal: sometimes a free lane outside the safe corridor gets a crystal (usually a small, valuable one) right between the obstacles.",
+                          "comment2": ""
+                        },
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "NumberVariable"
+                              },
+                              "parameters": [
+                                "ObjType",
+                                "=",
+                                "0"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "NumberVariable"
+                              },
+                              "parameters": [
+                                "RowType",
+                                "=",
+                                "2"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "BuiltinCommonInstructions::CompareNumbers"
+                              },
+                              "parameters": [
+                                "RandomFloat(1)",
+                                "<",
+                                "RiskyGemChance"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "SetNumberVariable"
+                              },
+                              "parameters": [
+                                "GemSize",
+                                "=",
+                                "0"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "SetNumberVariable"
+                              },
+                              "parameters": [
+                                "ObjWorldY",
+                                "=",
+                                "RowWorldY"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "events": [
+                            {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [
+                                {
+                                  "type": {
+                                    "inverted": false,
+                                    "value": "BuiltinCommonInstructions::CompareNumbers"
+                                  },
+                                  "parameters": [
+                                    "RandomFloat(1)",
+                                    "<",
+                                    "0.3"
+                                  ],
+                                  "subInstructions": []
+                                }
+                              ],
+                              "actions": [
+                                {
+                                  "type": {
+                                    "inverted": false,
+                                    "value": "SetNumberVariable"
+                                  },
+                                  "parameters": [
+                                    "GemSize",
+                                    "=",
+                                    "1"
+                                  ],
+                                  "subInstructions": []
+                                }
+                              ],
+                              "events": []
+                            },
+                            {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [],
+                              "actions": [
+                                {
+                                  "type": {
+                                    "inverted": false,
+                                    "value": "Create"
+                                  },
+                                  "parameters": [
+                                    "",
+                                    "Crystal",
+                                    "LaneX",
+                                    "TipScreenY - (ObjWorldY - CrackWorldY)",
+                                    "\"\""
+                                  ],
+                                  "subInstructions": []
+                                },
+                                {
+                                  "type": {
+                                    "inverted": false,
+                                    "value": "SetNumberObjectVariable"
+                                  },
+                                  "parameters": [
+                                    "Crystal",
+                                    "WorldY",
+                                    "=",
+                                    "ObjWorldY"
+                                  ],
+                                  "subInstructions": []
+                                },
+                                {
+                                  "type": {
+                                    "inverted": false,
+                                    "value": "SetZOrder"
+                                  },
+                                  "parameters": [
+                                    "Crystal",
+                                    "=",
+                                    "5"
+                                  ],
+                                  "subInstructions": []
+                                },
+                                {
+                                  "type": {
+                                    "inverted": false,
+                                    "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                                  },
+                                  "parameters": [
+                                    "Crystal",
+                                    "Animation",
+                                    "=",
+                                    "RandomInRange(0, 2)"
+                                  ],
+                                  "subInstructions": []
+                                }
+                              ],
+                              "events": [
+                                {
+                                  "type": "BuiltinCommonInstructions::Standard",
+                                  "conditions": [
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "NumberVariable"
+                                      },
+                                      "parameters": [
+                                        "GemSize",
+                                        "=",
+                                        "0"
+                                      ],
+                                      "subInstructions": []
+                                    }
+                                  ],
+                                  "actions": [
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "SetNumberObjectVariable"
+                                      },
+                                      "parameters": [
+                                        "Crystal",
+                                        "Value",
+                                        "=",
+                                        "5"
+                                      ],
+                                      "subInstructions": []
+                                    },
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "ScalableCapability::ScalableBehavior::SetValue"
+                                      },
+                                      "parameters": [
+                                        "Crystal",
+                                        "Scale",
+                                        "=",
+                                        "0.45"
+                                      ],
+                                      "subInstructions": []
+                                    }
+                                  ],
+                                  "events": []
+                                },
+                                {
+                                  "type": "BuiltinCommonInstructions::Standard",
+                                  "conditions": [
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "NumberVariable"
+                                      },
+                                      "parameters": [
+                                        "GemSize",
+                                        "=",
+                                        "1"
+                                      ],
+                                      "subInstructions": []
+                                    }
+                                  ],
+                                  "actions": [
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "SetNumberObjectVariable"
+                                      },
+                                      "parameters": [
+                                        "Crystal",
+                                        "Value",
+                                        "=",
+                                        "3"
+                                      ],
+                                      "subInstructions": []
+                                    },
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "ScalableCapability::ScalableBehavior::SetValue"
+                                      },
+                                      "parameters": [
+                                        "Crystal",
+                                        "Scale",
+                                        "=",
+                                        "0.7"
+                                      ],
+                                      "subInstructions": []
+                                    }
+                                  ],
+                                  "events": []
+                                },
+                                {
+                                  "type": "BuiltinCommonInstructions::Standard",
+                                  "conditions": [
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "NumberVariable"
+                                      },
+                                      "parameters": [
+                                        "GemSize",
+                                        "=",
+                                        "2"
+                                      ],
+                                      "subInstructions": []
+                                    }
+                                  ],
+                                  "actions": [
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "SetNumberObjectVariable"
+                                      },
+                                      "parameters": [
+                                        "Crystal",
+                                        "Value",
+                                        "=",
+                                        "1"
+                                      ],
+                                      "subInstructions": []
+                                    },
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "ScalableCapability::ScalableBehavior::SetValue"
+                                      },
+                                      "parameters": [
+                                        "Crystal",
+                                        "Scale",
+                                        "=",
+                                        "1"
+                                      ],
+                                      "subInstructions": []
+                                    }
+                                  ],
+                                  "events": []
+                                }
+                              ]
+                            }
+                          ]
                         },
                         {
                           "type": "BuiltinCommonInstructions::Standard",
@@ -9866,6 +14277,362 @@
                         }
                       ],
                       "events": []
+                    }
+                  ]
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Comment",
+                  "color": {
+                    "b": 109,
+                    "g": 230,
+                    "r": 255,
+                    "textB": 0,
+                    "textG": 0,
+                    "textR": 0
+                  },
+                  "comment": "Corridor crystal: GemChance per row (Verdant planets get more), placed in the safe corridor between this row and the next, so it is always reachable. Sizes: small (5 points, small pickup area), medium (3), large (1).",
+                  "comment2": ""
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "RowType",
+                        "<=",
+                        "2"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "BuiltinCommonInstructions::CompareNumbers"
+                      },
+                      "parameters": [
+                        "RandomFloat(1)",
+                        "<",
+                        "GemChance + ThemeCrystalBonus"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "LaneX",
+                        "=",
+                        "(SafeLane + RandomInRange(0, 1) + 0.5) * LaneWidth"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ObjWorldY",
+                        "=",
+                        "RowWorldY + RowGap * 0.28"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "GemRoll",
+                        "=",
+                        "RandomFloat(1)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "GemSize",
+                        "=",
+                        "2"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "NumberVariable"
+                          },
+                          "parameters": [
+                            "GemRoll",
+                            "<",
+                            "0.55"
+                          ],
+                          "subInstructions": []
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "SetNumberVariable"
+                          },
+                          "parameters": [
+                            "GemSize",
+                            "=",
+                            "1"
+                          ],
+                          "subInstructions": []
+                        }
+                      ],
+                      "events": []
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "NumberVariable"
+                          },
+                          "parameters": [
+                            "GemRoll",
+                            "<",
+                            "0.2"
+                          ],
+                          "subInstructions": []
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "SetNumberVariable"
+                          },
+                          "parameters": [
+                            "GemSize",
+                            "=",
+                            "0"
+                          ],
+                          "subInstructions": []
+                        }
+                      ],
+                      "events": []
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [],
+                      "actions": [
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "Create"
+                          },
+                          "parameters": [
+                            "",
+                            "Crystal",
+                            "LaneX",
+                            "TipScreenY - (ObjWorldY - CrackWorldY)",
+                            "\"\""
+                          ],
+                          "subInstructions": []
+                        },
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "SetNumberObjectVariable"
+                          },
+                          "parameters": [
+                            "Crystal",
+                            "WorldY",
+                            "=",
+                            "ObjWorldY"
+                          ],
+                          "subInstructions": []
+                        },
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "SetZOrder"
+                          },
+                          "parameters": [
+                            "Crystal",
+                            "=",
+                            "5"
+                          ],
+                          "subInstructions": []
+                        },
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                          },
+                          "parameters": [
+                            "Crystal",
+                            "Animation",
+                            "=",
+                            "RandomInRange(0, 2)"
+                          ],
+                          "subInstructions": []
+                        }
+                      ],
+                      "events": [
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "NumberVariable"
+                              },
+                              "parameters": [
+                                "GemSize",
+                                "=",
+                                "0"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "SetNumberObjectVariable"
+                              },
+                              "parameters": [
+                                "Crystal",
+                                "Value",
+                                "=",
+                                "5"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "ScalableCapability::ScalableBehavior::SetValue"
+                              },
+                              "parameters": [
+                                "Crystal",
+                                "Scale",
+                                "=",
+                                "0.45"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "events": []
+                        },
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "NumberVariable"
+                              },
+                              "parameters": [
+                                "GemSize",
+                                "=",
+                                "1"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "SetNumberObjectVariable"
+                              },
+                              "parameters": [
+                                "Crystal",
+                                "Value",
+                                "=",
+                                "3"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "ScalableCapability::ScalableBehavior::SetValue"
+                              },
+                              "parameters": [
+                                "Crystal",
+                                "Scale",
+                                "=",
+                                "0.7"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "events": []
+                        },
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "NumberVariable"
+                              },
+                              "parameters": [
+                                "GemSize",
+                                "=",
+                                "2"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "SetNumberObjectVariable"
+                              },
+                              "parameters": [
+                                "Crystal",
+                                "Value",
+                                "=",
+                                "1"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "ScalableCapability::ScalableBehavior::SetValue"
+                              },
+                              "parameters": [
+                                "Crystal",
+                                "Scale",
+                                "=",
+                                "1"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "events": []
+                        }
+                      ]
                     }
                   ]
                 },
@@ -10265,6 +15032,49 @@
                     "Fissure",
                     "=",
                     "TipScreenY - (Fissure.WorldY - CrackWorldY)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "Crystal",
+                    "=",
+                    "TipScreenY - (Crystal.WorldY - CrackWorldY)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PosY"
+                  },
+                  "parameters": [
+                    "Crystal",
+                    ">",
+                    "SceneWindowHeight() + 80"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "Crystal",
+                    ""
                   ],
                   "subInstructions": []
                 }
@@ -10759,6 +15569,196 @@
           "colorG": 176,
           "colorB": 228,
           "creationTime": 0,
+          "name": "Crystals (points)",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Collecting a crystal adds its Value to RunCrystals (this run) and CrystalWallet (saved; spent in the Shop).",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "CollisionNP"
+                  },
+                  "parameters": [
+                    "CrackHitbox",
+                    "Crystal",
+                    "",
+                    "",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "RunCrystals",
+                    "+",
+                    "Crystal.Value"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "CrystalWallet",
+                    "+",
+                    "Crystal.Value"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Create"
+                  },
+                  "parameters": [
+                    "",
+                    "ImpactFlash",
+                    "Crystal.X()",
+                    "Crystal.Y()",
+                    "\"\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ChangeColor"
+                  },
+                  "parameters": [
+                    "ImpactFlash",
+                    "\"150;235;255\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ImpactFlash",
+                    "Scale",
+                    "=",
+                    "0.5"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetZOrder"
+                  },
+                  "parameters": [
+                    "ImpactFlash",
+                    "=",
+                    "12"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "Crystal",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "GemText",
+                    "Text",
+                    "=",
+                    "ToString(RunCrystals)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                  },
+                  "parameters": [
+                    "GemIcon",
+                    "Animation",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "Crystal",
+                    "Scale",
+                    "+",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
           "name": "Timers and HUD",
           "source": "",
           "events": [
@@ -11235,6 +16235,19 @@
                 {
                   "type": {
                     "inverted": false,
+                    "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                  },
+                  "parameters": [
+                    "TrailSegment",
+                    "Animation",
+                    "=",
+                    "EquippedStyle"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
                     "value": "SetAngle"
                   },
                   "parameters": [
@@ -11683,6 +16696,17 @@
                 {
                   "type": {
                     "inverted": false,
+                    "value": "ChangeColor"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "StyleSparkColors[EquippedStyle]"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
                     "value": "SetNumberObjectVariable"
                   },
                   "parameters": [
@@ -11847,6 +16871,17 @@
                     "CrackWorldX",
                     "TipScreenY",
                     "\"\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ChangeColor"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "StyleSparkColors[EquippedStyle]"
                   ],
                   "subInstructions": []
                 },
@@ -12020,6 +17055,31 @@
                 "HintText"
               ],
               "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "EcrireFichierExp"
+              },
+              "parameters": [
+                "\"CracklineSave\"",
+                "\"CrystalWallet\"",
+                "CrystalWallet"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+              },
+              "parameters": [
+                "GameOverGemsText",
+                "Text",
+                "=",
+                "\"CRYSTALS +\" + ToString(RunCrystals) + \"   (TOTAL \" + ToString(CrystalWallet) + \")\""
+              ],
+              "subInstructions": []
             }
           ],
           "events": [
@@ -12039,6 +17099,17 @@
                     "CrackWorldX",
                     "TipScreenY",
                     "\"\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ChangeColor"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "StyleSparkColors[EquippedStyle]"
                   ],
                   "subInstructions": []
                 },
@@ -12399,6 +17470,18 @@
                   },
                   "parameters": [
                     "GameOverPlanetsText",
+                    "=",
+                    "SceneWindowWidth() / 2"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetCenterX"
+                  },
+                  "parameters": [
+                    "GameOverGemsText",
                     "=",
                     "SceneWindowWidth() / 2"
                   ],

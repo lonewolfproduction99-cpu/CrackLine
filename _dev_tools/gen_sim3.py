@@ -51,12 +51,12 @@ class Gen:
             wy = self.next + r.uniform(-P["RowJitterY"], P["RowJitterY"]); typ = None
             if rowtype == 1: typ = "BarrierBreakable" if tr < P["WallBreakableShare"] else "BarrierSolid"
             elif r.random() < dens:
-                typ = "Crystal"
+                typ = "RockMedium"   # crystals are now collectibles; their hazard slot is a rock
                 if tr >= cc: typ = "BarrierSolid"
                 if tr >= cc + sc: typ = "BarrierBreakable"
                 if tr >= cc + sc + bc: typ = "RockSmall" if r.random() < 0.5 else "RockMedium"
             if typ is None and lane == crack_lane and r.random() < blk:
-                typ = "Crystal" if tr < cc else ("RockSmall" if r.random() < 0.5 else "RockMedium")
+                typ = "RockSmall" if r.random() < 0.5 else "RockMedium"
             if typ:
                 if typ.startswith("Barrier"): wy = self.next
                 self.objs.append((typ, x, wy))

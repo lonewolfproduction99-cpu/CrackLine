@@ -133,9 +133,9 @@ async def main():
         st = await wait_state(page, lambda s: s['charges'] < 2 or s['state'] != 'Playing', 2)
         check('Strength breaks a breakable barrier', st['charges'] == 1 and st['state'] == 'Playing')
         await page.screenshot(path=f'{SHOTS}/p2_02_strength.png')
-        await page.evaluate(put('Crystal', 0, 70))
+        await page.evaluate(put('BarrierSolid', 0, 70))
         st = await wait_state(page, lambda s: s['state'] != 'Playing', 2)
-        check('crystal kills even with Strength charges', st['state'] == 'GameOver' and st['charges'] == 1)
+        check('solid barrier kills even with Strength charges', st['state'] == 'GameOver' and st['charges'] == 1)
         d1 = st['dist']
         check('game over: best saved + NEW BEST shown', st['best'] == d1 and st['newBest'] and st['gameOver'], f'best={st["best"]}')
         await page.screenshot(path=f'{SHOTS}/p2_03_gameover.png')

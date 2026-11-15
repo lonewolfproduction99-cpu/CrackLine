@@ -8,14 +8,16 @@ On a tablet or in a browser, open
 and press **Preview** (▶). To keep your own editable copy, use **File → Save as** and choose cloud.
 
 ## How to play
-The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER**.
+The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER**, or open the **SHOP**.
 - **Planet Breaker:** you start at the planet's core and travel up to its surface. The progress bar shows how far you have left. Planet 1 needs **1,000 m**, planet 2 needs 2,000 m, planet 3 needs 3,000 m, and so on. Each planet starts noticeably harder. When you reach the surface, the planet splits in two and the next one begins. The themes cycle Ember → Verdant (more crystals) → Frost (more barriers).
 - **Game over:** you can RESTART, go back to the MAIN MENU, or use **SIMULATE AD REVIVE (TEST)** once per run. The revive clears nearby obstacles and gives you 2 seconds of protection, shown as a cyan ring. You keep your score.
 - Tap the left or right half of the screen to make the crack branch that way.
 - The game gets **25% faster every 250 m** (180 → 225 → 281 → 352 px/s and so on). Endless tops out at 420 px/s, and Planet Breaker tops out at 520 px/s. Survive as long as you can and try to beat your best distance.
 - **Blue clock (Slow Time):** the world moves 40% slower for 4 seconds.
 - **Orange bolt (Crack Strength):** gives you 3 charges. Each charge smashes one rock or one cracked barrier.
-- **Crystals** and **metal-banded barriers** always kill you, even when you have charges.
+- **Metal-banded barriers** always kill you, even when you have charges.
+- **Crystals are points.** Small ones are worth 5 but are harder to grab. Medium ones are worth 3 and large ones are worth 1. Most appear in the safe path; some riskier ones sit between obstacles. Verdant planets have more of them. Your crystal total is saved on the device.
+- **Shop:** spend crystals on crack styles. Classic is free, then Frostbite 150, Venom 300, Amethyst 500, Inferno 800 and Shadow 1200. Tap a style to buy it, or tap one you own to use it. The style recolours the trail, tip and sparks.
 - **Ground gaps (fissures)** stretch across the whole screen. Touching one jolts your crack into a branch in a random direction. Nothing spawns just after a gap, so you can always recover.
 - **Burrowing worms** tunnel sideways back and forth across a row. They kill on contact, but Crack Strength can smash them. They are tinted to match each planet.
 
@@ -23,6 +25,8 @@ The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER*
 | What | Where |
 |---|---|
 | Main menu | Scene `MainMenu` (its own events) |
+| Shop (buy and equip crack styles) | Scene `Shop` (its own events) |
+| Crystal pickups and counter | `EV_Powerups` (group "Crystals (points)") |
 | Scene setup, best-score loading, game-over buttons | External events `EV_GameState` |
 | Planet themes, surface progress, planet-split animation | `EV_PlanetMode` |
 | Revive (one per run) | `EV_Revive` |
@@ -77,7 +81,16 @@ Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"E
 | WormChanceStart/End, WormSpeedStart/End | 0.03→0.12, 110→210 | how often worm rows appear and how fast worms move |
 | FissureChanceStart/End, FissureClearance | 0.02→0.07, 1000 | how often ground gaps appear, and the empty distance after each one |
 | BreakDuration | 2.0 | length of the planet-split sequence in seconds |
+| GemChance / RiskyGemChance | 0.5 / 0.15 | chance of a crystal in the safe path per row, and of a risky one beside obstacles |
 | ReviveInvulnerability / ReviveClearBehind / ReviveClearAhead | 2 / 250 / 750 | revive protection time and the area it clears |
+
+## Shop data
+Style names, prices and spark colours are in the global arrays `StyleNames`, `StylePrices` and `StyleSparkColors`. To add a style:
+1. Add a `trail_<name>.png` and a `tip_<name>.png`.
+2. Add a matching animation to `TrailSegment`, `CrackTip`, `ShopTrail` and `ShopTip`.
+3. Add an entry to each of the three arrays.
+4. Add a card to the Shop.
+5. Add one more `0` to the `OwnedStyles` default.
 
 ## Replacing the art
 Every sprite reads one PNG file in `assets/`. To replace it, overwrite the file using the same name. Keep these details in mind:
@@ -90,7 +103,7 @@ Every sprite reads one PNG file in `assets/`. To replace it, overwrite the file 
 The planet halves are animated with events: ease-out curves driven by `BreakTime` in `EV_PlanetMode`, not the Tween behavior. I could only verify instructions that GDevelop's native engine knows, and the Tween behavior is a JavaScript extension it can't check. To use real tweens instead, replace the SetX/SetAngle actions in the "Reach the surface" group with Tween actions.
 
 ## Notes for publishing on Playgama later
-- The best score is saved with GDevelop storage. Playgama requires its Bridge storage instead, so this will be swapped when the SDK is added.
+- The best scores, crystals and owned styles are saved with GDevelop storage. Playgama requires its Bridge storage instead, so this will be swapped when the SDK is added.
 - GDevelop's exported builds send an anonymous session ping to `api.gdevelop-app.com`. Playgama does not allow external analytics, so this needs to be switched off at export time.
 - The "Made with GDevelop" watermark (bottom left) can only be removed with a GDevelop subscription. On a square window it sits near the MAIN MENU button.
 - Phone notches and safe areas are not handled specifically. The HUD starts about 40 px from the top.
