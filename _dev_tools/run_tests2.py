@@ -60,7 +60,13 @@ async def wait_state(page, cond, timeout):
         await asyncio.sleep(0.03)
     return await S(page)
 async def restart(page):
-    await asyncio.sleep(0.5); st = await S(page); vp = page.viewport_size; k = vp['width'] / st['w']
+    for _ in range(5):
+        await asyncio.sleep(0.5); st = await S(page)
+        if st['state'] == 'Playing': return
+        vp = page.viewport_size; k = vp['width'] / st['w']
+        await page.mouse.click(360 * k, st['h'] * 0.56 * k)
+    await asyncio.sleep(0.4); return
+    st = await S(page); vp = page.viewport_size; k = vp['width'] / st['w']
     await page.mouse.click(360 * k, st['h'] * 0.56 * k); await asyncio.sleep(0.4)
 
 async def main():
@@ -68,6 +74,7 @@ async def main():
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(args=['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'])
         ctx, page, errors = await boot(browser); allerr += errors
+        await page.evaluate(setvar('NextRowWorldY', 1e9))   # feature tests: no random rows interfering
         st = await S(page)
         check('launches into Gameplay, Endless mode, Playing', st['state'] == 'Playing' and st['mode'] == 'Endless')
         check('fresh device: best starts at 0', st['best'] == 0 and 'BEST: 0000 m' in st['bestText'], st['bestText'])
@@ -121,6 +128,7 @@ async def main():
         check('game over: best saved + NEW BEST shown', st['best'] == d1 and st['newBest'] and st['gameOver'], f'best={st["best"]}')
         await page.screenshot(path=f'{SHOTS}/p2_03_gameover.png')
         await restart(page); st = await S(page)
+        await page.evaluate(setvar('NextRowWorldY', 1e9))
         check('restart keeps best (global) and resets run', st['state'] == 'Playing' and st['best'] == d1 and st['wy'] < 150 and st['charges'] == 0,
               st['bestText'])
         await page.evaluate(put('PowerStrength', 0, 45)); await wait_state(page, lambda s: s['charges'] > 0, 1.5)
@@ -135,7 +143,7 @@ async def main():
             if st and st['scene'] == 'Gameplay' and st['wy'] > 0: break
             await asyncio.sleep(0.05)
         check('best persists after full page reload (device storage)', st['best'] == d1, f'loaded {st["best"]}')
-        await restart(page)
+        await restart(page); await page.evaluate(setvar('NextRowWorldY', 1e9))
 
         # --- unprotected rock kills ---
         await page.evaluate(put('RockSmall', 0, 60))
@@ -162,6 +170,13 @@ async def main():
             await page.evaluate(setvar('InvulnerabilityRemaining', 0))
             await page.evaluate("() => { %s V('GameState').setString('GameOver'); }" % PRE); await asyncio.sleep(0.5); await restart(page)
         json.dump(harvest, open(HARVEST, 'w'))
+        # --- no-input survival (should be short: going straight is rarely safe) ---
+        idle = []
+        for _ in range(3):
+            await restart(page); t0 = time.time()
+            st = await wait_state(page, lambda s: s['state'] != 'Playing', 60)
+            idle.append(round(time.time() - t0, 1))
+        check('holding straight with no taps dies quickly (anti-camping)', max(idle) < 16, f'idle survival times {idle}s (first 8 s are a warm-up)')
         allerr += errors; await ctx.close()
 
         # --- touch + tall phone + tablet ---
@@ -172,7 +187,8 @@ async def main():
         ctx, page, errors = await boot(browser, 800, 1280); allerr += errors
         st = await S(page); check('tablet portrait: width 720, tip at 70%', st['w'] == 720 and abs(st['tipY'] - st['h'] * 0.7) < 0.5, f"{st['w']}x{st['h']:.0f}")
         await page.screenshot(path=f'{SHOTS}/p2_05_tablet.png'); await ctx.close()
-        check('no runtime errors in console', not allerr, '; '.join(allerr[:3]))
+        allerr = [e for e in allerr if 'api.gdevelop-app.com/analytics' not in e and 'ERR_TUNNEL_CONNECTION_FAILED' not in e]
+        check('no runtime errors in console (ignoring GDevelop analytics ping blocked by sandbox)', not allerr, '; '.join(allerr[:3]))
         await browser.close()
     srv.shutdown()
     print(f"\n{sum(r[1] for r in results)}/{len(results)} checks passed")

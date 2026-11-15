@@ -13,14 +13,16 @@ BREAKABLE = {"RockSmall", "RockMedium", "BarrierBreakable"}
 P = dict(
     BaseSpeed=180, MaxSpeed=420, SpeedGrowth=1.08, SpeedGrowthInterval=20,
     DifficultyRampTime=180,
-    RowGapStart=320, RowGapEnd=210,
-    DensityStart=0.30, DensityEnd=0.65,
-    EmptyChanceStart=0.25, EmptyChanceEnd=0.05,
+    RowGapStart=280, RowGapEnd=210,
+    DensityStart=0.40, DensityEnd=0.65,
+    EmptyChanceStart=0.10, EmptyChanceEnd=0.03,
     WallChanceStart=0.05, WallChanceEnd=0.22,
     CrystalChanceStart=0.05, CrystalChanceEnd=0.30,
     SolidChanceStart=0.00, SolidChanceEnd=0.12,
     BreakChanceStart=0.05, BreakChanceEnd=0.15,
     WallBreakableShare=0.6,
+    BlockerChanceStart=0.75, BlockerChanceEnd=0.9,   # chance a row blocks the lane the crack is in right now
+    CorridorStayChance=0.2,                       # chance the safe corridor does NOT drift on a row
     LaneJitterX=8, RowJitterY=18,
     FirstRowOffset=600,          # first row this far above the top of the screen (warm-up)
     PowerupChance=0.12, PowerupCooldownTime=10,

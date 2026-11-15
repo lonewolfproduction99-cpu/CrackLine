@@ -15,17 +15,20 @@ def speed_at(t): return min(P["MaxSpeed"], P["BaseSpeed"] * P["SpeedGrowth"] ** 
 
 class Gen:
     def __init__(self, rng):
-        self.r = rng; self.safe = 3; self.next = TIPY + P["FirstRowOffset"]; self.objs = []
+        self.r = rng; self.safe = rng.choice([0, 1, 4, 5]); self.next = TIPY + P["FirstRowOffset"]; self.objs = []
     def row(self, t):
         r = self.r; d = min(1, t / P["DifficultyRampTime"])
         prev = self.safe
-        self.safe = max(0, min(LANE_COUNT - 2, self.safe + r.randint(-1, 1)))
+        shift = 0 if r.random() < P["CorridorStayChance"] else (1 if r.random() < 0.5 else -1)
+        self.safe = max(0, min(LANE_COUNT - 2, self.safe + shift))
         cmin, cmax = min(prev, self.safe), max(prev, self.safe) + 1
         empty = lerp(P["EmptyChanceStart"], P["EmptyChanceEnd"], d); wall = lerp(P["WallChanceStart"], P["WallChanceEnd"], d)
         dens = lerp(P["DensityStart"], P["DensityEnd"], d)
         cc = lerp(P["CrystalChanceStart"], P["CrystalChanceEnd"], d); sc = lerp(P["SolidChanceStart"], P["SolidChanceEnd"], d)
         bc = lerp(P["BreakChanceStart"], P["BreakChanceEnd"], d)
         rr = r.random(); rowtype = 0 if rr < empty else (1 if rr < empty + wall else 2)
+        blk = lerp(P["BlockerChanceStart"], P["BlockerChanceEnd"], d)
+        crack_lane = r.randint(0, LANE_COUNT - 1)   # stand-in for the player's current lane (any lane)
         for lane in range(LANE_COUNT):
             if (lane - cmin) * (lane - cmax) <= 0: continue
             tr = r.random(); x = (lane + 0.5) * LANE_W + r.uniform(-P["LaneJitterX"], P["LaneJitterX"])
@@ -37,6 +40,8 @@ class Gen:
                 if tr >= cc: typ = "BarrierSolid"
                 if tr >= cc + sc: typ = "BarrierBreakable"
                 if tr >= cc + sc + bc: typ = "RockSmall" if r.random() < 0.5 else "RockMedium"
+            if typ is None and rowtype != 0 and lane == crack_lane and r.random() < blk:
+                typ = "Crystal" if tr < cc else ("RockSmall" if r.random() < 0.5 else "RockMedium")
             if typ:
                 if typ.startswith("Barrier"): wy = self.next
                 self.objs.append((typ, x, wy))

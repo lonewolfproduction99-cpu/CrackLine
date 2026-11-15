@@ -55,7 +55,8 @@ TUNING = [
     ("CrystalChanceStart", P["CrystalChanceStart"]), ("CrystalChanceEnd", P["CrystalChanceEnd"]),
     ("SolidChanceStart", P["SolidChanceStart"]), ("SolidChanceEnd", P["SolidChanceEnd"]),
     ("BreakChanceStart", P["BreakChanceStart"]), ("BreakChanceEnd", P["BreakChanceEnd"]),
-    ("WallBreakableShare", P["WallBreakableShare"]), ("LaneJitterX", P["LaneJitterX"]), ("RowJitterY", P["RowJitterY"]),
+    ("WallBreakableShare", P["WallBreakableShare"]),
+    ("BlockerChanceStart", P["BlockerChanceStart"]), ("BlockerChanceEnd", P["BlockerChanceEnd"]), ("CorridorStayChance", P["CorridorStayChance"]), ("LaneJitterX", P["LaneJitterX"]), ("RowJitterY", P["RowJitterY"]),
     ("PowerupChance", P["PowerupChance"]), ("PowerupCooldownTime", P["PowerupCooldownTime"]),
     ("SlowTimeDuration", P["SlowTimeDuration"]), ("SlowTimeFactor", P["SlowTimeFactor"]), ("StrengthMaxCharges", P["StrengthMaxCharges"]),
     ("RestartDelay", 0.3),
@@ -64,7 +65,7 @@ STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLeve
          "BranchDirection", "BranchTimer", "BranchStartX", "CooldownTimer", "TrailLastX", "TrailLastWorldY", "TrailNewX",
          "NextRowWorldY", "RowWorldY", "RowGap", "SafeLane", "PrevSafeLane", "CorridorMin", "CorridorMax", "RowType", "RowRoll",
          "Density", "EmptyChance", "WallChance", "CrystalChance", "SolidChance", "BreakChance",
-         "LaneIter", "LaneWidth", "TypeRoll", "ObjType", "LaneX", "ObjWorldY",
+         "LaneIter", "LaneWidth", "BlockerChance", "CrackLane", "CorridorShift", "TypeRoll", "ObjType", "LaneX", "ObjWorldY",
          "PowerupCooldown", "SlowTimeRemaining", "StrengthCharges", "InvulnerabilityRemaining", "GameOverTime"]
 scene_vars = [num(n, v) for n, v in TUNING] + [st("GameState", "Playing")] + [num(n, 0) for n in STATE] + [boo("NewBest", False)]
 global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0)]
@@ -189,7 +190,7 @@ ev_gamestate = [
             setv("ScrollSpeed", "=", "BaseSpeed"), setv("EffectiveSpeed", "=", "BaseSpeed"),
             setv("TrailLastX", "=", "CrackWorldX"), setv("TrailLastWorldY", "=", "CrackWorldY"),
             setv("NextRowWorldY", "=", "TipScreenY + FirstRowOffset"),
-            setv("SafeLane", "=", "floor(LaneCount / 2)"),
+            setv("SafeLane", "=", "RandomInRange(0, 1) * 4 + RandomInRange(0, 1)"),   # corridor starts off-centre (lanes 0-1 or 4-5): the first rows teach branching
             setv("PowerupCooldown", "=", "6"),
             sets("GameState", '"Playing"'),
             A("HideLayer", "", '"GameOver"'),
@@ -295,7 +296,7 @@ def spawn(obj, wy, extra=()):
     return [create(obj, "LaneX", screen_y(wy)), setov(obj, "WorldY", "=", wy), A("SetZOrder", obj, "=", "5")] + list(extra)
 L = lambda a, b: f"lerp({a}, {b}, DifficultyLevel)"
 ev_spawner = [
-    comment("PROCEDURAL OBSTACLE ROWS with a guaranteed safe route. The screen is split into LaneCount (7) lanes. Every row keeps a 2-lane wide CORRIDOR free (SafeLane and SafeLane+1). The corridor drifts by at most one lane per row, and on a drift row the lanes of both the old and new corridor stay free, so the corridor is continuous. A 2-lane gap is always wider than one branch (130 px), so a branch can always land inside it. This rule was validated offline by brute-force searching every tap timing over 60 random 5-minute runs at the real speeds (tools: gen_sim.py)."),
+    comment("PROCEDURAL OBSTACLE ROWS with a guaranteed safe route. The screen is split into LaneCount (7) lanes. Every row keeps a 2-lane wide CORRIDOR free (SafeLane and SafeLane+1). The corridor drifts by at most one lane per row (on most rows), and on a drift row the lanes of both the old and new corridor stay free, so the corridor is continuous. A 2-lane gap is always wider than one branch (130 px), so a branch can always land inside it. This rule was validated offline by brute-force searching every tap timing over 60 random 5-minute runs at the real speeds (tools: gen_sim.py)."),
     comment("Row types: EMPTY (nothing), WALL (every lane outside the corridor gets a reinforced barrier, a share of them breakable), SCATTER (each lane outside the corridor gets an obstacle with probability Density). Density, row spacing and the share of crystals/solid barriers rise with DifficultyLevel; empty rows become rarer."),
     group("Spawn next row", [
         ev([PLAYING, cmp("CrackWorldY + TipScreenY + SpawnMargin", ">=", "NextRowWorldY")], [
@@ -308,13 +309,17 @@ ev_spawner = [
             setv("SolidChance", "=", L("SolidChanceStart", "SolidChanceEnd")),
             setv("BreakChance", "=", L("BreakChanceStart", "BreakChanceEnd")),
             setv("PrevSafeLane", "=", "SafeLane"),
-            setv("SafeLane", "=", "clamp(SafeLane + RandomInRange(-1, 1), 0, LaneCount - 2)"),
-            setv("CorridorMin", "=", "min(PrevSafeLane, SafeLane)"),
-            setv("CorridorMax", "=", "max(PrevSafeLane, SafeLane) + 1"),
+            setv("BlockerChance", "=", L("BlockerChanceStart", "BlockerChanceEnd")),
+            setv("CrackLane", "=", "clamp(floor(CrackWorldX / LaneWidth), 0, LaneCount - 1)"),
+            setv("CorridorShift", "=", "RandomInRange(0, 1) * 2 - 1"),
             setv("RowRoll", "=", "RandomFloat(1)"),
             setv("RowType", "=", "2"),
             setv("LaneIter", "=", "0"),
         ], [
+            comment("The corridor drifts left or right on most rows (it stays put only CorridorStayChance of the time), so the player must keep moving."),
+            ev([cmp("RandomFloat(1)", "<", "CorridorStayChance")], [setv("CorridorShift", "=", "0")]),
+            ev([], [setv("SafeLane", "=", "clamp(SafeLane + CorridorShift, 0, LaneCount - 2)"),
+                    setv("CorridorMin", "=", "min(PrevSafeLane, SafeLane)"), setv("CorridorMax", "=", "max(PrevSafeLane, SafeLane) + 1")]),
             ev([isv("RowRoll", "<", "EmptyChance")], [setv("RowType", "=", "0")]),
             ev([isv("RowRoll", ">=", "EmptyChance"), isv("RowRoll", "<", "EmptyChance + WallChance")], [setv("RowType", "=", "1")]),
             repeat("LaneCount", [], [
@@ -332,6 +337,10 @@ ev_spawner = [
                         ev([isv("TypeRoll", ">=", "CrystalChance + SolidChance + BreakChance")], [setv("ObjType", "=", "1")],
                            [ev([cmp("RandomFloat(1)", ">=", "0.5")], [setv("ObjType", "=", "2")])]),
                     ]),
+                    comment("Anti-camping: if this lane is where the crack is right now (and outside the corridor), block it with BlockerChance, so going straight is rarely safe."),
+                    ev([isv("ObjType", "=", "0"), isv("RowType", "!=", "0"), isv("LaneIter", "=", "CrackLane"), cmp("RandomFloat(1)", "<", "BlockerChance")],
+                       [setv("ObjType", "=", "3")], [ev([isv("TypeRoll", ">=", "CrystalChance")], [setv("ObjType", "=", "1")],
+                                                       [ev([cmp("RandomFloat(1)", ">=", "0.5")], [setv("ObjType", "=", "2")])])]),
                     ev([isv("ObjType", "=", "1")], spawn("RockSmall", "ObjWorldY")),
                     ev([isv("ObjType", "=", "2")], spawn("RockMedium", "ObjWorldY")),
                     ev([isv("ObjType", "=", "3")], spawn("Crystal", "ObjWorldY", [A("AnimatableCapability::AnimatableBehavior::SetIndex", "Crystal", "Animation", "=", "RandomInRange(0, 2)")])),

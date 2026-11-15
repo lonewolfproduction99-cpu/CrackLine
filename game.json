@@ -396,7 +396,7 @@
         {
           "name": "RowGapStart",
           "type": "number",
-          "value": 320
+          "value": 280
         },
         {
           "name": "RowGapEnd",
@@ -406,7 +406,7 @@
         {
           "name": "DensityStart",
           "type": "number",
-          "value": 0.3
+          "value": 0.4
         },
         {
           "name": "DensityEnd",
@@ -416,12 +416,12 @@
         {
           "name": "EmptyChanceStart",
           "type": "number",
-          "value": 0.25
+          "value": 0.1
         },
         {
           "name": "EmptyChanceEnd",
           "type": "number",
-          "value": 0.05
+          "value": 0.03
         },
         {
           "name": "WallChanceStart",
@@ -467,6 +467,21 @@
           "name": "WallBreakableShare",
           "type": "number",
           "value": 0.6
+        },
+        {
+          "name": "BlockerChanceStart",
+          "type": "number",
+          "value": 0.75
+        },
+        {
+          "name": "BlockerChanceEnd",
+          "type": "number",
+          "value": 0.9
+        },
+        {
+          "name": "CorridorStayChance",
+          "type": "number",
+          "value": 0.2
         },
         {
           "name": "LaneJitterX",
@@ -670,6 +685,21 @@
         },
         {
           "name": "LaneWidth",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "BlockerChance",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "CrackLane",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "CorridorShift",
           "type": "number",
           "value": 0
         },
@@ -2785,7 +2815,7 @@
                   "parameters": [
                     "SafeLane",
                     "=",
-                    "floor(LaneCount / 2)"
+                    "RandomInRange(0, 1) * 4 + RandomInRange(0, 1)"
                   ],
                   "subInstructions": []
                 },
@@ -4044,7 +4074,7 @@
             "textG": 0,
             "textR": 0
           },
-          "comment": "PROCEDURAL OBSTACLE ROWS with a guaranteed safe route. The screen is split into LaneCount (7) lanes. Every row keeps a 2-lane wide CORRIDOR free (SafeLane and SafeLane+1). The corridor drifts by at most one lane per row, and on a drift row the lanes of both the old and new corridor stay free, so the corridor is continuous. A 2-lane gap is always wider than one branch (130 px), so a branch can always land inside it. This rule was validated offline by brute-force searching every tap timing over 60 random 5-minute runs at the real speeds (tools: gen_sim.py).",
+          "comment": "PROCEDURAL OBSTACLE ROWS with a guaranteed safe route. The screen is split into LaneCount (7) lanes. Every row keeps a 2-lane wide CORRIDOR free (SafeLane and SafeLane+1). The corridor drifts by at most one lane per row (on most rows), and on a drift row the lanes of both the old and new corridor stay free, so the corridor is continuous. A 2-lane gap is always wider than one branch (130 px), so a branch can always land inside it. This rule was validated offline by brute-force searching every tap timing over 60 random 5-minute runs at the real speeds (tools: gen_sim.py).",
           "comment2": ""
         },
         {
@@ -4212,9 +4242,9 @@
                     "value": "SetNumberVariable"
                   },
                   "parameters": [
-                    "SafeLane",
+                    "BlockerChance",
                     "=",
-                    "clamp(SafeLane + RandomInRange(-1, 1), 0, LaneCount - 2)"
+                    "lerp(BlockerChanceStart, BlockerChanceEnd, DifficultyLevel)"
                   ],
                   "subInstructions": []
                 },
@@ -4224,9 +4254,9 @@
                     "value": "SetNumberVariable"
                   },
                   "parameters": [
-                    "CorridorMin",
+                    "CrackLane",
                     "=",
-                    "min(PrevSafeLane, SafeLane)"
+                    "clamp(floor(CrackWorldX / LaneWidth), 0, LaneCount - 1)"
                   ],
                   "subInstructions": []
                 },
@@ -4236,9 +4266,9 @@
                     "value": "SetNumberVariable"
                   },
                   "parameters": [
-                    "CorridorMax",
+                    "CorridorShift",
                     "=",
-                    "max(PrevSafeLane, SafeLane) + 1"
+                    "RandomInRange(0, 1) * 2 - 1"
                   ],
                   "subInstructions": []
                 },
@@ -4280,6 +4310,94 @@
                 }
               ],
               "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Comment",
+                  "color": {
+                    "b": 109,
+                    "g": 230,
+                    "r": 255,
+                    "textB": 0,
+                    "textG": 0,
+                    "textR": 0
+                  },
+                  "comment": "The corridor drifts left or right on most rows (it stays put only CorridorStayChance of the time), so the player must keep moving.",
+                  "comment2": ""
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "BuiltinCommonInstructions::CompareNumbers"
+                      },
+                      "parameters": [
+                        "RandomFloat(1)",
+                        "<",
+                        "CorridorStayChance"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "CorridorShift",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "SafeLane",
+                        "=",
+                        "clamp(SafeLane + CorridorShift, 0, LaneCount - 2)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "CorridorMin",
+                        "=",
+                        "min(PrevSafeLane, SafeLane)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "CorridorMax",
+                        "=",
+                        "max(PrevSafeLane, SafeLane) + 1"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
                 {
                   "type": "BuiltinCommonInstructions::Standard",
                   "conditions": [
@@ -4639,6 +4757,153 @@
                                     "TypeRoll",
                                     ">=",
                                     "CrystalChance + SolidChance + BreakChance"
+                                  ],
+                                  "subInstructions": []
+                                }
+                              ],
+                              "actions": [
+                                {
+                                  "type": {
+                                    "inverted": false,
+                                    "value": "SetNumberVariable"
+                                  },
+                                  "parameters": [
+                                    "ObjType",
+                                    "=",
+                                    "1"
+                                  ],
+                                  "subInstructions": []
+                                }
+                              ],
+                              "events": [
+                                {
+                                  "type": "BuiltinCommonInstructions::Standard",
+                                  "conditions": [
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "BuiltinCommonInstructions::CompareNumbers"
+                                      },
+                                      "parameters": [
+                                        "RandomFloat(1)",
+                                        ">=",
+                                        "0.5"
+                                      ],
+                                      "subInstructions": []
+                                    }
+                                  ],
+                                  "actions": [
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "SetNumberVariable"
+                                      },
+                                      "parameters": [
+                                        "ObjType",
+                                        "=",
+                                        "2"
+                                      ],
+                                      "subInstructions": []
+                                    }
+                                  ],
+                                  "events": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "BuiltinCommonInstructions::Comment",
+                          "color": {
+                            "b": 109,
+                            "g": 230,
+                            "r": 255,
+                            "textB": 0,
+                            "textG": 0,
+                            "textR": 0
+                          },
+                          "comment": "Anti-camping: if this lane is where the crack is right now (and outside the corridor), block it with BlockerChance, so going straight is rarely safe.",
+                          "comment2": ""
+                        },
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "NumberVariable"
+                              },
+                              "parameters": [
+                                "ObjType",
+                                "=",
+                                "0"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "NumberVariable"
+                              },
+                              "parameters": [
+                                "RowType",
+                                "!=",
+                                "0"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "NumberVariable"
+                              },
+                              "parameters": [
+                                "LaneIter",
+                                "=",
+                                "CrackLane"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "BuiltinCommonInstructions::CompareNumbers"
+                              },
+                              "parameters": [
+                                "RandomFloat(1)",
+                                "<",
+                                "BlockerChance"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "SetNumberVariable"
+                              },
+                              "parameters": [
+                                "ObjType",
+                                "=",
+                                "3"
+                              ],
+                              "subInstructions": []
+                            }
+                          ],
+                          "events": [
+                            {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [
+                                {
+                                  "type": {
+                                    "inverted": false,
+                                    "value": "NumberVariable"
+                                  },
+                                  "parameters": [
+                                    "TypeRoll",
+                                    ">=",
+                                    "CrystalChance"
                                   ],
                                   "subInstructions": []
                                 }

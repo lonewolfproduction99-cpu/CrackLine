@@ -30,7 +30,9 @@ There is one scene, `Gameplay`. The global variable `GameMode` is set to `"Endle
 ## How the obstacles are generated
 - The screen is split into 7 lanes, and a new row of obstacles appears every `RowGap` px.
 - Every row keeps a **2-lane corridor** free of obstacles.
-- The corridor shifts by at most one lane per row. On a shifting row, both the old and the new corridor lanes stay free, so the safe path never breaks.
+- The corridor shifts by one lane on most rows. It stays put only `CorridorStayChance` (20%) of the time. On a shifting row, both the old and the new corridor lanes stay free, so the safe path never breaks.
+- The corridor starts off-centre, so the first rows teach branching.
+- **Anti-camping:** if the lane the crack is in is outside the corridor, it gets blocked with `BlockerChance` (75% rising to 90%). Holding straight is almost never safe.
 - A 2-lane gap is wider than one branch (130 px), so a branch can always land inside it.
 - Each row is one of three types:
   - **Empty:** no obstacles.
@@ -46,9 +48,11 @@ There is one scene, `Gameplay`. The global variable `GameMode` is set to `"Endle
 | SpeedGrowth / SpeedGrowthInterval | 1.08 / 20 | speed rises 8% every 20 seconds |
 | DifficultyRampTime | 180 | seconds until maximum difficulty |
 | BranchDistance / BranchDuration / BranchCooldown | 130 / 0.15 / 0.08 | how one branch behaves |
-| RowGapStart / RowGapEnd | 320 / 210 | spacing between rows, easy to hard |
-| DensityStart / DensityEnd | 0.30 / 0.65 | chance that a lane gets an obstacle |
+| RowGapStart / RowGapEnd | 280 / 210 | spacing between rows, easy to hard |
+| DensityStart / DensityEnd | 0.40 / 0.65 | chance that a lane gets an obstacle |
 | EmptyChance*, WallChance*, CrystalChance*, SolidChance*, BreakChance* | see editor | how often each row and obstacle type appears |
+| BlockerChanceStart / End | 0.75 / 0.9 | chance that the crack's current lane gets blocked |
+| CorridorStayChance | 0.2 | chance that the safe corridor doesn't move on a row |
 | FirstRowOffset | 600 | empty warm-up distance at the start |
 | PowerupChance / PowerupCooldownTime | 0.12 / 10 | how often power-ups appear |
 | SlowTimeDuration / SlowTimeFactor | 4 / 0.6 | how long Slow Time lasts and how much it slows the world |
