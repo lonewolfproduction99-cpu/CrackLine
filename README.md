@@ -4,12 +4,9 @@ Portrait 720×1280 arcade prototype. All gameplay is native GDevelop events, wit
 
 ## Open it
 
-**On the tablet (web editor):**
-1. Upload this `crackline` folder (with `game.json` and the `assets/` folder) to your GitHub repo, for example `gdevelop-test/crackline/`.
-2. Open this URL in your browser:
-   `https://editor.gdevelop.io/?project=https://raw.githubusercontent.com/lonewolfproduction99-cpu/gdevelop-test/main/crackline/game.json`
-   (change `main` if your branch has another name). GDevelop loads the images from the `assets/` folder next to `game.json`.
-3. Press **Preview** (▶). After that, use **File → Save as** to save it as a cloud project, so your edits are kept.
+**On the tablet (web editor):** open
+`https://editor.gdevelop.io/?project=https://raw.githubusercontent.com/lonewolfproduction99-cpu/Crackline/main/game.json`
+then press **Preview** (▶). Use **File → Save as** (cloud) to keep your own editable copy.
 
 **On a desktop:** unzip, then use GDevelop → Open project → `crackline/game.json`.
 
