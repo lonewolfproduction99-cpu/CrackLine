@@ -266,10 +266,37 @@
       },
       {
         "alwaysLoaded": false,
+        "file": "assets/worm_b.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "worm_b",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
         "file": "assets/fissure.png",
         "kind": "image",
         "metadata": "",
         "name": "fissure",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/icon_audio_on.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "icon_audio_on",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/icon_audio_off.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "icon_audio_off",
         "smoothed": true,
         "userAdded": true
       },
@@ -434,6 +461,126 @@
         "name": "tip_shadow",
         "smoothed": true,
         "userAdded": true
+      },
+      {
+        "file": "audio/sfx_branch.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_branch",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/sfx_break.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_break",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/sfx_crash.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_crash",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/sfx_fissure.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_fissure",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/sfx_crystal.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_crystal",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/sfx_powerup.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_powerup",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/sfx_click.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_click",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/sfx_error.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_error",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/sfx_buy.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_buy",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/sfx_revive.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "sfx_revive",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/jingle_gameover.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "jingle_gameover",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
+      },
+      {
+        "file": "audio/jingle_planet.ogg",
+        "kind": "audio",
+        "metadata": "",
+        "name": "jingle_planet",
+        "preloadAsMusic": false,
+        "preloadAsSound": true,
+        "preloadInCache": false,
+        "userAdded": true
       }
     ],
     "resourceFolders": []
@@ -463,6 +610,11 @@
     },
     {
       "name": "EquippedStyle",
+      "type": "number",
+      "value": 0
+    },
+    {
+      "name": "Muted",
       "type": "number",
       "value": 0
     },
@@ -570,7 +722,7 @@
       "name": "MainMenu",
       "r": 110,
       "standardSortMethod": true,
-      "stopSoundsOnStartup": true,
+      "stopSoundsOnStartup": false,
       "title": "",
       "v": 60,
       "uiSettings": {
@@ -761,6 +913,22 @@
           "x": 300,
           "y": 852,
           "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "MuteButton",
+          "persistentUuid": "6371a7fc-9ea9-5876-b28f-112cfd9ca74b",
+          "width": 0,
+          "x": 670,
+          "y": 50,
+          "zOrder": 4,
           "numberProperties": [],
           "stringProperties": [],
           "initialVariables": []
@@ -1187,6 +1355,76 @@
             "characterSize": 44,
             "color": "255;255;255"
           }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "MuteButton",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "On",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "icon_audio_on",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 50,
+                        "y": 50
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Off",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "icon_audio_off",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 50,
+                        "y": 50
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ],
       "objectsFolderStructure": {
@@ -1224,6 +1462,9 @@
           },
           {
             "objectName": "ShopLabel"
+          },
+          {
+            "objectName": "MuteButton"
           }
         ]
       },
@@ -1388,6 +1629,31 @@
                 "ShopButton.Y() - 27"
               ],
               "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "MuteButton",
+                "=",
+                "SceneWindowHeight() / 2 + 275"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ScalableCapability::ScalableBehavior::SetValue"
+              },
+              "parameters": [
+                "MuteButton",
+                "Scale",
+                "=",
+                "0.75"
+              ],
+              "subInstructions": []
             }
           ],
           "events": [
@@ -1545,6 +1811,57 @@
                     "\"OwnedStyles\"",
                     "",
                     "OwnedStyles"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"Muted\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"Muted\"",
+                    "",
+                    "Muted"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetGlobalVolume"
+                  },
+                  "parameters": [
+                    "",
+                    "=",
+                    "100 * (1 - Muted)"
                   ],
                   "subInstructions": []
                 }
@@ -1719,6 +2036,20 @@
             {
               "type": {
                 "inverted": false,
+                "value": "PlaySound"
+              },
+              "parameters": [
+                "",
+                "sfx_click",
+                "",
+                "80",
+                "1"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
                 "value": "SetStringVariable"
               },
               "parameters": [
@@ -1770,6 +2101,20 @@
             }
           ],
           "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "PlaySound"
+              },
+              "parameters": [
+                "",
+                "sfx_click",
+                "",
+                "80",
+                "1"
+              ],
+              "subInstructions": []
+            },
             {
               "type": {
                 "inverted": false,
@@ -1827,12 +2172,172 @@
             {
               "type": {
                 "inverted": false,
+                "value": "PlaySound"
+              },
+              "parameters": [
+                "",
+                "sfx_click",
+                "",
+                "80",
+                "1"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
                 "value": "Scene"
               },
               "parameters": [
                 "",
                 "\"Shop\"",
                 ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "NumberVariable"
+              },
+              "parameters": [
+                "Muted",
+                "=",
+                "0"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+              },
+              "parameters": [
+                "MuteButton",
+                "Animation",
+                "=",
+                "0"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "NumberVariable"
+              },
+              "parameters": [
+                "Muted",
+                "=",
+                "1"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+              },
+              "parameters": [
+                "MuteButton",
+                "Animation",
+                "=",
+                "1"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "HasAnyTouchOrMouseStarted"
+              },
+              "parameters": [
+                ""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "CollisionPoint"
+              },
+              "parameters": [
+                "MuteButton",
+                "TouchX(StartedTouchOrMouseId(0), \"\")",
+                "TouchY(StartedTouchOrMouseId(0), \"\")"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "Muted",
+                "=",
+                "1 - Muted"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "EcrireFichierExp"
+              },
+              "parameters": [
+                "\"CracklineSave\"",
+                "\"Muted\"",
+                "Muted"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetGlobalVolume"
+              },
+              "parameters": [
+                "",
+                "=",
+                "100 * (1 - Muted)"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "PlaySound"
+              },
+              "parameters": [
+                "",
+                "sfx_click",
+                "",
+                "80",
+                "1"
               ],
               "subInstructions": []
             }
@@ -1879,7 +2384,7 @@
       "name": "Shop",
       "r": 110,
       "standardSortMethod": true,
-      "stopSoundsOnStartup": true,
+      "stopSoundsOnStartup": false,
       "title": "",
       "v": 60,
       "uiSettings": {
@@ -3865,6 +4370,57 @@
                 }
               ],
               "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"Muted\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"Muted\"",
+                    "",
+                    "Muted"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetGlobalVolume"
+                  },
+                  "parameters": [
+                    "",
+                    "=",
+                    "100 * (1 - Muted)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
             }
           ]
         },
@@ -4341,6 +4897,20 @@
                     "StyleNames[ShopSel] + \" EQUIPPED\""
                   ],
                   "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_click",
+                    "",
+                    "80",
+                    "1"
+                  ],
+                  "subInstructions": []
                 }
               ],
               "events": []
@@ -4458,6 +5028,20 @@
                     "\"UNLOCKED \" + StyleNames[ShopSel] + \"!\""
                   ],
                   "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_buy",
+                    "",
+                    "75",
+                    "1"
+                  ],
+                  "subInstructions": []
                 }
               ],
               "events": []
@@ -4501,6 +5085,20 @@
                     "Text",
                     "=",
                     "\"NEED \" + ToString(StylePrices[ShopSel] - CrystalWallet) + \" MORE CRYSTALS\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_error",
+                    "",
+                    "80",
+                    "1"
                   ],
                   "subInstructions": []
                 }
@@ -4636,6 +5234,20 @@
             {
               "type": {
                 "inverted": false,
+                "value": "PlaySound"
+              },
+              "parameters": [
+                "",
+                "sfx_click",
+                "",
+                "80",
+                "1"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
                 "value": "Scene"
               },
               "parameters": [
@@ -4688,7 +5300,7 @@
       "name": "Gameplay",
       "r": 110,
       "standardSortMethod": true,
-      "stopSoundsOnStartup": true,
+      "stopSoundsOnStartup": false,
       "title": "",
       "v": 60,
       "uiSettings": {
@@ -5670,6 +6282,22 @@
           "height": 0,
           "layer": "HUD",
           "locked": false,
+          "name": "MuteButton",
+          "persistentUuid": "09865824-bc09-5ed8-b1d6-1719e6d7e885",
+          "width": 0,
+          "x": 46,
+          "y": 46,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "HUD",
+          "locked": false,
           "name": "GemText",
           "persistentUuid": "47c2af6b-fc66-5269-9d4f-ec844f091b6d",
           "width": 0,
@@ -6351,7 +6979,7 @@
                       "originPoint": {
                         "name": "origine",
                         "x": 48,
-                        "y": 54
+                        "y": 48
                       },
                       "centerPoint": {
                         "automatic": true,
@@ -6363,35 +6991,35 @@
                         [
                           {
                             "x": 78.0,
-                            "y": 66.43
+                            "y": 60.43
                           },
                           {
                             "x": 60.43,
-                            "y": 84.0
+                            "y": 78.0
                           },
                           {
                             "x": 35.57,
-                            "y": 84.0
+                            "y": 78.0
                           },
                           {
                             "x": 18.0,
-                            "y": 66.43
+                            "y": 60.43
                           },
                           {
                             "x": 18.0,
-                            "y": 41.57
+                            "y": 35.57
                           },
                           {
                             "x": 35.57,
-                            "y": 24.0
+                            "y": 18.0
                           },
                           {
                             "x": 60.43,
-                            "y": 24.0
+                            "y": 18.0
                           },
                           {
                             "x": 78.0,
-                            "y": 41.57
+                            "y": 35.57
                           }
                         ]
                       ]
@@ -6415,7 +7043,7 @@
                       "originPoint": {
                         "name": "origine",
                         "x": 48,
-                        "y": 54
+                        "y": 48
                       },
                       "centerPoint": {
                         "automatic": true,
@@ -6427,35 +7055,35 @@
                         [
                           {
                             "x": 78.0,
-                            "y": 66.43
+                            "y": 60.43
                           },
                           {
                             "x": 60.43,
-                            "y": 84.0
+                            "y": 78.0
                           },
                           {
                             "x": 35.57,
-                            "y": 84.0
+                            "y": 78.0
                           },
                           {
                             "x": 18.0,
-                            "y": 66.43
+                            "y": 60.43
                           },
                           {
                             "x": 18.0,
-                            "y": 41.57
+                            "y": 35.57
                           },
                           {
                             "x": 35.57,
-                            "y": 24.0
+                            "y": 18.0
                           },
                           {
                             "x": 60.43,
-                            "y": 24.0
+                            "y": 18.0
                           },
                           {
                             "x": 78.0,
-                            "y": 41.57
+                            "y": 35.57
                           }
                         ]
                       ]
@@ -6479,7 +7107,7 @@
                       "originPoint": {
                         "name": "origine",
                         "x": 48,
-                        "y": 54
+                        "y": 48
                       },
                       "centerPoint": {
                         "automatic": true,
@@ -6491,35 +7119,35 @@
                         [
                           {
                             "x": 78.0,
-                            "y": 66.43
+                            "y": 60.43
                           },
                           {
                             "x": 60.43,
-                            "y": 84.0
+                            "y": 78.0
                           },
                           {
                             "x": 35.57,
-                            "y": 84.0
+                            "y": 78.0
                           },
                           {
                             "x": 18.0,
-                            "y": 66.43
+                            "y": 60.43
                           },
                           {
                             "x": 18.0,
-                            "y": 41.57
+                            "y": 35.57
                           },
                           {
                             "x": 35.57,
-                            "y": 24.0
+                            "y": 18.0
                           },
                           {
                             "x": 60.43,
-                            "y": 24.0
+                            "y": 18.0
                           },
                           {
                             "x": 78.0,
-                            "y": 41.57
+                            "y": 35.57
                           }
                         ]
                       ]
@@ -6561,8 +7189,8 @@
               "useMultipleDirections": false,
               "directions": [
                 {
-                  "looping": false,
-                  "timeBetweenFrames": 0.08,
+                  "looping": true,
+                  "timeBetweenFrames": 0.18,
                   "sprites": [
                     {
                       "hasCustomCollisionMask": true,
@@ -6570,8 +7198,8 @@
                       "points": [],
                       "originPoint": {
                         "name": "origine",
-                        "x": 70,
-                        "y": 33
+                        "x": 80,
+                        "y": 32
                       },
                       "centerPoint": {
                         "automatic": true,
@@ -6582,20 +7210,56 @@
                       "customCollisionMask": [
                         [
                           {
-                            "x": 4,
-                            "y": 13
+                            "x": 14,
+                            "y": 12
                           },
                           {
-                            "x": 136,
-                            "y": 13
+                            "x": 146,
+                            "y": 12
                           },
                           {
-                            "x": 136,
-                            "y": 53
+                            "x": 146,
+                            "y": 52
                           },
                           {
-                            "x": 4,
-                            "y": 53
+                            "x": 14,
+                            "y": 52
+                          }
+                        ]
+                      ]
+                    },
+                    {
+                      "hasCustomCollisionMask": true,
+                      "image": "worm_b",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 80,
+                        "y": 32
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": [
+                        [
+                          {
+                            "x": 14,
+                            "y": 12
+                          },
+                          {
+                            "x": 146,
+                            "y": 12
+                          },
+                          {
+                            "x": 146,
+                            "y": 52
+                          },
+                          {
+                            "x": 14,
+                            "y": 52
                           }
                         ]
                       ]
@@ -7244,7 +7908,77 @@
                       "originPoint": {
                         "name": "origine",
                         "x": 48,
-                        "y": 54
+                        "y": 48
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "MuteButton",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "On",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "icon_audio_on",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 50,
+                        "y": 50
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Off",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "icon_audio_off",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 50,
+                        "y": 50
                       },
                       "centerPoint": {
                         "automatic": true,
@@ -9672,6 +10406,57 @@
                   "events": []
                 },
                 {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "GroupExists"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"Muted\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ReadNumberFromStorage"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"Muted\"",
+                        "",
+                        "Muted"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetGlobalVolume"
+                      },
+                      "parameters": [
+                        "",
+                        "=",
+                        "100 * (1 - Muted)"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
                   "type": "BuiltinCommonInstructions::Comment",
                   "color": {
                     "b": 109,
@@ -9801,6 +10586,177 @@
                   "events": []
                 }
               ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Sound toggle",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Speaker button (top-left of the HUD). Taps on it never count as a branch tap.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "Muted",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                  },
+                  "parameters": [
+                    "MuteButton",
+                    "Animation",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "Muted",
+                    "=",
+                    "1"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                  },
+                  "parameters": [
+                    "MuteButton",
+                    "Animation",
+                    "=",
+                    "1"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "HasAnyTouchOrMouseStarted"
+                  },
+                  "parameters": [
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "CollisionPoint"
+                  },
+                  "parameters": [
+                    "MuteButton",
+                    "TouchX(StartedTouchOrMouseId(0), \"HUD\")",
+                    "TouchY(StartedTouchOrMouseId(0), \"HUD\")"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "Muted",
+                    "=",
+                    "1 - Muted"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "EcrireFichierExp"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"Muted\"",
+                    "Muted"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetGlobalVolume"
+                  },
+                  "parameters": [
+                    "",
+                    "=",
+                    "100 * (1 - Muted)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_click",
+                    "",
+                    "80",
+                    "1"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
             }
           ],
           "parameters": []
@@ -9957,6 +10913,20 @@
                 {
                   "type": {
                     "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_click",
+                    "",
+                    "80",
+                    "1"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
                     "value": "Scene"
                   },
                   "parameters": [
@@ -10020,6 +10990,20 @@
                 }
               ],
               "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_click",
+                    "",
+                    "80",
+                    "1"
+                  ],
+                  "subInstructions": []
+                },
                 {
                   "type": {
                     "inverted": false,
@@ -10111,6 +11095,20 @@
                 }
               ],
               "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_click",
+                    "",
+                    "80",
+                    "1"
+                  ],
+                  "subInstructions": []
+                },
                 {
                   "type": {
                     "inverted": false,
@@ -11341,6 +12339,34 @@
                     {
                       "type": {
                         "inverted": false,
+                        "value": "PlaySound"
+                      },
+                      "parameters": [
+                        "",
+                        "sfx_break",
+                        "",
+                        "85",
+                        "0.8"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "PlaySound"
+                      },
+                      "parameters": [
+                        "",
+                        "jingle_planet",
+                        "",
+                        "70",
+                        "1"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
                         "value": "Create"
                       },
                       "parameters": [
@@ -11853,9 +12879,36 @@
                     "0"
                   ],
                   "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": true,
+                    "value": "CollisionPoint"
+                  },
+                  "parameters": [
+                    "MuteButton",
+                    "TouchX(StartedTouchOrMouseId(0), \"HUD\")",
+                    "TouchY(StartedTouchOrMouseId(0), \"HUD\")"
+                  ],
+                  "subInstructions": []
                 }
               ],
-              "actions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_branch",
+                    "",
+                    "55",
+                    "RandomFloatInRange(0.9, 1.2)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
               "events": [
                 {
                   "type": "BuiltinCommonInstructions::Standard",
@@ -15470,6 +16523,20 @@
                 {
                   "type": {
                     "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_powerup",
+                    "",
+                    "80",
+                    "1"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
                     "value": "Create"
                   },
                   "parameters": [
@@ -15558,6 +16625,20 @@
                     "StrengthCharges",
                     "=",
                     "StrengthMaxCharges"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_powerup",
+                    "",
+                    "80",
+                    "1.2"
                   ],
                   "subInstructions": []
                 },
@@ -15689,6 +16770,20 @@
                     "CrystalWallet",
                     "+",
                     "Crystal.Value"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_crystal",
+                    "",
+                    "70",
+                    "1 + (Crystal.Value - 1) * 0.1"
                   ],
                   "subInstructions": []
                 },
@@ -16690,6 +17785,20 @@
             {
               "type": {
                 "inverted": false,
+                "value": "PlaySound"
+              },
+              "parameters": [
+                "",
+                "sfx_fissure",
+                "",
+                "90",
+                "1"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
                 "value": "Create"
               },
               "parameters": [
@@ -16904,6 +18013,20 @@
                 "1"
               ],
               "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "PlaySound"
+              },
+              "parameters": [
+                "",
+                "sfx_break",
+                "",
+                "80",
+                "1"
+              ],
+              "subInstructions": []
             }
           ],
           "events": [
@@ -17045,6 +18168,34 @@
                 "BranchDirection",
                 "=",
                 "0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "PlaySound"
+              },
+              "parameters": [
+                "",
+                "sfx_crash",
+                "",
+                "90",
+                "1"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "PlaySound"
+              },
+              "parameters": [
+                "",
+                "jingle_gameover",
+                "",
+                "65",
+                "1"
               ],
               "subInstructions": []
             },
@@ -17692,6 +18843,20 @@
                     "ReviveUsed",
                     "True",
                     ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PlaySound"
+                  },
+                  "parameters": [
+                    "",
+                    "sfx_revive",
+                    "",
+                    "80",
+                    "1"
                   ],
                   "subInstructions": []
                 },

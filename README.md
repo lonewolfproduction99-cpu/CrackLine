@@ -92,15 +92,12 @@ Style names, prices and spark colours are in the global arrays `StyleNames`, `St
 4. Add a card to the Shop.
 5. Add one more `0` to the `OwnedStyles` default.
 
-## Replacing the art
-Every sprite reads one PNG file in `assets/`. To replace it, overwrite the file using the same name. Keep these details in mind:
-- Origins are at the centre of each image. Collision masks are polygons slightly smaller than the art, so hits feel fair.
-- `Crystal` has three animations: Purple, Pink and Cyan. The game picks one at random.
-- `TrailSegment` has its origin and centre point at the middle of its left edge, because the game stretches it to the right.
-- `CrackHitbox` is the real collision point. It is hidden in game.
-
-## Planet split animation
-The planet halves are animated with events: ease-out curves driven by `BreakTime` in `EV_PlanetMode`, not the Tween behavior. I could only verify instructions that GDevelop's native engine knows, and the Tween behavior is a JavaScript extension it can't check. To use real tweens instead, replace the SetX/SetAngle actions in the "Reach the surface" group with Tween actions.
+## Art and sound
+All art and sound is **human-made**, from free CC0 (public domain) packs: **Kenney** (kenney.nl) art and sound effects, and **Beatscribe** jingles. See `CREDITS.md` for which pack each file comes from and what was changed. Changes were limited to resizing, recolouring, cutting the planets in half and similar edits.
+- Images are in `assets/` and sounds are in `audio/`. To replace one, overwrite it with a file of the same name.
+- **Speaker button** (main menu and top-left of the HUD): mutes or unmutes everything. The setting is saved.
+- Sounds play for branching, ground gaps, crystals, power-ups, smashing, crashing (plus a game-over jingle), breaking a planet (plus a victory jingle), the revive, and the shop.
+- **No background music yet.** I couldn't download from itch.io or OpenGameArt here. Add a looping `.ogg` and wire it up with a "Play music" action.
 
 ## Notes for publishing on Playgama later
 - The best scores, crystals and owned styles are saved with GDevelop storage. Playgama requires its Bridge storage instead, so this will be swapped when the SDK is added.

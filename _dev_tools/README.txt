@@ -13,3 +13,5 @@ make_art4.py       - worm and fissure art
 run_tests4.py      - tests: 1k planet progression, fissures, worms
 make_art5.py       - crack style art (trails, tips) and shop card
 run_tests5.py      - tests: crystals as points, shop buy/equip/persist, layouts
+assemble_assets.py - builds assets/ and audio/ from the human-made CC0 packs (Kenney, Beatscribe) + writes CREDITS.md
+run_tests6.py      - tests: sound files load, sounds fire, mute button

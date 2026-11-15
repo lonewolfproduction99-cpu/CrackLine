@@ -84,15 +84,18 @@ STYLE_PRICES = [0, 150, 300, 500, 800, 1200]
 STYLE_SPARKS = ["255;210;110", "150;230;255", "180;255;120", "220;160;255", "255;130;90", "170;120;255"]
 def arr(n, typ, vals): return {"name": n, "type": "array", "children": [{"type": typ, "value": v} for v in vals]}
 global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("BestPlanetsBroken", 0),
-               num("CrystalWallet", 0), num("EquippedStyle", 0), st("OwnedStyles", "100000"),
+               num("CrystalWallet", 0), num("EquippedStyle", 0), num("Muted", 0), st("OwnedStyles", "100000"),
                arr("StyleNames", "string", [s.upper() for s in STYLES]), arr("StylePrices", "number", STYLE_PRICES), arr("StyleSparkColors", "string", STYLE_SPARKS)]
 
 # ---------------------------------------------------------------- resources & objects
 IMAGES = ["bg_soil", "rock_small", "rock_medium", "crack_hitbox", "ui_card", "spark", "impact_flash", "ui_overlay",
           "ui_button", "barrier_solid", "barrier_breakable", "crystal_purple", "crystal_pink", "crystal_cyan", "powerup_slow", "powerup_strength",
-          "bg_verdant", "bg_frost", "shield_glow", "ui_white", "ui_button_blue", "worm", "fissure"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")] + \
+          "bg_verdant", "bg_frost", "shield_glow", "ui_white", "ui_button_blue", "worm", "worm_b", "fissure", "icon_audio_on", "icon_audio_off"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")] + \
     [f"{k}_{s.lower()}" for s in ["Classic", "Frostbite", "Venom", "Amethyst", "Inferno", "Shadow"] for k in ("trail", "tip")]
 resources = [{"alwaysLoaded": False, "file": f"assets/{n}.png", "kind": "image", "metadata": "", "name": n, "smoothed": True, "userAdded": True} for n in IMAGES]
+SOUNDS = ["sfx_branch", "sfx_break", "sfx_crash", "sfx_fissure", "sfx_crystal", "sfx_powerup", "sfx_click", "sfx_error", "sfx_buy", "sfx_revive", "jingle_gameover", "jingle_planet"]
+resources += [{"file": f"audio/{n}.ogg", "kind": "audio", "metadata": "", "name": n, "preloadAsMusic": False, "preloadAsSound": True, "preloadInCache": False, "userAdded": True} for n in SOUNDS]
+def snd(name, vol="100", pitch="1"): return A("PlaySound", "", name, "", vol, pitch)
 
 import math
 def octagon(cx, cy, r):   # inscribed circle radius r
@@ -105,8 +108,12 @@ def frame(image, origin, center=None, mask=None):
             "originPoint": {"name": "origine", "x": origin[0], "y": origin[1]},
             "centerPoint": {"automatic": center is None, "name": "centre", "x": (center or (0, 0))[0], "y": (center or (0, 0))[1]},
             "customCollisionMask": [mask] if mask else []}
-def sprite(name, image, origin=(0, 0), center=None, mask=None, variables=(), anims=None):
+def sprite(name, image, origin=(0, 0), center=None, mask=None, variables=(), anims=None, frames=None, frame_time=0.08):
     anims = anims or [("", image)]
+    if frames:   # one looping animation made of several images
+        o = sprite(name, image, origin, center, mask, variables)
+        o["animations"][0]["directions"][0].update({"looping": True, "timeBetweenFrames": frame_time, "sprites": [frame(f, origin, center, mask) for f in frames]})
+        return o
     return {"adaptCollisionMaskAutomatically": False, "assetStoreId": "", "name": name, "type": "Sprite", "updateIfNotVisible": False,
             "variables": list(variables), "effects": [], "behaviors": [],
             "animations": [{"name": an, "useMultipleDirections": False, "directions": [{"looping": False, "timeBetweenFrames": 0.08,
@@ -129,15 +136,16 @@ objects = [
     sprite("RockMedium", "rock_medium", origin=(58, 58), mask=octagon(58, 58, HIT["RockMedium"][1]), variables=wvar),
     sprite("BarrierBreakable", "barrier_breakable", origin=(56, 32), mask=rect(56, 32, HIT["BarrierBreakable"][1], HIT["BarrierBreakable"][2]), variables=wvar),
     sprite("BarrierSolid", "barrier_solid", origin=(56, 32), mask=rect(56, 32, HIT["BarrierSolid"][1], HIT["BarrierSolid"][2]), variables=wvar),
-    sprite("Crystal", "crystal_purple", origin=(48, 54), mask=octagon(48, 54, 30), variables=wvar + [num("Value", 1)],
+    sprite("Crystal", "crystal_purple", origin=(48, 48), mask=octagon(48, 48, 30), variables=wvar + [num("Value", 1)],
            anims=[("Purple", "crystal_purple"), ("Pink", "crystal_pink"), ("Cyan", "crystal_cyan")]),
-    sprite("Worm", "worm", origin=(70, 33), mask=rect(70, 33, HIT["Worm"][1], HIT["Worm"][2]), variables=wvar + [num("Dir", 1), num("Speed", 150)]),
+    sprite("Worm", "worm", origin=(80, 32), mask=rect(80, 32, HIT["Worm"][1], HIT["Worm"][2]), variables=wvar + [num("Dir", 1), num("Speed", 150)], frames=["worm", "worm_b"], frame_time=0.18),
     sprite("Fissure", "fissure", origin=(0, 32), mask=rect(360, 32, 360, 12), variables=wvar + [boo("Used", False)]),
     sprite("PowerSlow", "powerup_slow", origin=(40, 40), mask=octagon(40, 40, 36), variables=wvar),
     sprite("PowerStrength", "powerup_strength", origin=(40, 40), mask=octagon(40, 40, 36), variables=wvar),
     sprite("TrailSegment", "trail_classic", origin=(0, 24), center=(0, 24), variables=wvar, anims=[(s, f"trail_{s.lower()}") for s in STYLES]),
     sprite("CrackTip", "tip_classic", origin=(64, 64), anims=[(s, f"tip_{s.lower()}") for s in STYLES]),
-    sprite("GemIcon", "crystal_cyan", origin=(48, 54)),
+    sprite("GemIcon", "crystal_cyan", origin=(48, 48)),
+    sprite("MuteButton", "icon_audio_on", origin=(50, 50), anims=[("On", "icon_audio_on"), ("Off", "icon_audio_off")]),
     textobj("GemText", "0", 34, rgb="160;240;255", align="left"),
     textobj("GameOverGemsText", "CRYSTALS +0", 28, rgb="160;240;255"),
     sprite("CrackHitbox", "crack_hitbox", origin=(6, 6)),
@@ -195,7 +203,7 @@ instances = [
     inst("DistanceText", 140, 40, layer="HUD", z=1), inst("BestText", 250, 104, layer="HUD", z=1),
     inst("SlowText", 30, 150, layer="HUD", z=1), inst("StrengthText", 470, 150, layer="HUD", z=1),
     inst("HintText", 90, 1040, layer="HUD", z=1),
-    inst("GemIcon", 610, 66, layer="HUD", z=1), inst("GemText", 636, 44, layer="HUD", z=1), inst("GameOverGemsText", 200, 600, layer="GameOver", z=1),
+    inst("GemIcon", 610, 66, layer="HUD", z=1), inst("MuteButton", 46, 46, layer="HUD", z=3), inst("GemText", 636, 44, layer="HUD", z=1), inst("GameOverGemsText", 200, 600, layer="GameOver", z=1),
     inst("Overlay", 0, -400, layer="GameOver", z=0, w=720, h=3000),
     inst("GameOverTitle", 130, 300, layer="GameOver", z=1), inst("FinalDistanceText", 150, 430, layer="GameOver", z=1),
     inst("GameOverBestText", 220, 500, layer="GameOver", z=1), inst("NewBestText", 250, 560, layer="GameOver", z=1),
@@ -221,7 +229,7 @@ TOUCHX = 'TouchX(StartedTouchOrMouseId(0), "")'
 def screen_y(world): return f"TipScreenY - ({world} - CrackWorldY)"
 def pad4(v): return f'StrRepeat("0", max(0, 4 - StrLength(ToString({v})))) + ToString({v})'
 SAVE, KEY, KEYP = '"CracklineSave"', '"BestEndlessDistance"', '"BestPlanetsBroken"'
-KW, KO, KE = '"CrystalWallet"', '"OwnedStyles"', '"EquippedStyle"'
+KW, KO, KE, KM = '"CrystalWallet"', '"OwnedStyles"', '"EquippedStyle"', '"Muted"'
 def load_profile():
     """Loads everything saved on the device (shared by MainMenu, Shop and Gameplay)."""
     return [
@@ -230,7 +238,15 @@ def load_profile():
         ev([C("GroupExists", SAVE, KW)], [A("ReadNumberFromStorage", SAVE, KW, "", "CrystalWallet")]),
         ev([C("GroupExists", SAVE, KE)], [A("ReadNumberFromStorage", SAVE, KE, "", "EquippedStyle")]),
         ev([C("GroupExists", SAVE, KO)], [A("ReadStringFromStorage", SAVE, KO, "", "OwnedStyles")]),
+        ev([C("GroupExists", SAVE, KM)], [A("ReadNumberFromStorage", SAVE, KM, "", "Muted")]),
+        ev([], [A("SetGlobalVolume", "", "=", "100 * (1 - Muted)")]),
     ]
+def mute_events(layer='""'):
+    """Speaker button: toggles all sound on/off, saved on the device (Playgama requires a mute button)."""
+    return [ev([isv("Muted", "=", "0")], [A("AnimatableCapability::AnimatableBehavior::SetIndex", "MuteButton", "Animation", "=", "0")]),
+            ev([isv("Muted", "=", "1")], [A("AnimatableCapability::AnimatableBehavior::SetIndex", "MuteButton", "Animation", "=", "1")]),
+            ev([C("HasAnyTouchOrMouseStarted", ""), C("CollisionPoint", "MuteButton", f'TouchX(StartedTouchOrMouseId(0), {layer})', f'TouchY(StartedTouchOrMouseId(0), {layer})')],
+               [setv("Muted", "=", "1 - Muted"), A("EcrireFichierExp", SAVE, KM, "Muted"), A("SetGlobalVolume", "", "=", "100 * (1 - Muted)"), snd("sfx_click", "80")])]
 def save_wallet(): return A("EcrireFichierExp", SAVE, KW, "CrystalWallet")
 ENDLESS = iss("GameMode", '"Endless"')
 def color(obj, rgb): return A("ChangeColor", obj, f'"{rgb}"')
@@ -276,6 +292,7 @@ ev_gamestate = [
             ev([iss("GameMode", '"Endless"')], [A("Hide", "ProgressBack"), A("Hide", "ProgressFill"), A("Hide", "PlanetHudText"), A("Hide", "BgVerdant"), A("Hide", "BgFrost")]),
         ]),
     ]),
+    group("Sound toggle", [comment("Speaker button (top-left of the HUD). Taps on it never count as a branch tap.")] + mute_events('"HUD"')),
     group("Timers", [
         ev([isv("InvulnerabilityRemaining", ">", "0")], [setv("InvulnerabilityRemaining", "-", "TimeDelta()")]),
     ]),
@@ -284,14 +301,14 @@ ev_gamestate = [
         comment("Restart: tap/click the RESTART button. Restarting the scene resets every scene variable; global variables (best score, mode) persist."),
         ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("HasAnyTouchOrMouseStarted", ""),
             C("CollisionPoint", "RestartButton", 'TouchX(StartedTouchOrMouseId(0), "GameOver")', 'TouchY(StartedTouchOrMouseId(0), "GameOver")')],
-           [A("Scene", "", '"Gameplay"', "")]),
+           [snd("sfx_click", "80"), A("Scene", "", '"Gameplay"', "")]),
         ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("HasAnyTouchOrMouseStarted", ""),
             C("CollisionPoint", "MenuButton", 'TouchX(StartedTouchOrMouseId(0), "GameOver")', 'TouchY(StartedTouchOrMouseId(0), "GameOver")')],
-           [A("Scene", "", '"MainMenu"', "")]),
+           [snd("sfx_click", "80"), A("Scene", "", '"MainMenu"', "")]),
         comment("SIMULATE AD REVIVE (TEST) button: it only REQUESTS a revive (RequestRevive = true); EV_Revive does the work. A future Playgama rewarded-ad 'rewarded' callback should set RequestRevive the same way. No ad is shown or faked here."),
         ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("BooleanVariable", "ReviveUsed", "False", ""), C("HasAnyTouchOrMouseStarted", ""),
             C("CollisionPoint", "ReviveButton", 'TouchX(StartedTouchOrMouseId(0), "GameOver")', 'TouchY(StartedTouchOrMouseId(0), "GameOver")')],
-           [A("SetBooleanVariable", "RequestRevive", "True", "")]),
+           [snd("sfx_click", "80"), A("SetBooleanVariable", "RequestRevive", "True", "")]),
         comment("Impact flash fades out and grows."),
         ev([], [opacity("ImpactFlash", "-", "900 * TimeDelta()"), scale("ImpactFlash", "+", "4 * TimeDelta()")]),
         ev([C("OpacityCapability::OpacityBehavior::Value", "ImpactFlash", "Opacity", "<=", "0")], [delete("ImpactFlash")]),
@@ -318,7 +335,8 @@ ev_movement = [
     ]),
     group("Input (tap / click)", [
         comment("One tap = one branch. Taps during a branch or the short cooldown are ignored (no queueing). Left half = left, right half = right."),
-        ev([PLAYING, C("HasAnyTouchOrMouseStarted", ""), isv("BranchDirection", "=", "0"), isv("CooldownTimer", "<=", "0")], [], [
+        ev([PLAYING, C("HasAnyTouchOrMouseStarted", ""), isv("BranchDirection", "=", "0"), isv("CooldownTimer", "<=", "0"),
+            C("CollisionPoint", "MuteButton", 'TouchX(StartedTouchOrMouseId(0), "HUD")', 'TouchY(StartedTouchOrMouseId(0), "HUD")', inv=True)], [snd("sfx_branch", "55", "RandomFloatInRange(0.9, 1.2)")], [
             ev([cmp(TOUCHX, "<", "SceneWindowWidth() / 2")], [setv("BranchDirection", "=", "-1")]),
             ev([cmp(TOUCHX, ">=", "SceneWindowWidth() / 2")], [setv("BranchDirection", "=", "1")]),
             ev([], [setv("BranchTimer", "=", "0"), setv("BranchStartX", "=", "CrackWorldX"), A("Hide", "HintText")]),
@@ -501,16 +519,17 @@ ev_powerups = [
     comment("POWER-UPS — Slow Time: EffectiveSpeed x SlowTimeFactor (0.6 = 40% slower) for SlowTimeDuration real seconds; distance still follows real progress. Crack Strength: StrengthMaxCharges charges, each breaks one rock or breakable barrier (see EV_Collisions); crystals and solid barriers can't be broken. Picking it up again refills to max."),
     group("Pick up", [
         ev([PLAYING, C("CollisionNP", "CrackHitbox", "PowerSlow", "", "", "")], [
-            setv("SlowTimeRemaining", "=", "SlowTimeDuration"), create("ImpactFlash", "PowerSlow.X()", "PowerSlow.Y()"),
+            setv("SlowTimeRemaining", "=", "SlowTimeDuration"), snd("sfx_powerup", "80"), create("ImpactFlash", "PowerSlow.X()", "PowerSlow.Y()"),
             color("ImpactFlash", "120;180;255"), A("SetZOrder", "ImpactFlash", "=", "12"), delete("PowerSlow")]),
         ev([PLAYING, C("CollisionNP", "CrackHitbox", "PowerStrength", "", "", "")], [
-            setv("StrengthCharges", "=", "StrengthMaxCharges"), create("ImpactFlash", "PowerStrength.X()", "PowerStrength.Y()"),
+            setv("StrengthCharges", "=", "StrengthMaxCharges"), snd("sfx_powerup", "80", "1.2"), create("ImpactFlash", "PowerStrength.X()", "PowerStrength.Y()"),
             color("ImpactFlash", "255;140;60"), A("SetZOrder", "ImpactFlash", "=", "12"), delete("PowerStrength")]),
     ]),
     group("Crystals (points)", [
         comment("Collecting a crystal adds its Value to RunCrystals (this run) and CrystalWallet (saved; spent in the Shop)."),
         ev([PLAYING, C("CollisionNP", "CrackHitbox", "Crystal", "", "", "")], [
             setv("RunCrystals", "+", "Crystal.Value"), setv("CrystalWallet", "+", "Crystal.Value"),
+            snd("sfx_crystal", "70", "1 + (Crystal.Value - 1) * 0.1"),
             create("ImpactFlash", "Crystal.X()", "Crystal.Y()"), color("ImpactFlash", "150;235;255"), scale("ImpactFlash", "=", "0.5"), A("SetZOrder", "ImpactFlash", "=", "12"),
             delete("Crystal")]),
         ev([], [text("GemText", "ToString(RunCrystals)"), A("AnimatableCapability::AnimatableBehavior::SetIndex", "GemIcon", "Animation", "=", "0"),
@@ -536,16 +555,16 @@ ev_collisions = [
     ev([PLAYING, C("CollisionNP", "CrackHitbox", "Fissure", "", "", ""), C("BooleanObjectVariable", "Fissure", "Used", "False", "")], [
         A("SetBooleanObjectVariable", "Fissure", "Used", "True", ""),
         setv("BranchDirection", "=", "RandomInRange(0, 1) * 2 - 1"), setv("BranchTimer", "=", "0"), setv("BranchStartX", "=", "CrackWorldX"),
-        setv("CooldownTimer", "=", "0"), A("Hide", "HintText"),
+        setv("CooldownTimer", "=", "0"), A("Hide", "HintText"), snd("sfx_fissure", "90"),
         create("ImpactFlash", "CrackWorldX", "TipScreenY"), color("ImpactFlash", "255;160;60"), A("SetZOrder", "ImpactFlash", "=", "12"),
     ], [spark_burst("8", "BranchDirection * RandomFloatInRange(100, 320)", "RandomFloatInRange(-200, 60)")]),
     comment("COLLISIONS — only the small hidden CrackHitbox at the tip is tested. Order matters: first Crack Strength breaks Breakable obstacles (rocks, breakable barriers), then anything still touched kills, unless InvulnerabilityRemaining > 0 (used by the revive in Phase 3)."),
     ev([PLAYING, isv("StrengthCharges", ">", "0"), C("CollisionNP", "CrackHitbox", "Breakable", "", "", "")], [
         create("ImpactFlash", "Breakable.X()", "Breakable.Y()"), A("SetZOrder", "ImpactFlash", "=", "12"),
-        delete("Breakable"), setv("StrengthCharges", "-", "1"),
+        delete("Breakable"), setv("StrengthCharges", "-", "1"), snd("sfx_break", "80"),
     ], [spark_burst("10", "RandomFloatInRange(-300, 300)", "RandomFloatInRange(-300, 100)")]),
     ev([PLAYING, isv("InvulnerabilityRemaining", "<=", "0"), C("CollisionNP", "CrackHitbox", "Obstacles", "", "", "")], [
-        sets("GameState", '"GameOver"'), setv("BranchDirection", "=", "0"),
+        sets("GameState", '"GameOver"'), setv("BranchDirection", "=", "0"), snd("sfx_crash", "90"), snd("jingle_gameover", "65"),
         create("ImpactFlash", "CrackWorldX", "TipScreenY"), A("SetZOrder", "ImpactFlash", "=", "12"),
         color("CrackTip", "255;90;70"),
         text("FinalDistanceText", '"DISTANCE: " + ToString(Distance) + " m"'),
@@ -637,7 +656,7 @@ ev_planet = [
             A("SetCenterX", "PlanetBrokenText", "=", "PlanetCX"), sety("PlanetBrokenText", "PlanetCY + 200"),
         ], [
             ev([isv("BreakTime", ">=", "0.75"), C("BooleanVariable", "BreakBurstDone", "False", "")], [
-                A("SetBooleanVariable", "BreakBurstDone", "True", ""), A("Show", "PlanetBrokenText", ""),
+                A("SetBooleanVariable", "BreakBurstDone", "True", ""), A("Show", "PlanetBrokenText", ""), snd("sfx_break", "85", "0.8"), snd("jingle_planet", "70"),
                 create("ImpactFlash", "PlanetCX", "PlanetCY", '"Cinematic"'), scale("ImpactFlash", "=", "2.5"), A("SetZOrder", "ImpactFlash", "=", "5"),
             ], [spark_burst("16", "RandomFloatInRange(-420, 420)", "RandomFloatInRange(-420, 420) - EffectiveSpeed", "PlanetCX", "PlanetCY")]),
             ev([isv("BreakTime", ">=", "BreakDuration")], [
@@ -654,7 +673,7 @@ ev_revive = [
     comment("REVIVE (modular). Anything that sets RequestRevive = true while GameState is GameOver triggers it: today the SIMULATE AD REVIVE (TEST) button, later the Playgama rewarded-ad callback. One revive per run (ReviveUsed). Score, distance, speed, difficulty and planet progress are all kept."),
     ev([C("BooleanVariable", "RequestRevive", "True", "")], [A("SetBooleanVariable", "RequestRevive", "False", "")], [
         ev([GAMEOVER, C("BooleanVariable", "ReviveUsed", "False", "")], [
-            A("SetBooleanVariable", "ReviveUsed", "True", ""),
+            A("SetBooleanVariable", "ReviveUsed", "True", ""), snd("sfx_revive", "80"),
         ] + [
             setv("InvulnerabilityRemaining", "=", "ReviveInvulnerability"),
             setv("GameOverTime", "=", "0"), setv("BranchDirection", "=", "0"), setv("CooldownTimer", "=", "0"),
@@ -680,7 +699,7 @@ scene_events = [comment("CRACKLINE — Phase 3. Endless Depth and Planet Breaker
 ui_settings = {"grid": False, "gridType": "rectangular", "gridWidth": 32, "gridHeight": 32, "gridOffsetX": 0, "gridOffsetY": 0, "gridColor": 10401023,
                "gridAlpha": 0.8, "snap": False, "zoomFactor": 0.5, "windowMask": True}
 layout = {"b": 40, "disableInputWhenNotFocused": True, "mangledName": "Gameplay", "name": "Gameplay", "r": 110, "standardSortMethod": True,
-          "stopSoundsOnStartup": True, "title": "", "v": 60, "uiSettings": ui_settings, "objectsGroups": groups, "variables": scene_vars,
+          "stopSoundsOnStartup": False, "title": "", "v": 60, "uiSettings": ui_settings, "objectsGroups": groups, "variables": scene_vars,
           "instances": instances, "objects": objects, "objectsFolderStructure": folders, "events": scene_events,
           "layers": [layer(""), layer("Cinematic", visible=False), layer("HUD"), layer("GameOver", visible=False)], "behaviorsSharedData": []}
 
@@ -696,12 +715,13 @@ menu_objects = [
     sprite("EndlessButton", "ui_button", origin=(180, 55)), textobj("EndlessLabel", "ENDLESS DEPTH", 40, rgb="80;26;6"),
     sprite("PlanetButton", "ui_button", origin=(180, 55)), textobj("PlanetLabel", "PLANET BREAKER", 38, rgb="80;26;6"),
     sprite("ShopButton", "ui_button_blue", origin=(180, 55)), textobj("ShopLabel", "SHOP", 44, rgb="255;255;255"),
+    sprite("MuteButton", "icon_audio_on", origin=(50, 50), anims=[("On", "icon_audio_on"), ("Off", "icon_audio_off")]),
 ]
 menu_instances = [inst("MenuBg", 0, -800, z=-10, w=720, h=3200), inst("TitleText", 60, 220, z=2), inst("SubtitleText", 210, 350, z=2),
                   inst("MenuBestText", 150, 420, z=2), inst("MenuWalletText", 240, 460, z=2),
                   inst("EndlessButton", 360, 620, z=2), inst("EndlessLabel", 210, 594, z=3),
                   inst("PlanetButton", 360, 750, z=2), inst("PlanetLabel", 200, 725, z=3),
-                  inst("ShopButton", 360, 880, z=2), inst("ShopLabel", 300, 852, z=3)]
+                  inst("ShopButton", 360, 880, z=2), inst("ShopLabel", 300, 852, z=3), inst("MuteButton", 670, 50, z=4)]
 def tapped(obj, layer='""'): return [C("HasAnyTouchOrMouseStarted", ""), C("CollisionPoint", obj, f'TouchX(StartedTouchOrMouseId(0), {layer})', f'TouchY(StartedTouchOrMouseId(0), {layer})')]
 def center_all(*objs): return [A("SetCenterX", o, "=", "SceneWindowWidth() / 2") for o in objs]
 menu_events = [
@@ -713,19 +733,21 @@ menu_events = [
         sety("EndlessButton", f"{CY} + 25"), sety("EndlessLabel", "EndlessButton.Y() - 24"),
         sety("PlanetButton", f"{CY} + 150"), sety("PlanetLabel", "PlanetButton.Y() - 24"),
         sety("ShopButton", f"{CY} + 275"), sety("ShopLabel", "ShopButton.Y() - 27"),
+        sety("MuteButton", f"{CY} + 275"), scale("MuteButton", "=", "0.75"),
     ], load_profile() + [
         ev([], [text("MenuBestText", '"BEST: " + ToString(BestEndlessDistance) + " m   |   " + ToString(BestPlanetsBroken) + " PLANETS"'),
                 text("MenuWalletText", '"CRYSTALS: " + ToString(CrystalWallet)')]),
     ]),
     ev([], [A("TiledSpriteObject::YOffset", "MenuBg", "=", "-TimeFromStart() * 60")] +
             center_all("TitleText", "SubtitleText", "EndlessLabel", "PlanetLabel", "ShopLabel", "MenuBestText", "MenuWalletText")),
-    ev(tapped("EndlessButton"), [sets("GameMode", '"Endless"'), A("Scene", "", '"Gameplay"', "")]),
-    ev(tapped("PlanetButton"), [sets("GameMode", '"Planet"'), A("Scene", "", '"Gameplay"', "")]),
-    ev(tapped("ShopButton"), [A("Scene", "", '"Shop"', "")]),
+    ev(tapped("EndlessButton"), [snd("sfx_click", "80"), sets("GameMode", '"Endless"'), A("Scene", "", '"Gameplay"', "")]),
+    ev(tapped("PlanetButton"), [snd("sfx_click", "80"), sets("GameMode", '"Planet"'), A("Scene", "", '"Gameplay"', "")]),
+    ev(tapped("ShopButton"), [snd("sfx_click", "80"), A("Scene", "", '"Shop"', "")]),
+] + mute_events() + [
 ]
 def simple_layout(name, objs, insts, events, groups=(), variables=()):
     return {"b": 40, "disableInputWhenNotFocused": True, "mangledName": name, "name": name, "r": 110, "standardSortMethod": True,
-            "stopSoundsOnStartup": True, "title": "", "v": 60, "uiSettings": ui_settings, "objectsGroups": list(groups), "variables": list(variables),
+            "stopSoundsOnStartup": False, "title": "", "v": 60, "uiSettings": ui_settings, "objectsGroups": list(groups), "variables": list(variables),
             "instances": insts, "objects": objs,
             "objectsFolderStructure": {"folderName": "__ROOT", "children": [{"objectName": o["name"]} for o in objs]},
             "events": events, "layers": [layer("")], "behaviorsSharedData": []}
@@ -782,20 +804,20 @@ shop_events = [
     ev(tapped("ShopCard"), [setv("ShopSel", "=", "ShopCard.StyleIndex"), setv("ShopOwned", "=", "0"), setv("MsgTime", "=", "1.8")], [
         ev([C("BuiltinCommonInstructions::CompareStrings", "SubStr(OwnedStyles, ShopSel, 1)", "=", '"1"')], [setv("ShopOwned", "=", "1")]),
         ev([isv("ShopOwned", "=", "1")], [setv("EquippedStyle", "=", "ShopSel"), A("EcrireFichierExp", SAVE, KE, "EquippedStyle"),
-                                          text("ShopMsg", 'StyleNames[ShopSel] + " EQUIPPED"')]),
+                                          text("ShopMsg", 'StyleNames[ShopSel] + " EQUIPPED"'), snd("sfx_click", "80")]),
         ev([isv("ShopOwned", "=", "0"), cmp("CrystalWallet", ">=", "StylePrices[ShopSel]")], [
             setv("CrystalWallet", "-", "StylePrices[ShopSel]"),
             sets("OwnedStyles", 'SubStr(OwnedStyles, 0, ShopSel) + "1" + SubStr(OwnedStyles, ShopSel + 1, 99)'),
             setv("EquippedStyle", "=", "ShopSel"),
             A("EcrireFichierExp", SAVE, KW, "CrystalWallet"), A("EcrireFichierTxt", SAVE, KO, "OwnedStyles"), A("EcrireFichierExp", SAVE, KE, "EquippedStyle"),
-            text("ShopMsg", '"UNLOCKED " + StyleNames[ShopSel] + "!"')]),
+            text("ShopMsg", '"UNLOCKED " + StyleNames[ShopSel] + "!"'), snd("sfx_buy", "75")]),
         ev([isv("ShopOwned", "=", "0"), cmp("CrystalWallet", "<", "StylePrices[ShopSel]")], [
-            text("ShopMsg", '"NEED " + ToString(StylePrices[ShopSel] - CrystalWallet) + " MORE CRYSTALS"')]),
+            text("ShopMsg", '"NEED " + ToString(StylePrices[ShopSel] - CrystalWallet) + " MORE CRYSTALS"'), snd("sfx_error", "80")]),
     ]),
     ev([isv("MsgTime", ">", "0")], [setv("MsgTime", "-", "TimeDelta()"), opacity("ShopMsg", "=", "255 * clamp(MsgTime / 0.4, 0, 1)")]),
     ev([isv("MsgTime", "<=", "0")], [opacity("ShopMsg", "=", "0")]),
     ev([], [A("TiledSpriteObject::YOffset", "ShopBg", "=", "-TimeFromStart() * 30")]),
-    ev(tapped("BackButton"), [A("Scene", "", '"MainMenu"', "")]),
+    ev(tapped("BackButton"), [snd("sfx_click", "80"), A("Scene", "", '"MainMenu"', "")]),
 ]
 shop_layout = simple_layout("Shop", shop_objects, shop_instances, shop_events,
                             variables=[num("ShopSel", 0), num("ShopOwned", 0), num("MsgTime", 0)])
