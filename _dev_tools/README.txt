@@ -6,3 +6,5 @@ harvest_check.py   - same search, run on obstacle layouts recorded from the real
 make_art.py / make_art2.py - placeholder art
 gdexport.cpp       - loads game.json with GDevelop's own engine (built from source), checks every instruction, runs the official HTML5 exporter
 run_tests2.py      - automated play-tests of the exported build in headless Chrome
+make_art3.py       - Phase 3 art (planets, themes, shield)
+run_tests3.py      - Phase 3 play-tests: menu, planets, split, revive, resolutions

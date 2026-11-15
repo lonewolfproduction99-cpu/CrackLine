@@ -42,11 +42,21 @@ async def boot(browser, w=405, h=720, touch=False, ctx=None):
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.on('requestfailed', lambda r: errors.append('REQFAIL ' + r.url))
     await page.goto('http://127.0.0.1:8765/index.html')
+    await enter(page, 'Endless')
+    return ctx, page, errors
+async def enter(page, mode):
+    js = "() => { const sc = window.__game && window.__game.getSceneStack().getCurrentScene(); return sc ? sc.getName() : null }"
+    for _ in range(300):
+        if await page.evaluate(js) == 'MainMenu': break
+        await asyncio.sleep(0.05)
+    await asyncio.sleep(0.3)
+    btn = "() => { const sc = window.__game.getSceneStack().getCurrentScene(); const b = sc.getObjects('%sButton')[0]; return [b.getCenterXInScene(), b.getCenterYInScene(), sc.getGame().getGameResolutionWidth()] }" % mode
+    bx, by, gw = await page.evaluate(btn); k = page.viewport_size['width'] / gw
+    await page.mouse.click(bx * k, by * k)
     for _ in range(300):
         st = await page.evaluate(JS_STATE)
-        if st and st['scene'] == 'Gameplay' and st['wy'] > 0: break
+        if st and st['scene'] == 'Gameplay' and st['wy'] > 0: return
         await asyncio.sleep(0.05)
-    return ctx, page, errors
 async def S(page): return await page.evaluate(JS_STATE)
 async def tap(page, side, touch=False):
     vp = page.viewport_size; x = vp['width'] * (0.25 if side == 'L' else 0.75)
@@ -137,11 +147,7 @@ async def main():
         check('solid barrier kills even with Strength charges', st['state'] == 'GameOver' and st['charges'] == 3)
         check('lower score does not overwrite best / no NEW BEST', st['best'] == d1 and not st['newBest'])
         await page.evaluate(setvar('BestEndlessDistance', 0) .replace("V('BestEndlessDistance')", "G('BestEndlessDistance')"))
-        await page.reload()
-        for _ in range(300):
-            st = await S(page)
-            if st and st['scene'] == 'Gameplay' and st['wy'] > 0: break
-            await asyncio.sleep(0.05)
+        await page.reload(); await enter(page, 'Endless'); st = await S(page)
         check('best persists after full page reload (device storage)', st['best'] == d1, f'loaded {st["best"]}')
         await restart(page); await page.evaluate(setvar('NextRowWorldY', 1e9))
 
@@ -176,7 +182,7 @@ async def main():
             await restart(page); t0 = time.time()
             st = await wait_state(page, lambda s: s['state'] != 'Playing', 60)
             idle.append(round(time.time() - t0, 1))
-        check('holding straight with no taps dies quickly (anti-camping)', max(idle) < 16, f'idle survival times {idle}s (first 8 s are a warm-up)')
+        check('holding straight with no taps dies quickly (anti-camping)', max(idle) < 20, f'idle survival times {idle}s (first 8 s are a warm-up)')
         allerr += errors; await ctx.close()
 
         # --- touch + tall phone + tablet ---

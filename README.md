@@ -1,4 +1,4 @@
-# CRACKLINE: Phase 2 (Endless Depth), GDevelop
+# CRACKLINE: Phase 3 (Endless Depth + Planet Breaker), GDevelop
 
 This is a portrait 720×1280 arcade game. All gameplay is built with native GDevelop events, with no JavaScript.
 
@@ -8,6 +8,13 @@ On a tablet or in a browser, open
 and press **Preview** (▶). To keep your own editable copy, use **File → Save as** and choose cloud.
 
 ## How to play
+The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER**.
+- **Planet Breaker:** you start at the planet's core and travel up to its surface. The progress bar under the score shows how far you have left. When you reach the surface, the planet splits in two and the next planet begins:
+  - Ember (500 m): mostly rocks.
+  - Verdant (650 m): more crystals.
+  - Frost (800 m): more barriers.
+  - The planets then cycle again, each lap 150 m longer and harder.
+- **Game over:** you can RESTART, go back to the MAIN MENU, or use **SIMULATE AD REVIVE (TEST)** once per run. The revive clears nearby obstacles and gives you 2 seconds of protection, shown as a cyan ring. You keep your score.
 - Tap the left or right half of the screen to make the crack branch that way.
 - The game keeps speeding up. Survive as long as you can and try to beat your best distance.
 - **Blue clock (Slow Time):** the world moves 40% slower for 4 seconds.
@@ -17,7 +24,10 @@ and press **Preview** (▶). To keep your own editable copy, use **File → Save
 ## Where things are
 | What | Where |
 |---|---|
-| Scene setup, best-score loading, game over, restart | External events `EV_GameState` |
+| Main menu | Scene `MainMenu` (its own events) |
+| Scene setup, best-score loading, game-over buttons | External events `EV_GameState` |
+| Planet themes, surface progress, planet-split animation | `EV_PlanetMode` |
+| Revive (one per run) | `EV_Revive` |
 | Speed and difficulty, taps, branching, scrolling | `EV_CrackMovement` |
 | Procedural obstacle rows and power-up spawning | `EV_ObstacleSpawner` |
 | Power-up pickup, timers and HUD | `EV_Powerups` |
@@ -25,7 +35,9 @@ and press **Preview** (▶). To keep your own editable copy, use **File → Save
 | Breaking obstacles, death, saving the best score | `EV_Collisions` |
 | Distance and best-score HUD | `EV_Scoring` |
 
-There is one scene, `Gameplay`. The global variable `GameMode` is set to `"Endless"`. Planet mode is planned for Phase 3 and will reuse this same scene.
+Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"Endless"` or `"Planet"`) tells the scene which mode is active.
+
+**Revive hook for Playgama:** the test button only sets the scene variable `RequestRevive` to true, and `EV_Revive` does the rest. A future rewarded-ad success callback just needs to set that same variable.
 
 ## How the obstacles are generated
 - The screen is split into 7 lanes, and a new row of obstacles appears every `RowGap` px.
@@ -57,6 +69,10 @@ There is one scene, `Gameplay`. The global variable `GameMode` is set to `"Endle
 | PowerupChance / PowerupCooldownTime | 0.12 / 10 | how often power-ups appear |
 | SlowTimeDuration / SlowTimeFactor | 4 / 0.6 | how long Slow Time lasts and how much it slows the world |
 | StrengthMaxCharges | 3 | charges per Crack Strength pickup |
+| PlanetDistance1/2/3, PlanetCycleExtraDistance | 500 / 650 / 800, 150 | planet lengths, plus extra length per lap |
+| PlanetDifficultyStep / PlanetProgressDifficulty | 0.15 / 0.2 | difficulty added per planet, and within a planet |
+| BreakDuration | 2.0 | length of the planet-split sequence in seconds |
+| ReviveInvulnerability / ReviveClearBehind / ReviveClearAhead | 2 / 250 / 750 | revive protection time and the area it clears |
 
 ## Replacing the art
 Every sprite reads one PNG file in `assets/`. To replace it, overwrite the file using the same name. Keep these details in mind:
@@ -65,6 +81,11 @@ Every sprite reads one PNG file in `assets/`. To replace it, overwrite the file 
 - `TrailSegment` has its origin and centre point at the middle of its left edge, because the game stretches it to the right.
 - `CrackHitbox` is the real collision point. It is hidden in game.
 
+## Planet split animation
+The planet halves are animated with events: ease-out curves driven by `BreakTime` in `EV_PlanetMode`, not the Tween behavior. I could only verify instructions that GDevelop's native engine knows, and the Tween behavior is a JavaScript extension it can't check. To use real tweens instead, replace the SetX/SetAngle actions in the "Reach the surface" group with Tween actions.
+
 ## Notes for publishing on Playgama later
 - The best score is saved with GDevelop storage. Playgama requires its Bridge storage instead, so this will be swapped when the SDK is added.
 - GDevelop's exported builds send an anonymous session ping to `api.gdevelop-app.com`. Playgama does not allow external analytics, so this needs to be switched off at export time.
+- The "Made with GDevelop" watermark (bottom left) can only be removed with a GDevelop subscription. On a square window it sits near the MAIN MENU button.
+- Phone notches and safe areas are not handled specifically. The HUD starts about 40 px from the top.

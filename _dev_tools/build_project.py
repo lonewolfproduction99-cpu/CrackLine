@@ -1,4 +1,4 @@
-# Generates the CRACKLINE GDevelop project (game.json) — Phase 2.
+# Generates the CRACKLINE GDevelop project (game.json) — Phase 3.
 # All gameplay logic is native GDevelop events (no JavaScript events).
 import json, sys, uuid, os
 sys.path.insert(0, os.path.dirname(__file__))
@@ -60,19 +60,26 @@ TUNING = [
     ("PowerupChance", P["PowerupChance"]), ("PowerupCooldownTime", P["PowerupCooldownTime"]),
     ("SlowTimeDuration", P["SlowTimeDuration"]), ("SlowTimeFactor", P["SlowTimeFactor"]), ("StrengthMaxCharges", P["StrengthMaxCharges"]),
     ("RestartDelay", 0.3),
+    ("PlanetDistance1", 500), ("PlanetDistance2", 650), ("PlanetDistance3", 800), ("PlanetCycleExtraDistance", 150),
+    ("PlanetDifficultyStep", 0.15), ("PlanetProgressDifficulty", 0.2), ("BreakDuration", 2.0),
+    ("ReviveInvulnerability", 2), ("ReviveClearBehind", 250), ("ReviveClearAhead", 750),
 ]
 STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLevel", "CrackWorldX", "CrackWorldY", "TipScreenY",
          "BranchDirection", "BranchTimer", "BranchStartX", "CooldownTimer", "TrailLastX", "TrailLastWorldY", "TrailNewX",
          "NextRowWorldY", "RowWorldY", "RowGap", "SafeLane", "PrevSafeLane", "CorridorMin", "CorridorMax", "RowType", "RowRoll",
          "Density", "EmptyChance", "WallChance", "CrystalChance", "SolidChance", "BreakChance",
          "LaneIter", "LaneWidth", "BlockerChance", "CrackLane", "CorridorShift", "TypeRoll", "ObjType", "LaneX", "ObjWorldY",
-         "PowerupCooldown", "SlowTimeRemaining", "StrengthCharges", "InvulnerabilityRemaining", "GameOverTime"]
-scene_vars = [num(n, v) for n, v in TUNING] + [st("GameState", "Playing")] + [num(n, 0) for n in STATE] + [boo("NewBest", False)]
-global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0)]
+         "PowerupCooldown", "SlowTimeRemaining", "StrengthCharges", "InvulnerabilityRemaining", "GameOverTime",
+         "TotalDistance", "PlanetIndex", "PlanetTheme", "PlanetsBroken", "PlanetTargetDistance", "PlanetDistance", "PlanetStartWorldY",
+         "ThemeCrystalBonus", "ThemeWallBonus", "ThemeSolidBonus", "BreakTime", "SplitOffset", "PlanetCX", "PlanetCY"]
+scene_vars = [num(n, v) for n, v in TUNING] + [st("GameState", "Playing"), st("RockTint", "255;255;255"), st("PlanetName", "EMBER")] + [num(n, 0) for n in STATE] + \
+    [boo("ReviveUsed", False), boo("RequestRevive", False), boo("PlanetSetupPending", True), boo("BreakBurstDone", False)]
+global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("BestPlanetsBroken", 0)]
 
 # ---------------------------------------------------------------- resources & objects
 IMAGES = ["bg_soil", "rock_small", "rock_medium", "crack_tip", "crack_hitbox", "trail_segment", "spark", "impact_flash", "ui_overlay",
-          "ui_button", "barrier_solid", "barrier_breakable", "crystal_purple", "crystal_pink", "crystal_cyan", "powerup_slow", "powerup_strength"]
+          "ui_button", "barrier_solid", "barrier_breakable", "crystal_purple", "crystal_pink", "crystal_cyan", "powerup_slow", "powerup_strength",
+          "bg_verdant", "bg_frost", "planet_crack", "shield_glow", "ui_white", "ui_button_blue"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")]
 resources = [{"alwaysLoaded": False, "file": f"assets/{n}.png", "kind": "image", "metadata": "", "name": n, "smoothed": True, "userAdded": True} for n in IMAGES]
 
 import math
@@ -104,8 +111,8 @@ def textobj(name, s, size, rgb="255;240;214", bold=True, align="center"):
 
 wvar = [num("WorldY", 0)]
 objects = [
-    {"assetStoreId": "", "name": "Background", "type": "TiledSpriteObject::TiledSprite", "texture": "bg_soil", "width": 720, "height": 3000,
-     "variables": [], "effects": [], "behaviors": []},
+] + [{"assetStoreId": "", "name": n, "type": "TiledSpriteObject::TiledSprite", "texture": t, "width": 720, "height": 3000,
+     "variables": [], "effects": [], "behaviors": []} for n, t in (("BgEmber", "bg_soil"), ("BgVerdant", "bg_verdant"), ("BgFrost", "bg_frost"))] + [
     sprite("RockSmall", "rock_small", origin=(38, 38), mask=octagon(38, 38, HIT["RockSmall"][1]), variables=wvar),
     sprite("RockMedium", "rock_medium", origin=(58, 58), mask=octagon(58, 58, HIT["RockMedium"][1]), variables=wvar),
     sprite("BarrierBreakable", "barrier_breakable", origin=(56, 32), mask=rect(56, 32, HIT["BarrierBreakable"][1], HIT["BarrierBreakable"][2]), variables=wvar),
@@ -131,34 +138,57 @@ objects = [
     textobj("NewBestText", "NEW BEST!", 40, rgb="120;255;160"),
     sprite("RestartButton", "ui_button", origin=(180, 55)),
     textobj("RestartLabel", "RESTART", 48, rgb="80;26;6"),
+    sprite("ReviveButton", "ui_button_blue", origin=(180, 55)),
+    textobj("ReviveLabel", "SIMULATE AD REVIVE (TEST)", 20, rgb="255;255;255"),
+    sprite("MenuButton", "ui_button", origin=(180, 55)),
+    textobj("MenuLabel", "MAIN MENU", 40, rgb="80;26;6"),
+    textobj("GameOverPlanetsText", "PLANETS BROKEN: 0", 40, rgb="255;240;214"),
+    sprite("ShieldGlow", "shield_glow", origin=(70, 70)),
+    sprite("ProgressBack", "ui_white"), sprite("ProgressFill", "ui_white"),
+    textobj("PlanetHudText", "EMBER  0 / 500 m", 26, rgb="255;240;214"),
+    sprite("PlanetLeft", "planet_ember_left", origin=(160, 160), anims=[(t.capitalize(), f"planet_{t}_left") for t in ("ember", "verdant", "frost")]),
+    sprite("PlanetRight", "planet_ember_right", origin=(160, 160), anims=[(t.capitalize(), f"planet_{t}_right") for t in ("ember", "verdant", "frost")]),
+    sprite("PlanetCrack", "planet_crack", origin=(20, 0)),
+    textobj("PlanetBrokenText", "EMBER BROKEN!", 56, rgb="255;230;140"),
 ]
 folders = {"folderName": "__ROOT", "children": [
-    {"folderName": "World", "children": [{"objectName": "Background"}]},
+    {"folderName": "World", "children": [{"objectName": "BgEmber"}, {"objectName": "BgVerdant"}, {"objectName": "BgFrost"}]},
+    {"folderName": "Planet", "children": [{"objectName": n} for n in ["PlanetLeft", "PlanetRight", "PlanetCrack", "PlanetBrokenText", "ShieldGlow"]]},
     {"folderName": "Crack", "children": [{"objectName": n} for n in ["CrackTip", "CrackHitbox", "TrailSegment", "Spark", "ImpactFlash"]]},
     {"folderName": "Obstacles", "children": [{"objectName": n} for n in ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Crystal"]]},
     {"folderName": "Powerups", "children": [{"objectName": "PowerSlow"}, {"objectName": "PowerStrength"}]},
     {"folderName": "UI", "children": [{"objectName": n} for n in ["DistanceText", "BestText", "SlowText", "StrengthText", "HintText", "Overlay",
-                                                                   "GameOverTitle", "FinalDistanceText", "GameOverBestText", "NewBestText", "RestartButton", "RestartLabel"]]},
+                                                                   "GameOverTitle", "FinalDistanceText", "GameOverBestText", "NewBestText", "RestartButton", "RestartLabel",
+                                                                   "ReviveButton", "ReviveLabel", "MenuButton", "MenuLabel", "GameOverPlanetsText", "ProgressBack", "ProgressFill", "PlanetHudText"]]},
 ]}
 def grp(name, objs): return {"name": name, "objects": [{"name": o} for o in objs]}
 groups = [grp("Obstacles", ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Crystal"]),
           grp("Breakable", ["RockSmall", "RockMedium", "BarrierBreakable"]),
-          grp("Powerups", ["PowerSlow", "PowerStrength"])]
+          grp("Powerups", ["PowerSlow", "PowerStrength"]),
+          grp("Backgrounds", ["BgEmber", "BgVerdant", "BgFrost"]), grp("Rocks", ["RockSmall", "RockMedium"])]
 
 def inst(name, x, y, z=0, layer="", w=0, h=0):
     return {"angle": 0, "customSize": bool(w), "height": h, "layer": layer, "locked": False, "name": name,
             "persistentUuid": uid(f"{name}-{layer}"), "width": w, "x": x, "y": y, "zOrder": z,
             "numberProperties": [], "stringProperties": [], "initialVariables": []}
 instances = [
-    inst("Background", 0, -800, z=-10, w=720, h=3200),
+    inst("BgEmber", 0, -800, z=-12, w=720, h=3200), inst("BgVerdant", 0, -800, z=-11, w=720, h=3200), inst("BgFrost", 0, -800, z=-10, w=720, h=3200),
+    inst("ShieldGlow", 360, 896, z=12),
     inst("CrackTip", 360, 896, z=10), inst("CrackHitbox", 360, 896, z=11),
-    inst("DistanceText", 140, 40, layer="HUD", z=1), inst("BestText", 250, 92, layer="HUD", z=1),
-    inst("SlowText", 30, 140, layer="HUD", z=1), inst("StrengthText", 470, 140, layer="HUD", z=1),
+    inst("DistanceText", 140, 40, layer="HUD", z=1), inst("BestText", 250, 104, layer="HUD", z=1),
+    inst("SlowText", 30, 150, layer="HUD", z=1), inst("StrengthText", 470, 150, layer="HUD", z=1),
     inst("HintText", 90, 1040, layer="HUD", z=1),
     inst("Overlay", 0, -400, layer="GameOver", z=0, w=720, h=3000),
     inst("GameOverTitle", 130, 300, layer="GameOver", z=1), inst("FinalDistanceText", 150, 430, layer="GameOver", z=1),
     inst("GameOverBestText", 220, 500, layer="GameOver", z=1), inst("NewBestText", 250, 560, layer="GameOver", z=1),
     inst("RestartButton", 360, 700, layer="GameOver", z=1), inst("RestartLabel", 270, 668, layer="GameOver", z=2),
+    inst("ReviveButton", 360, 840, layer="GameOver", z=1), inst("ReviveLabel", 200, 826, layer="GameOver", z=2),
+    inst("MenuButton", 360, 980, layer="GameOver", z=1), inst("MenuLabel", 255, 958, layer="GameOver", z=2),
+    inst("GameOverPlanetsText", 160, 430, layer="GameOver", z=1),
+    inst("ProgressBack", 160, 200, layer="HUD", z=1, w=400, h=18), inst("ProgressFill", 162, 202, layer="HUD", z=2, w=396, h=14),
+    inst("PlanetHudText", 200, 224, layer="HUD", z=1),
+    inst("PlanetLeft", 360, 540, layer="Cinematic", z=1), inst("PlanetRight", 360, 540, layer="Cinematic", z=1),
+    inst("PlanetCrack", 360, 380, layer="Cinematic", z=2), inst("PlanetBrokenText", 160, 800, layer="Cinematic", z=3),
 ]
 def layer(name, visible=True):
     return {"ambientLightColorB": 200, "ambientLightColorG": 200, "ambientLightColorR": 200, "camera3DFarPlaneDistance": 10000,
@@ -172,7 +202,7 @@ CLAMPX = "clamp({}, EdgeMargin, SceneWindowWidth() - EdgeMargin)"
 TOUCHX = 'TouchX(StartedTouchOrMouseId(0), "")'
 def screen_y(world): return f"TipScreenY - ({world} - CrackWorldY)"
 def pad4(v): return f'StrRepeat("0", max(0, 4 - StrLength(ToString({v})))) + ToString({v})'
-SAVE, KEY = '"CracklineSave"', '"BestEndlessDistance"'
+SAVE, KEY, KEYP = '"CracklineSave"', '"BestEndlessDistance"', '"BestPlanetsBroken"'
 ENDLESS = iss("GameMode", '"Endless"')
 def color(obj, rgb): return A("ChangeColor", obj, f'"{rgb}"')
 
@@ -193,20 +223,27 @@ ev_gamestate = [
             setv("SafeLane", "=", "RandomInRange(0, 1) * 4 + RandomInRange(0, 1)"),   # corridor starts off-centre (lanes 0-1 or 4-5): the first rows teach branching
             setv("PowerupCooldown", "=", "6"),
             sets("GameState", '"Playing"'),
-            A("HideLayer", "", '"GameOver"'),
+            A("HideLayer", "", '"GameOver"'), A("HideLayer", "", '"Cinematic"'), A("Hide", "ShieldGlow"),
             A("Hide", "CrackHitbox"), A("Hide", "SlowText"), A("Hide", "StrengthText"), A("Hide", "NewBestText"),
             opacity("Overlay", "=", "170"),
             sety("HintText", "SceneWindowHeight() * 0.82"),
-            sety("GameOverTitle", "SceneWindowHeight() * 0.22"),
-            sety("FinalDistanceText", "SceneWindowHeight() * 0.33"),
-            sety("GameOverBestText", "SceneWindowHeight() * 0.39"),
-            sety("NewBestText", "SceneWindowHeight() * 0.44"),
-            sety("RestartButton", "SceneWindowHeight() * 0.56"),
+            sety("GameOverTitle", "SceneWindowHeight() / 2 - 320"),
+            sety("FinalDistanceText", "SceneWindowHeight() / 2 - 140"),
+            sety("GameOverBestText", "SceneWindowHeight() / 2 - 80"),
+            sety("NewBestText", "SceneWindowHeight() / 2 - 30"),
+            sety("RestartButton", "SceneWindowHeight() / 2 + 80"),
             sety("RestartLabel", "RestartButton.Y() - 32"),
+            sety("ReviveButton", "SceneWindowHeight() / 2 + 192"), sety("ReviveLabel", "ReviveButton.Y() - 12"),
+            sety("MenuButton", "SceneWindowHeight() / 2 + 302"), sety("MenuLabel", "MenuButton.Y() - 24"),
+            sety("GameOverPlanetsText", "SceneWindowHeight() / 2 - 200"),
+            color("ProgressBack", "40;20;12"), opacity("ProgressBack", "=", "170"),
         ], [
             ev([iss("GameMode", '""')], [sets("GameMode", '"Endless"')]),
             comment("Load the personal best saved on this device (GDevelop storage). NOTE: Playgama requires its Bridge storage instead; this gets swapped when the SDK is integrated."),
             ev([C("GroupExists", SAVE, KEY)], [A("ReadNumberFromStorage", SAVE, KEY, "", "BestEndlessDistance")]),
+            ev([C("GroupExists", SAVE, KEYP)], [A("ReadNumberFromStorage", SAVE, KEYP, "", "BestPlanetsBroken")]),
+            comment("Planet-mode HUD (surface progress bar) only in Planet Breaker; Endless shows only the Ember background."),
+            ev([iss("GameMode", '"Endless"')], [A("Hide", "ProgressBack"), A("Hide", "ProgressFill"), A("Hide", "PlanetHudText"), A("Hide", "BgVerdant"), A("Hide", "BgFrost")]),
         ]),
     ]),
     group("Timers", [
@@ -218,6 +255,13 @@ ev_gamestate = [
         ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("HasAnyTouchOrMouseStarted", ""),
             C("CollisionPoint", "RestartButton", 'TouchX(StartedTouchOrMouseId(0), "GameOver")', 'TouchY(StartedTouchOrMouseId(0), "GameOver")')],
            [A("Scene", "", '"Gameplay"', "")]),
+        ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("HasAnyTouchOrMouseStarted", ""),
+            C("CollisionPoint", "MenuButton", 'TouchX(StartedTouchOrMouseId(0), "GameOver")', 'TouchY(StartedTouchOrMouseId(0), "GameOver")')],
+           [A("Scene", "", '"MainMenu"', "")]),
+        comment("SIMULATE AD REVIVE (TEST) button: it only REQUESTS a revive (RequestRevive = true); EV_Revive does the work. A future Playgama rewarded-ad 'rewarded' callback should set RequestRevive the same way. No ad is shown or faked here."),
+        ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("BooleanVariable", "ReviveUsed", "False", ""), C("HasAnyTouchOrMouseStarted", ""),
+            C("CollisionPoint", "ReviveButton", 'TouchX(StartedTouchOrMouseId(0), "GameOver")', 'TouchY(StartedTouchOrMouseId(0), "GameOver")')],
+           [A("SetBooleanVariable", "RequestRevive", "True", "")]),
         comment("Impact flash fades out and grows."),
         ev([], [opacity("ImpactFlash", "-", "900 * TimeDelta()"), scale("ImpactFlash", "+", "4 * TimeDelta()")]),
         ev([C("OpacityCapability::OpacityBehavior::Value", "ImpactFlash", "Opacity", "<=", "0")], [delete("ImpactFlash")]),
@@ -231,9 +275,12 @@ ev_movement = [
         ev([PLAYING], [
             setv("RunTime", "+", "TimeDelta()"),
             setv("DifficultyLevel", "=", "clamp(RunTime / DifficultyRampTime, 0, 1)"),
+            setv("TotalDistance", "=", "Distance"),
             setv("ScrollSpeed", "=", "min(MaxSpeed, BaseSpeed * pow(SpeedGrowth, RunTime / SpeedGrowthInterval))"),
             setv("EffectiveSpeed", "=", "ScrollSpeed"),
-        ], [ev([isv("SlowTimeRemaining", ">", "0")], [setv("EffectiveSpeed", "=", "ScrollSpeed * SlowTimeFactor")])]),
+        ], [ev([isv("SlowTimeRemaining", ">", "0")], [setv("EffectiveSpeed", "=", "ScrollSpeed * SlowTimeFactor")]),
+            comment("Planet Breaker: difficulty steps up per planet (PlanetDifficultyStep) and rises a little within each planet; speed keeps growing with RunTime across planets."),
+            ev([iss("GameMode", '"Planet"')], [setv("DifficultyLevel", "=", "clamp(PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)")])]),
     ]),
     group("Input (tap / click)", [
         comment("One tap = one branch. Taps during a branch or the short cooldown are ignored (no queueing). Left half = left, right half = right."),
@@ -259,7 +306,7 @@ ev_movement = [
         ev([PLAYING], [
             setv("CrackWorldY", "+", "EffectiveSpeed * TimeDelta()"),
             setv("Distance", "=", "floor(CrackWorldY / PixelsPerMeter)"),
-            A("TiledSpriteObject::YOffset", "Background", "=", "-CrackWorldY"),
+            A("TiledSpriteObject::YOffset", "Backgrounds", "=", "-CrackWorldY"),
         ]),
         ev([], [setx("CrackTip", "CrackWorldX"), sety("CrackTip", "TipScreenY"), setx("CrackHitbox", "CrackWorldX"), sety("CrackHitbox", "TipScreenY")]),
         ev([PLAYING], [scale("CrackTip", "=", "1 + 0.12 * sin(TimeFromStart() * 14)")]),
@@ -304,9 +351,9 @@ ev_spawner = [
             setv("RowGap", "=", L("RowGapStart", "RowGapEnd")),
             setv("Density", "=", L("DensityStart", "DensityEnd")),
             setv("EmptyChance", "=", L("EmptyChanceStart", "EmptyChanceEnd")),
-            setv("WallChance", "=", L("WallChanceStart", "WallChanceEnd")),
-            setv("CrystalChance", "=", L("CrystalChanceStart", "CrystalChanceEnd")),
-            setv("SolidChance", "=", L("SolidChanceStart", "SolidChanceEnd")),
+            setv("WallChance", "=", L("WallChanceStart", "WallChanceEnd") + " + ThemeWallBonus"),
+            setv("CrystalChance", "=", L("CrystalChanceStart", "CrystalChanceEnd") + " + ThemeCrystalBonus"),
+            setv("SolidChance", "=", L("SolidChanceStart", "SolidChanceEnd") + " + ThemeSolidBonus"),
             setv("BreakChance", "=", L("BreakChanceStart", "BreakChanceEnd")),
             setv("PrevSafeLane", "=", "SafeLane"),
             setv("BlockerChance", "=", L("BlockerChanceStart", "BlockerChanceEnd")),
@@ -341,8 +388,8 @@ ev_spawner = [
                     ev([isv("ObjType", "=", "0"), isv("RowType", "!=", "0"), isv("LaneIter", "=", "CrackLane"), cmp("RandomFloat(1)", "<", "BlockerChance")],
                        [setv("ObjType", "=", "3")], [ev([isv("TypeRoll", ">=", "CrystalChance")], [setv("ObjType", "=", "1")],
                                                        [ev([cmp("RandomFloat(1)", ">=", "0.5")], [setv("ObjType", "=", "2")])])]),
-                    ev([isv("ObjType", "=", "1")], spawn("RockSmall", "ObjWorldY")),
-                    ev([isv("ObjType", "=", "2")], spawn("RockMedium", "ObjWorldY")),
+                    ev([isv("ObjType", "=", "1")], spawn("RockSmall", "ObjWorldY", [A("ChangeColor", "RockSmall", "RockTint")])),
+                    ev([isv("ObjType", "=", "2")], spawn("RockMedium", "ObjWorldY", [A("ChangeColor", "RockMedium", "RockTint")])),
                     ev([isv("ObjType", "=", "3")], spawn("Crystal", "ObjWorldY", [A("AnimatableCapability::AnimatableBehavior::SetIndex", "Crystal", "Animation", "=", "RandomInRange(0, 2)")])),
                     ev([isv("ObjType", "=", "4")], spawn("BarrierBreakable", "RowWorldY")),
                     ev([isv("ObjType", "=", "5")], spawn("BarrierSolid", "RowWorldY")),
@@ -382,9 +429,9 @@ ev_powerups = [
     group("Timers and HUD", [
         ev([PLAYING, isv("PowerupCooldown", ">", "0")], [setv("PowerupCooldown", "-", "TimeDelta()")]),
         ev([PLAYING, isv("SlowTimeRemaining", ">", "0")], [
-            setv("SlowTimeRemaining", "-", "TimeDelta()"), A("TiledSpriteObject::SetColor", "Background", '"150;185;255"'), A("Show", "SlowText", ""),
+            setv("SlowTimeRemaining", "-", "TimeDelta()"), A("TiledSpriteObject::SetColor", "Backgrounds", '"150;185;255"'), A("Show", "SlowText", ""),
             text("SlowText", '"SLOW " + ToString(round(max(0, SlowTimeRemaining) * 10) / 10)')]),
-        ev([isv("SlowTimeRemaining", "<=", "0")], [A("TiledSpriteObject::SetColor", "Background", '"255;255;255"'), A("Hide", "SlowText")]),
+        ev([isv("SlowTimeRemaining", "<=", "0")], [A("TiledSpriteObject::SetColor", "Backgrounds", '"255;255;255"'), A("Hide", "SlowText")]),
         ev([isv("StrengthCharges", ">", "0")], [A("Show", "StrengthText", ""), text("StrengthText", '"STRENGTH x" + ToString(StrengthCharges)')]),
         ev([isv("StrengthCharges", "<=", "0")], [A("Hide", "StrengthText")]),
         comment("Crack colour shows Strength: orange-red while charged."),
@@ -408,11 +455,19 @@ ev_collisions = [
         A("Hide", "HintText"),
     ], [
         spark_burst("12", "RandomFloatInRange(-260, 260)", "RandomFloatInRange(-320, 120)"),
-        comment("Endless mode: personal best is saved locally."),
-        ev([ENDLESS, cmp("Distance", ">", "BestEndlessDistance")], [
-            setv("BestEndlessDistance", "=", "Distance"), A("EcrireFichierExp", SAVE, KEY, "BestEndlessDistance"),
-            A("Show", "NewBestText", "")]),
-        ev([], [text("GameOverBestText", '"BEST: " + ToString(BestEndlessDistance) + " m"'),
+        ev([C("BooleanVariable", "ReviveUsed", "True", "")], [A("Hide", "ReviveButton"), A("Hide", "ReviveLabel")]),
+        comment("Endless: best distance. Planet Breaker: best planets broken. Both saved locally."),
+        ev([ENDLESS], [A("Hide", "GameOverPlanetsText"), text("GameOverBestText", '"BEST: " + ToString(BestEndlessDistance) + " m"')],
+           [ev([cmp("Distance", ">", "BestEndlessDistance")], [
+                setv("BestEndlessDistance", "=", "Distance"), A("EcrireFichierExp", SAVE, KEY, "BestEndlessDistance"),
+                A("Show", "NewBestText", ""), text("GameOverBestText", '"BEST: " + ToString(BestEndlessDistance) + " m"')])]),
+        ev([iss("GameMode", '"Planet"')], [A("Show", "GameOverPlanetsText", ""), text("GameOverPlanetsText", '"PLANETS BROKEN: " + ToString(PlanetsBroken)'),
+                 text("FinalDistanceText", '"TOTAL DISTANCE: " + ToString(Distance) + " m"'),
+                 text("GameOverBestText", '"BEST: " + ToString(BestPlanetsBroken) + " PLANETS"')],
+           [ev([cmp("PlanetsBroken", ">", "BestPlanetsBroken")], [
+                setv("BestPlanetsBroken", "=", "PlanetsBroken"), A("EcrireFichierExp", SAVE, KEYP, "BestPlanetsBroken"),
+                A("Show", "NewBestText", ""), text("GameOverBestText", '"BEST: " + ToString(BestPlanetsBroken) + " PLANETS"')])]),
+        ev([], [A("SetCenterX", "GameOverPlanetsText", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "ReviveLabel", "=", "SceneWindowWidth() / 2"),
                 A("SetCenterX", "FinalDistanceText", "=", "SceneWindowWidth() / 2"),
                 A("SetCenterX", "GameOverBestText", "=", "SceneWindowWidth() / 2"),
                 A("SetCenterX", "NewBestText", "=", "SceneWindowWidth() / 2"),
@@ -425,11 +480,106 @@ ev_scoring = [
     ev([], [text("DistanceText", '"DISTANCE: " + ' + pad4("Distance") + ' + " m"'),
             text("BestText", '"BEST: " + ' + pad4("BestEndlessDistance") + ' + " m"'),
             A("SetCenterX", "DistanceText", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "BestText", "=", "SceneWindowWidth() / 2")]),
+    ev([iss("GameMode", '"Planet"')], [text("BestText", '"PLANETS BROKEN: " + ToString(PlanetsBroken) + "   BEST: " + ToString(BestPlanetsBroken)'),
+                 A("SetCenterX", "BestText", "=", "SceneWindowWidth() / 2")]),
 ]
 
-external_events = [("EV_GameState", ev_gamestate), ("EV_CrackMovement", ev_movement), ("EV_ObstacleSpawner", ev_spawner),
-                   ("EV_Powerups", ev_powerups), ("EV_Trail", ev_trail), ("EV_Collisions", ev_collisions), ("EV_Scoring", ev_scoring)]
-scene_events = [comment("CRACKLINE — Phase 2 (Endless Depth). Each system lives in its own external events sheet (Project manager > External events). Order matters.")] + \
+
+PLANET = iss("GameMode", '"Planet"')
+def theme(i, name, rocktint, cb, wb, sb, bg):
+    hide = [A("Hide", o) for o in ("BgEmber", "BgVerdant", "BgFrost") if o != bg]
+    return ev([isv("PlanetTheme", "=", str(i))], [sets("PlanetName", f'"{name}"'), sets("RockTint", f'"{rocktint}"'),
+        setv("ThemeCrystalBonus", "=", cb), setv("ThemeWallBonus", "=", wb), setv("ThemeSolidBonus", "=", sb),
+        setv("PlanetTargetDistance", "=", f"PlanetDistance{i + 1} + PlanetCycleExtraDistance * floor(PlanetIndex / 3)"),
+        A("Show", bg, "")] + hide)
+EASE = "(1 - pow(1 - clamp({}, 0, 1), 3))"
+ev_planet = [
+    comment("PLANET BREAKER — same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planets cycle Ember -> Verdant -> Frost -> Ember...; each lap adds PlanetCycleExtraDistance and difficulty keeps rising (see EV_CrackMovement)."),
+    group("Planet setup", [
+        comment("Runs once at scene start and after every broken planet: picks the theme, target distance and theme modifiers (Verdant = more crystals, Frost = more barriers/solid barriers)."),
+        ev([PLANET, C("BooleanVariable", "PlanetSetupPending", "True", "")], [
+            A("SetBooleanVariable", "PlanetSetupPending", "False", ""),
+            setv("PlanetTheme", "=", "mod(PlanetIndex, 3)"),
+            setv("PlanetStartWorldY", "=", "CrackWorldY"),
+        ], [
+            theme(0, "EMBER", "255;255;255", "-0.04", "0", "0", "BgEmber"),
+            theme(1, "VERDANT", "200;240;205", "0.15", "0", "0", "BgVerdant"),
+            theme(2, "FROST", "190;215;255", "0", "0.15", "0.08", "BgFrost"),
+        ]),
+    ]),
+    group("Progress toward the surface", [
+        ev([PLANET], [
+            setv("PlanetDistance", "=", "max(0, floor((CrackWorldY - PlanetStartWorldY) / PixelsPerMeter))"),
+            A("ResizableCapability::ResizableBehavior::SetWidth", "ProgressFill", "Resizable", "=", "max(1, 396 * min(1, PlanetDistance / PlanetTargetDistance))"),
+            text("PlanetHudText", '"PLANET " + ToString(PlanetIndex + 1) + "  " + PlanetName + "   " + ToString(min(PlanetDistance, PlanetTargetDistance)) + " / " + ToString(PlanetTargetDistance) + " m"'),
+            A("SetCenterX", "PlanetHudText", "=", "SceneWindowWidth() / 2"),
+        ], [ev([isv("PlanetTheme", "=", "0")], [color("ProgressFill", "255;150;50")]),
+            ev([isv("PlanetTheme", "=", "1")], [color("ProgressFill", "90;240;180")]),
+            ev([isv("PlanetTheme", "=", "2")], [color("ProgressFill", "160;190;255")])]),
+    ]),
+    group("Reach the surface -> break the planet", [
+        ev([PLANET, PLAYING, cmp("PlanetDistance", ">=", "PlanetTargetDistance")], [
+            sets("GameState", '"PlanetBreak"'), setv("BreakTime", "=", "0"), A("SetBooleanVariable", "BreakBurstDone", "False", ""),
+            setv("BranchDirection", "=", "0"), setv("SlowTimeRemaining", "=", "0"),
+            delete("Obstacles"), delete("Powerups"),
+            setv("PlanetCX", "=", "SceneWindowWidth() / 2"), setv("PlanetCY", "=", "SceneWindowHeight() * 0.42"),
+            A("AnimatableCapability::AnimatableBehavior::SetIndex", "PlanetLeft", "Animation", "=", "PlanetTheme"),
+            A("AnimatableCapability::AnimatableBehavior::SetIndex", "PlanetRight", "Animation", "=", "PlanetTheme"),
+            text("PlanetBrokenText", 'PlanetName + " BROKEN!"'), A("Hide", "PlanetBrokenText"),
+            A("ShowLayer", "", '"Cinematic"'),
+        ]),
+        comment("Event-driven animation (BreakTime seconds): 0-0.35 planet pops in, 0.35-0.75 a glowing crack runs down its centre, 0.75-1.45 the two halves fly apart with an ease-out, then a message; at BreakDuration the next planet starts."),
+        ev([iss("GameState", '"PlanetBreak"')], [
+            setv("BreakTime", "+", "TimeDelta()"),
+            setv("SplitOffset", "=", "170 * " + EASE.format("(BreakTime - 0.75) / 0.7")),
+            scale("PlanetLeft", "=", EASE.format("BreakTime / 0.35")), scale("PlanetRight", "=", EASE.format("BreakTime / 0.35")),
+            setx("PlanetLeft", "PlanetCX - SplitOffset"), sety("PlanetLeft", "PlanetCY + SplitOffset * 0.15"),
+            setx("PlanetRight", "PlanetCX + SplitOffset"), sety("PlanetRight", "PlanetCY - SplitOffset * 0.15"),
+            A("SetAngle", "PlanetLeft", "=", "-SplitOffset * 0.08"), A("SetAngle", "PlanetRight", "=", "SplitOffset * 0.08"),
+            setx("PlanetCrack", "PlanetCX"), sety("PlanetCrack", "PlanetCY - 140"),
+            scaley("PlanetCrack", "=", "clamp((BreakTime - 0.35) / 0.4, 0, 1) * 0.875"),
+            opacity("PlanetCrack", "=", "255 * (1 - clamp((BreakTime - 0.9) / 0.3, 0, 1))"),
+            A("SetCenterX", "PlanetBrokenText", "=", "PlanetCX"), sety("PlanetBrokenText", "PlanetCY + 200"),
+        ], [
+            ev([isv("BreakTime", ">=", "0.75"), C("BooleanVariable", "BreakBurstDone", "False", "")], [
+                A("SetBooleanVariable", "BreakBurstDone", "True", ""), A("Show", "PlanetBrokenText", ""),
+                create("ImpactFlash", "PlanetCX", "PlanetCY", '"Cinematic"'), scale("ImpactFlash", "=", "2.5"), A("SetZOrder", "ImpactFlash", "=", "5"),
+            ], [spark_burst("16", "RandomFloatInRange(-420, 420)", "RandomFloatInRange(-420, 420) - EffectiveSpeed", "PlanetCX", "PlanetCY")]),
+            ev([isv("BreakTime", ">=", "BreakDuration")], [
+                setv("PlanetsBroken", "+", "1"), setv("PlanetIndex", "+", "1"),
+                A("SetBooleanVariable", "PlanetSetupPending", "True", ""),
+                setv("NextRowWorldY", "=", "CrackWorldY + TipScreenY + FirstRowOffset"),
+                A("HideLayer", "", '"Cinematic"'), sets("GameState", '"Playing"'),
+            ]),
+        ]),
+    ]),
+]
+
+ev_revive = [
+    comment("REVIVE (modular). Anything that sets RequestRevive = true while GameState is GameOver triggers it: today the SIMULATE AD REVIVE (TEST) button, later the Playgama rewarded-ad callback. One revive per run (ReviveUsed). Score, distance, speed, difficulty and planet progress are all kept."),
+    ev([C("BooleanVariable", "RequestRevive", "True", "")], [A("SetBooleanVariable", "RequestRevive", "False", "")], [
+        ev([GAMEOVER, C("BooleanVariable", "ReviveUsed", "False", "")], [
+            A("SetBooleanVariable", "ReviveUsed", "True", ""),
+        ] + [
+            setv("InvulnerabilityRemaining", "=", "ReviveInvulnerability"),
+            setv("GameOverTime", "=", "0"), setv("BranchDirection", "=", "0"), setv("CooldownTimer", "=", "0"),
+            A("HideLayer", "", '"GameOver"'), A("Hide", "NewBestText"), color("CrackTip", "255;255;255"),
+            sets("GameState", '"Playing"'),
+        ], [
+            comment("Clear lethal obstacles around the crack so it can't die again immediately (the 2 s protection covers the rest)."),
+            ev([C("NumberObjectVariable", "Obstacles", "WorldY", "<", "CrackWorldY + ReviveClearAhead"),
+                C("NumberObjectVariable", "Obstacles", "WorldY", ">", "CrackWorldY - ReviveClearBehind")], [delete("Obstacles")]),
+        ]),
+    ]),
+    comment("Protective glow while invulnerable."),
+    ev([isv("InvulnerabilityRemaining", ">", "0")], [A("Show", "ShieldGlow", ""), setx("ShieldGlow", "CrackWorldX"), sety("ShieldGlow", "TipScreenY"),
+        scale("ShieldGlow", "=", "1 + 0.08 * sin(TimeFromStart() * 18)"), opacity("ShieldGlow", "=", "160 + 95 * sin(TimeFromStart() * 18)")]),
+    ev([isv("InvulnerabilityRemaining", "<=", "0")], [A("Hide", "ShieldGlow")]),
+]
+
+external_events = [("EV_GameState", ev_gamestate), ("EV_PlanetMode", ev_planet), ("EV_CrackMovement", ev_movement), ("EV_ObstacleSpawner", ev_spawner),
+                   ("EV_Powerups", ev_powerups), ("EV_Trail", ev_trail), ("EV_Collisions", ev_collisions), ("EV_Revive", ev_revive), ("EV_Scoring", ev_scoring)]
+scene_events = [comment("CRACKLINE — Phase 3. Endless Depth and Planet Breaker share this one scene (GameMode global). Each system lives in its own external events sheet (Project manager > External events). Order matters.")] + \
     [link(n) for n, _ in external_events]
 
 ui_settings = {"grid": False, "gridType": "rectangular", "gridWidth": 32, "gridHeight": 32, "gridOffsetX": 0, "gridOffsetY": 0, "gridColor": 10401023,
@@ -437,16 +587,57 @@ ui_settings = {"grid": False, "gridType": "rectangular", "gridWidth": 32, "gridH
 layout = {"b": 40, "disableInputWhenNotFocused": True, "mangledName": "Gameplay", "name": "Gameplay", "r": 110, "standardSortMethod": True,
           "stopSoundsOnStartup": True, "title": "", "v": 60, "uiSettings": ui_settings, "objectsGroups": groups, "variables": scene_vars,
           "instances": instances, "objects": objects, "objectsFolderStructure": folders, "events": scene_events,
-          "layers": [layer(""), layer("HUD"), layer("GameOver", visible=False)], "behaviorsSharedData": []}
+          "layers": [layer(""), layer("Cinematic", visible=False), layer("HUD"), layer("GameOver", visible=False)], "behaviorsSharedData": []}
+
+
+# ---------------------------------------------------------------- MAIN MENU scene
+menu_objects = [
+    {"assetStoreId": "", "name": "MenuBg", "type": "TiledSpriteObject::TiledSprite", "texture": "bg_soil", "width": 720, "height": 3000, "variables": [], "effects": [], "behaviors": []},
+    textobj("TitleText", "CRACKLINE", 110, rgb="255;214;120"),
+    textobj("SubtitleText", "SPLIT THE WORLD", 34, rgb="255;240;214"),
+    sprite("MenuTip", "crack_tip", origin=(64, 64)),
+    sprite("EndlessButton", "ui_button", origin=(180, 55)), textobj("EndlessLabel", "ENDLESS DEPTH", 40, rgb="80;26;6"),
+    sprite("PlanetButton", "ui_button", origin=(180, 55)), textobj("PlanetLabel", "PLANET BREAKER", 38, rgb="80;26;6"),
+    textobj("MenuBestText", "BEST: 0 m   |   0 PLANETS", 28, rgb="255;220;160"),
+]
+menu_instances = [inst("MenuBg", 0, -800, z=-10, w=720, h=3200), inst("TitleText", 60, 220, z=2), inst("SubtitleText", 210, 350, z=2),
+                  inst("MenuTip", 360, 470, z=2), inst("EndlessButton", 360, 620, z=2), inst("EndlessLabel", 210, 594, z=3),
+                  inst("PlanetButton", 360, 790, z=2), inst("PlanetLabel", 200, 765, z=3), inst("MenuBestText", 150, 930, z=2)]
+def tapped(obj): return [C("HasAnyTouchOrMouseStarted", ""), C("CollisionPoint", obj, 'TouchX(StartedTouchOrMouseId(0), "")', 'TouchY(StartedTouchOrMouseId(0), "")')]
+menu_events = [
+    comment("MAIN MENU — pick a mode. Both buttons open the same Gameplay scene; only the global GameMode differs."),
+    comment("Positions are offsets from the screen centre so the menu fits any portrait height (and a square window)."),
+    ev([C("SceneJustBegins", "")], [
+        sety("TitleText", "SceneWindowHeight() / 2 - 330"), sety("SubtitleText", "SceneWindowHeight() / 2 - 195"), sety("MenuTip", "SceneWindowHeight() / 2 - 92"),
+        sety("EndlessButton", "SceneWindowHeight() / 2 + 20"), sety("EndlessLabel", "EndlessButton.Y() - 24"),
+        sety("PlanetButton", "SceneWindowHeight() / 2 + 150"), sety("PlanetLabel", "PlanetButton.Y() - 24"),
+        sety("MenuBestText", "SceneWindowHeight() / 2 + 230"),
+    ], [
+        ev([C("GroupExists", SAVE, KEY)], [A("ReadNumberFromStorage", SAVE, KEY, "", "BestEndlessDistance")]),
+        ev([C("GroupExists", SAVE, KEYP)], [A("ReadNumberFromStorage", SAVE, KEYP, "", "BestPlanetsBroken")]),
+        ev([], [text("MenuBestText", '"BEST: " + ToString(BestEndlessDistance) + " m   |   " + ToString(BestPlanetsBroken) + " PLANETS"')]),
+    ]),
+    ev([], [A("TiledSpriteObject::YOffset", "MenuBg", "=", "-TimeFromStart() * 60"), scale("MenuTip", "=", "0.75 + 0.08 * sin(TimeFromStart() * 5)"),
+            A("SetCenterX", "TitleText", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "SubtitleText", "=", "SceneWindowWidth() / 2"),
+            A("SetCenterX", "EndlessLabel", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "PlanetLabel", "=", "SceneWindowWidth() / 2"),
+            A("SetCenterX", "MenuBestText", "=", "SceneWindowWidth() / 2")]),
+    ev(tapped("EndlessButton"), [sets("GameMode", '"Endless"'), A("Scene", "", '"Gameplay"', "")]),
+    ev(tapped("PlanetButton"), [sets("GameMode", '"Planet"'), A("Scene", "", '"Gameplay"', "")]),
+]
+menu_layout = {"b": 40, "disableInputWhenNotFocused": True, "mangledName": "MainMenu", "name": "MainMenu", "r": 110, "standardSortMethod": True,
+               "stopSoundsOnStartup": True, "title": "", "v": 60, "uiSettings": ui_settings, "objectsGroups": [], "variables": [],
+               "instances": menu_instances, "objects": menu_objects,
+               "objectsFolderStructure": {"folderName": "__ROOT", "children": [{"objectName": o["name"]} for o in menu_objects]},
+               "events": menu_events, "layers": [layer("")], "behaviorsSharedData": []}
 
 project = {
-    "firstLayout": "Gameplay",
+    "firstLayout": "MainMenu",
     "gdVersion": {"build": 99, "major": 4, "minor": 0, "revision": 0},
     "properties": {
         "adaptGameResolutionAtRuntime": True, "antialiasingMode": "none", "antialisingEnabledOnMobile": False, "folderProject": False,
         "orientation": "portrait", "packageName": "com.lonewolfproduction.crackline", "pixelsRounding": False,
         "projectUuid": uid("project"), "scaleMode": "linear", "sizeOnStartupMode": "adaptHeight", "templateSlug": "",
-        "useExternalSourceFiles": False, "version": "0.2.0", "name": "CRACKLINE", "description": "Phase 2 - Endless Depth", "author": "",
+        "useExternalSourceFiles": False, "version": "0.3.0", "name": "CRACKLINE", "description": "Phase 3 - Endless Depth + Planet Breaker", "author": "",
         "windowWidth": 720, "windowHeight": 1280, "latestCompilationDirectory": "", "maxFPS": 60, "minFPS": 20, "verticalSync": False,
         "platformSpecificAssets": {},
         "loadingScreen": {"backgroundColor": 2101764, "backgroundFadeInDuration": 0.2, "backgroundImageResourceName": "", "gdevelopLogoStyle": "light",
@@ -457,7 +648,7 @@ project = {
         "authorIds": [], "authorUsernames": [], "categories": [], "playableDevices": ["mobile"], "extensionProperties": [],
         "platforms": [{"name": "GDevelop JS platform"}], "currentPlatform": "GDevelop JS platform"},
     "resources": {"resources": resources, "resourceFolders": []},
-    "objects": [], "objectsGroups": [], "variables": global_vars, "layouts": [layout],
+    "objects": [], "objectsGroups": [], "variables": global_vars, "layouts": [menu_layout, layout],
     "externalEvents": [{"associatedLayout": "Gameplay", "lastChangeTimeStamp": 0, "name": n, "events": e} for n, e in external_events],
     "eventsFunctionsExtensions": [], "externalLayouts": [], "externalSourceFiles": [],
 }

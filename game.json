@@ -1,5 +1,5 @@
 {
-  "firstLayout": "Gameplay",
+  "firstLayout": "MainMenu",
   "gdVersion": {
     "build": 99,
     "major": 4,
@@ -19,9 +19,9 @@
     "sizeOnStartupMode": "adaptHeight",
     "templateSlug": "",
     "useExternalSourceFiles": false,
-    "version": "0.2.0",
+    "version": "0.3.0",
     "name": "CRACKLINE",
-    "description": "Phase 2 - Endless Depth",
+    "description": "Phase 3 - Endless Depth + Planet Breaker",
     "author": "",
     "windowWidth": 720,
     "windowHeight": 1280,
@@ -218,6 +218,114 @@
         "name": "powerup_strength",
         "smoothed": true,
         "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/bg_verdant.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "bg_verdant",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/bg_frost.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "bg_frost",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_crack.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_crack",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/shield_glow.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "shield_glow",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/ui_white.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "ui_white",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/ui_button_blue.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "ui_button_blue",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_ember_left.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_ember_left",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_ember_right.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_ember_right",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_verdant_left.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_verdant_left",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_verdant_right.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_verdant_right",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_frost_left.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_frost_left",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_frost_right.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_frost_right",
+        "smoothed": true,
+        "userAdded": true
       }
     ],
     "resourceFolders": []
@@ -234,9 +342,1017 @@
       "name": "BestEndlessDistance",
       "type": "number",
       "value": 0
+    },
+    {
+      "name": "BestPlanetsBroken",
+      "type": "number",
+      "value": 0
     }
   ],
   "layouts": [
+    {
+      "b": 40,
+      "disableInputWhenNotFocused": true,
+      "mangledName": "MainMenu",
+      "name": "MainMenu",
+      "r": 110,
+      "standardSortMethod": true,
+      "stopSoundsOnStartup": true,
+      "title": "",
+      "v": 60,
+      "uiSettings": {
+        "grid": false,
+        "gridType": "rectangular",
+        "gridWidth": 32,
+        "gridHeight": 32,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      },
+      "objectsGroups": [],
+      "variables": [],
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 3200,
+          "layer": "",
+          "locked": false,
+          "name": "MenuBg",
+          "persistentUuid": "306b9796-350d-528a-9d25-94476a6ec4c0",
+          "width": 720,
+          "x": 0,
+          "y": -800,
+          "zOrder": -10,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "TitleText",
+          "persistentUuid": "85ecefdb-4a1f-55df-90d7-77f184b95097",
+          "width": 0,
+          "x": 60,
+          "y": 220,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "SubtitleText",
+          "persistentUuid": "f9f50f32-405c-5e42-89f4-0775f516b4d2",
+          "width": 0,
+          "x": 210,
+          "y": 350,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "MenuTip",
+          "persistentUuid": "3376bec0-397b-5761-ac51-8e342fb34225",
+          "width": 0,
+          "x": 360,
+          "y": 470,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "EndlessButton",
+          "persistentUuid": "6af3b2ce-9f24-55fc-9063-c0bcc84c9ddb",
+          "width": 0,
+          "x": 360,
+          "y": 620,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "EndlessLabel",
+          "persistentUuid": "7319b470-5a35-5cbc-9413-98d2cd40dfd7",
+          "width": 0,
+          "x": 210,
+          "y": 594,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "PlanetButton",
+          "persistentUuid": "5269d110-ee3c-5394-bbf8-36e8aa0f31e6",
+          "width": 0,
+          "x": 360,
+          "y": 790,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "PlanetLabel",
+          "persistentUuid": "38e341fc-3496-5d56-b7fe-5925be780f5f",
+          "width": 0,
+          "x": 200,
+          "y": 765,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "MenuBestText",
+          "persistentUuid": "78c85084-06dd-58cc-8850-e637318fd2d8",
+          "width": 0,
+          "x": 150,
+          "y": 930,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "objects": [
+        {
+          "assetStoreId": "",
+          "name": "MenuBg",
+          "type": "TiledSpriteObject::TiledSprite",
+          "texture": "bg_soil",
+          "width": 720,
+          "height": 3000,
+          "variables": [],
+          "effects": [],
+          "behaviors": []
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "TitleText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "CRACKLINE",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 110,
+          "color": {
+            "r": 255,
+            "g": 214,
+            "b": 120
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "CRACKLINE",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 110,
+            "color": "255;214;120"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "SubtitleText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "SPLIT THE WORLD",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 34,
+          "color": {
+            "r": 255,
+            "g": 240,
+            "b": 214
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "SPLIT THE WORLD",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 34,
+            "color": "255;240;214"
+          }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "MenuTip",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "crack_tip",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "EndlessButton",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_button",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 180,
+                        "y": 55
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "EndlessLabel",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "ENDLESS DEPTH",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 40,
+          "color": {
+            "r": 80,
+            "g": 26,
+            "b": 6
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "ENDLESS DEPTH",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 40,
+            "color": "80;26;6"
+          }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "PlanetButton",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_button",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 180,
+                        "y": 55
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "PlanetLabel",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "PLANET BREAKER",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 38,
+          "color": {
+            "r": 80,
+            "g": 26,
+            "b": 6
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "PLANET BREAKER",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 38,
+            "color": "80;26;6"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "MenuBestText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "BEST: 0 m   |   0 PLANETS",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 28,
+          "color": {
+            "r": 255,
+            "g": 220,
+            "b": 160
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "BEST: 0 m   |   0 PLANETS",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 28,
+            "color": "255;220;160"
+          }
+        }
+      ],
+      "objectsFolderStructure": {
+        "folderName": "__ROOT",
+        "children": [
+          {
+            "objectName": "MenuBg"
+          },
+          {
+            "objectName": "TitleText"
+          },
+          {
+            "objectName": "SubtitleText"
+          },
+          {
+            "objectName": "MenuTip"
+          },
+          {
+            "objectName": "EndlessButton"
+          },
+          {
+            "objectName": "EndlessLabel"
+          },
+          {
+            "objectName": "PlanetButton"
+          },
+          {
+            "objectName": "PlanetLabel"
+          },
+          {
+            "objectName": "MenuBestText"
+          }
+        ]
+      },
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "MAIN MENU \u2014 pick a mode. Both buttons open the same Gameplay scene; only the global GameMode differs.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "Positions are offsets from the screen centre so the menu fits any portrait height (and a square window).",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SceneJustBegins"
+              },
+              "parameters": [
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "TitleText",
+                "=",
+                "SceneWindowHeight() / 2 - 330"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "SubtitleText",
+                "=",
+                "SceneWindowHeight() / 2 - 195"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "MenuTip",
+                "=",
+                "SceneWindowHeight() / 2 - 92"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "EndlessButton",
+                "=",
+                "SceneWindowHeight() / 2 + 20"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "EndlessLabel",
+                "=",
+                "EndlessButton.Y() - 24"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "PlanetButton",
+                "=",
+                "SceneWindowHeight() / 2 + 150"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "PlanetLabel",
+                "=",
+                "PlanetButton.Y() - 24"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "MenuBestText",
+                "=",
+                "SceneWindowHeight() / 2 + 230"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"BestEndlessDistance\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"BestEndlessDistance\"",
+                    "",
+                    "BestEndlessDistance"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "GroupExists"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"BestPlanetsBroken\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ReadNumberFromStorage"
+                  },
+                  "parameters": [
+                    "\"CracklineSave\"",
+                    "\"BestPlanetsBroken\"",
+                    "",
+                    "BestPlanetsBroken"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "MenuBestText",
+                    "Text",
+                    "=",
+                    "\"BEST: \" + ToString(BestEndlessDistance) + \" m   |   \" + ToString(BestPlanetsBroken) + \" PLANETS\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ]
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "TiledSpriteObject::YOffset"
+              },
+              "parameters": [
+                "MenuBg",
+                "=",
+                "-TimeFromStart() * 60"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ScalableCapability::ScalableBehavior::SetValue"
+              },
+              "parameters": [
+                "MenuTip",
+                "Scale",
+                "=",
+                "0.75 + 0.08 * sin(TimeFromStart() * 5)"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "TitleText",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "SubtitleText",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "EndlessLabel",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "PlanetLabel",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "MenuBestText",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "HasAnyTouchOrMouseStarted"
+              },
+              "parameters": [
+                ""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "CollisionPoint"
+              },
+              "parameters": [
+                "EndlessButton",
+                "TouchX(StartedTouchOrMouseId(0), \"\")",
+                "TouchY(StartedTouchOrMouseId(0), \"\")"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetStringVariable"
+              },
+              "parameters": [
+                "GameMode",
+                "=",
+                "\"Endless\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "Scene"
+              },
+              "parameters": [
+                "",
+                "\"Gameplay\"",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "HasAnyTouchOrMouseStarted"
+              },
+              "parameters": [
+                ""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "CollisionPoint"
+              },
+              "parameters": [
+                "PlanetButton",
+                "TouchX(StartedTouchOrMouseId(0), \"\")",
+                "TouchY(StartedTouchOrMouseId(0), \"\")"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetStringVariable"
+              },
+              "parameters": [
+                "GameMode",
+                "=",
+                "\"Planet\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "Scene"
+              },
+              "parameters": [
+                "",
+                "\"Gameplay\"",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        }
+      ],
+      "layers": [
+        {
+          "ambientLightColorB": 200,
+          "ambientLightColorG": 200,
+          "ambientLightColorR": 200,
+          "camera3DFarPlaneDistance": 10000,
+          "camera3DFieldOfView": 45,
+          "camera3DNearPlaneDistance": 3,
+          "cameraType": "",
+          "followBaseLayerCamera": false,
+          "isLightingLayer": false,
+          "isLocked": false,
+          "name": "",
+          "renderingType": "",
+          "visibility": true,
+          "cameras": [
+            {
+              "defaultSize": true,
+              "defaultViewport": true,
+              "height": 0,
+              "viewportBottom": 1,
+              "viewportLeft": 0,
+              "viewportRight": 1,
+              "viewportTop": 0,
+              "width": 0
+            }
+          ],
+          "effects": []
+        }
+      ],
+      "behaviorsSharedData": []
+    },
     {
       "b": 40,
       "disableInputWhenNotFocused": true,
@@ -303,6 +1419,31 @@
             },
             {
               "name": "PowerStrength"
+            }
+          ]
+        },
+        {
+          "name": "Backgrounds",
+          "objects": [
+            {
+              "name": "BgEmber"
+            },
+            {
+              "name": "BgVerdant"
+            },
+            {
+              "name": "BgFrost"
+            }
+          ]
+        },
+        {
+          "name": "Rocks",
+          "objects": [
+            {
+              "name": "RockSmall"
+            },
+            {
+              "name": "RockMedium"
             }
           ]
         }
@@ -524,9 +1665,69 @@
           "value": 0.3
         },
         {
+          "name": "PlanetDistance1",
+          "type": "number",
+          "value": 500
+        },
+        {
+          "name": "PlanetDistance2",
+          "type": "number",
+          "value": 650
+        },
+        {
+          "name": "PlanetDistance3",
+          "type": "number",
+          "value": 800
+        },
+        {
+          "name": "PlanetCycleExtraDistance",
+          "type": "number",
+          "value": 150
+        },
+        {
+          "name": "PlanetDifficultyStep",
+          "type": "number",
+          "value": 0.15
+        },
+        {
+          "name": "PlanetProgressDifficulty",
+          "type": "number",
+          "value": 0.2
+        },
+        {
+          "name": "BreakDuration",
+          "type": "number",
+          "value": 2.0
+        },
+        {
+          "name": "ReviveInvulnerability",
+          "type": "number",
+          "value": 2
+        },
+        {
+          "name": "ReviveClearBehind",
+          "type": "number",
+          "value": 250
+        },
+        {
+          "name": "ReviveClearAhead",
+          "type": "number",
+          "value": 750
+        },
+        {
           "name": "GameState",
           "type": "string",
           "value": "Playing"
+        },
+        {
+          "name": "RockTint",
+          "type": "string",
+          "value": "255;255;255"
+        },
+        {
+          "name": "PlanetName",
+          "type": "string",
+          "value": "EMBER"
         },
         {
           "name": "ScrollSpeed",
@@ -749,7 +1950,92 @@
           "value": 0
         },
         {
-          "name": "NewBest",
+          "name": "TotalDistance",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PlanetIndex",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PlanetTheme",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PlanetsBroken",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PlanetTargetDistance",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PlanetDistance",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PlanetStartWorldY",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "ThemeCrystalBonus",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "ThemeWallBonus",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "ThemeSolidBonus",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "BreakTime",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "SplitOffset",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PlanetCX",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PlanetCY",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "ReviveUsed",
+          "type": "boolean",
+          "value": false
+        },
+        {
+          "name": "RequestRevive",
+          "type": "boolean",
+          "value": false
+        },
+        {
+          "name": "PlanetSetupPending",
+          "type": "boolean",
+          "value": true
+        },
+        {
+          "name": "BreakBurstDone",
           "type": "boolean",
           "value": false
         }
@@ -761,12 +2047,60 @@
           "height": 3200,
           "layer": "",
           "locked": false,
-          "name": "Background",
-          "persistentUuid": "775408de-611a-5db6-827b-a5fce24651c0",
+          "name": "BgEmber",
+          "persistentUuid": "f7b9373f-d8e1-522c-838e-a770bfef622d",
+          "width": 720,
+          "x": 0,
+          "y": -800,
+          "zOrder": -12,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 3200,
+          "layer": "",
+          "locked": false,
+          "name": "BgVerdant",
+          "persistentUuid": "3ae0fd93-4f57-5965-b4fd-0aabb2fc872a",
+          "width": 720,
+          "x": 0,
+          "y": -800,
+          "zOrder": -11,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 3200,
+          "layer": "",
+          "locked": false,
+          "name": "BgFrost",
+          "persistentUuid": "f9a465ec-7f45-589b-8405-cca34b73c85a",
           "width": 720,
           "x": 0,
           "y": -800,
           "zOrder": -10,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShieldGlow",
+          "persistentUuid": "c31e36bd-2e7b-5dee-9a16-6825c273bc0e",
+          "width": 0,
+          "x": 360,
+          "y": 896,
+          "zOrder": 12,
           "numberProperties": [],
           "stringProperties": [],
           "initialVariables": []
@@ -829,7 +2163,7 @@
           "persistentUuid": "2d710a34-787a-594c-9c75-7a0ca16f2baa",
           "width": 0,
           "x": 250,
-          "y": 92,
+          "y": 104,
           "zOrder": 1,
           "numberProperties": [],
           "stringProperties": [],
@@ -845,7 +2179,7 @@
           "persistentUuid": "8d06c1d8-ebea-5645-9b99-72579f669d66",
           "width": 0,
           "x": 30,
-          "y": 140,
+          "y": 150,
           "zOrder": 1,
           "numberProperties": [],
           "stringProperties": [],
@@ -861,7 +2195,7 @@
           "persistentUuid": "be22b5c2-0e38-5ea2-8472-ea1353b998f1",
           "width": 0,
           "x": 470,
-          "y": 140,
+          "y": 150,
           "zOrder": 1,
           "numberProperties": [],
           "stringProperties": [],
@@ -994,14 +2328,228 @@
           "numberProperties": [],
           "stringProperties": [],
           "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "ReviveButton",
+          "persistentUuid": "2f85eb73-63e6-5582-b58b-c67e76a8ab1d",
+          "width": 0,
+          "x": 360,
+          "y": 840,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "ReviveLabel",
+          "persistentUuid": "5fd529b9-2ea6-5f57-8d4f-57f24a435ded",
+          "width": 0,
+          "x": 200,
+          "y": 826,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "MenuButton",
+          "persistentUuid": "a13a412f-9238-5bcd-bf84-b04e6c4261b4",
+          "width": 0,
+          "x": 360,
+          "y": 980,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "MenuLabel",
+          "persistentUuid": "42e9c733-fbf5-59b1-a358-53b44fef0dca",
+          "width": 0,
+          "x": 255,
+          "y": 958,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "GameOverPlanetsText",
+          "persistentUuid": "93d68496-fd26-5260-b83d-8f92cc4101c1",
+          "width": 0,
+          "x": 160,
+          "y": 430,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 18,
+          "layer": "HUD",
+          "locked": false,
+          "name": "ProgressBack",
+          "persistentUuid": "52bfefb0-20ad-5d54-9bca-afb5698cfb1b",
+          "width": 400,
+          "x": 160,
+          "y": 200,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 14,
+          "layer": "HUD",
+          "locked": false,
+          "name": "ProgressFill",
+          "persistentUuid": "b945ac48-231c-5bf1-9f13-2b32eea7d2f0",
+          "width": 396,
+          "x": 162,
+          "y": 202,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "HUD",
+          "locked": false,
+          "name": "PlanetHudText",
+          "persistentUuid": "53ab3c64-c5b0-52c7-b038-e0a97aa4c0d5",
+          "width": 0,
+          "x": 200,
+          "y": 224,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "Cinematic",
+          "locked": false,
+          "name": "PlanetLeft",
+          "persistentUuid": "cec47c2c-0014-5428-9f92-304a3764b96d",
+          "width": 0,
+          "x": 360,
+          "y": 540,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "Cinematic",
+          "locked": false,
+          "name": "PlanetRight",
+          "persistentUuid": "d922386f-bb2b-5d88-8a9a-c9ad4f94c351",
+          "width": 0,
+          "x": 360,
+          "y": 540,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "Cinematic",
+          "locked": false,
+          "name": "PlanetCrack",
+          "persistentUuid": "7da17cee-f962-5fb4-9b8e-d252e4f1ac48",
+          "width": 0,
+          "x": 360,
+          "y": 380,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "Cinematic",
+          "locked": false,
+          "name": "PlanetBrokenText",
+          "persistentUuid": "ff2eece0-7561-522e-95e5-ffaaeb3f7817",
+          "width": 0,
+          "x": 160,
+          "y": 800,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
         }
       ],
       "objects": [
         {
           "assetStoreId": "",
-          "name": "Background",
+          "name": "BgEmber",
           "type": "TiledSpriteObject::TiledSprite",
           "texture": "bg_soil",
+          "width": 720,
+          "height": 3000,
+          "variables": [],
+          "effects": [],
+          "behaviors": []
+        },
+        {
+          "assetStoreId": "",
+          "name": "BgVerdant",
+          "type": "TiledSpriteObject::TiledSprite",
+          "texture": "bg_verdant",
+          "width": 720,
+          "height": 3000,
+          "variables": [],
+          "effects": [],
+          "behaviors": []
+        },
+        {
+          "assetStoreId": "",
+          "name": "BgFrost",
+          "type": "TiledSpriteObject::TiledSprite",
+          "texture": "bg_frost",
           "width": 720,
           "height": 3000,
           "variables": [],
@@ -2396,6 +3944,655 @@
             "characterSize": 48,
             "color": "80;26;6"
           }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "ReviveButton",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_button_blue",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 180,
+                        "y": 55
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "ReviveLabel",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "SIMULATE AD REVIVE (TEST)",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 20,
+          "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "SIMULATE AD REVIVE (TEST)",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 20,
+            "color": "255;255;255"
+          }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "MenuButton",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_button",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 180,
+                        "y": 55
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "MenuLabel",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "MAIN MENU",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 40,
+          "color": {
+            "r": 80,
+            "g": 26,
+            "b": 6
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "MAIN MENU",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 40,
+            "color": "80;26;6"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "GameOverPlanetsText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "PLANETS BROKEN: 0",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 40,
+          "color": {
+            "r": 255,
+            "g": 240,
+            "b": 214
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "PLANETS BROKEN: 0",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 40,
+            "color": "255;240;214"
+          }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "ShieldGlow",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "shield_glow",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 70,
+                        "y": 70
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "ProgressBack",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_white",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "ProgressFill",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_white",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "PlanetHudText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "EMBER  0 / 500 m",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 26,
+          "color": {
+            "r": 255,
+            "g": 240,
+            "b": 214
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "EMBER  0 / 500 m",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 26,
+            "color": "255;240;214"
+          }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "PlanetLeft",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "Ember",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_ember_left",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Verdant",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_verdant_left",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frost",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_frost_left",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "PlanetRight",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "Ember",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_ember_right",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Verdant",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_verdant_right",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frost",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_frost_right",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "PlanetCrack",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_crack",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 20,
+                        "y": 0
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "PlanetBrokenText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "EMBER BROKEN!",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 56,
+          "color": {
+            "r": 255,
+            "g": 230,
+            "b": 140
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "EMBER BROKEN!",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 56,
+            "color": "255;230;140"
+          }
         }
       ],
       "objectsFolderStructure": {
@@ -2405,7 +4602,33 @@
             "folderName": "World",
             "children": [
               {
-                "objectName": "Background"
+                "objectName": "BgEmber"
+              },
+              {
+                "objectName": "BgVerdant"
+              },
+              {
+                "objectName": "BgFrost"
+              }
+            ]
+          },
+          {
+            "folderName": "Planet",
+            "children": [
+              {
+                "objectName": "PlanetLeft"
+              },
+              {
+                "objectName": "PlanetRight"
+              },
+              {
+                "objectName": "PlanetCrack"
+              },
+              {
+                "objectName": "PlanetBrokenText"
+              },
+              {
+                "objectName": "ShieldGlow"
               }
             ]
           },
@@ -2498,6 +4721,30 @@
               },
               {
                 "objectName": "RestartLabel"
+              },
+              {
+                "objectName": "ReviveButton"
+              },
+              {
+                "objectName": "ReviveLabel"
+              },
+              {
+                "objectName": "MenuButton"
+              },
+              {
+                "objectName": "MenuLabel"
+              },
+              {
+                "objectName": "GameOverPlanetsText"
+              },
+              {
+                "objectName": "ProgressBack"
+              },
+              {
+                "objectName": "ProgressFill"
+              },
+              {
+                "objectName": "PlanetHudText"
               }
             ]
           }
@@ -2514,7 +4761,7 @@
             "textG": 0,
             "textR": 0
           },
-          "comment": "CRACKLINE \u2014 Phase 2 (Endless Depth). Each system lives in its own external events sheet (Project manager > External events). Order matters.",
+          "comment": "CRACKLINE \u2014 Phase 3. Endless Depth and Planet Breaker share this one scene (GameMode global). Each system lives in its own external events sheet (Project manager > External events). Order matters.",
           "comment2": ""
         },
         {
@@ -2523,6 +4770,13 @@
             "includeConfig": 0
           },
           "target": "EV_GameState"
+        },
+        {
+          "type": "BuiltinCommonInstructions::Link",
+          "include": {
+            "includeConfig": 0
+          },
+          "target": "EV_PlanetMode"
         },
         {
           "type": "BuiltinCommonInstructions::Link",
@@ -2564,6 +4818,13 @@
           "include": {
             "includeConfig": 0
           },
+          "target": "EV_Revive"
+        },
+        {
+          "type": "BuiltinCommonInstructions::Link",
+          "include": {
+            "includeConfig": 0
+          },
           "target": "EV_Scoring"
         }
       ],
@@ -2582,6 +4843,34 @@
           "name": "",
           "renderingType": "",
           "visibility": true,
+          "cameras": [
+            {
+              "defaultSize": true,
+              "defaultViewport": true,
+              "height": 0,
+              "viewportBottom": 1,
+              "viewportLeft": 0,
+              "viewportRight": 1,
+              "viewportTop": 0,
+              "width": 0
+            }
+          ],
+          "effects": []
+        },
+        {
+          "ambientLightColorB": 200,
+          "ambientLightColorG": 200,
+          "ambientLightColorR": 200,
+          "camera3DFarPlaneDistance": 10000,
+          "camera3DFieldOfView": 45,
+          "camera3DNearPlaneDistance": 3,
+          "cameraType": "",
+          "followBaseLayerCamera": false,
+          "isLightingLayer": false,
+          "isLocked": false,
+          "name": "Cinematic",
+          "renderingType": "",
+          "visibility": false,
           "cameras": [
             {
               "defaultSize": true,
@@ -2857,6 +5146,27 @@
                 {
                   "type": {
                     "inverted": false,
+                    "value": "HideLayer"
+                  },
+                  "parameters": [
+                    "",
+                    "\"Cinematic\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Hide"
+                  },
+                  "parameters": [
+                    "ShieldGlow"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
                     "value": "Hide"
                   },
                   "parameters": [
@@ -2927,7 +5237,7 @@
                   "parameters": [
                     "GameOverTitle",
                     "=",
-                    "SceneWindowHeight() * 0.22"
+                    "SceneWindowHeight() / 2 - 320"
                   ],
                   "subInstructions": []
                 },
@@ -2939,7 +5249,7 @@
                   "parameters": [
                     "FinalDistanceText",
                     "=",
-                    "SceneWindowHeight() * 0.33"
+                    "SceneWindowHeight() / 2 - 140"
                   ],
                   "subInstructions": []
                 },
@@ -2951,7 +5261,7 @@
                   "parameters": [
                     "GameOverBestText",
                     "=",
-                    "SceneWindowHeight() * 0.39"
+                    "SceneWindowHeight() / 2 - 80"
                   ],
                   "subInstructions": []
                 },
@@ -2963,7 +5273,7 @@
                   "parameters": [
                     "NewBestText",
                     "=",
-                    "SceneWindowHeight() * 0.44"
+                    "SceneWindowHeight() / 2 - 30"
                   ],
                   "subInstructions": []
                 },
@@ -2975,7 +5285,7 @@
                   "parameters": [
                     "RestartButton",
                     "=",
-                    "SceneWindowHeight() * 0.56"
+                    "SceneWindowHeight() / 2 + 80"
                   ],
                   "subInstructions": []
                 },
@@ -2988,6 +5298,90 @@
                     "RestartLabel",
                     "=",
                     "RestartButton.Y() - 32"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "ReviveButton",
+                    "=",
+                    "SceneWindowHeight() / 2 + 192"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "ReviveLabel",
+                    "=",
+                    "ReviveButton.Y() - 12"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "MenuButton",
+                    "=",
+                    "SceneWindowHeight() / 2 + 302"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "MenuLabel",
+                    "=",
+                    "MenuButton.Y() - 24"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "GameOverPlanetsText",
+                    "=",
+                    "SceneWindowHeight() / 2 - 200"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ChangeColor"
+                  },
+                  "parameters": [
+                    "ProgressBack",
+                    "\"40;20;12\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "OpacityCapability::OpacityBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ProgressBack",
+                    "Opacity",
+                    "=",
+                    "170"
                   ],
                   "subInstructions": []
                 }
@@ -3064,6 +5458,121 @@
                         "\"BestEndlessDistance\"",
                         "",
                         "BestEndlessDistance"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "GroupExists"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"BestPlanetsBroken\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ReadNumberFromStorage"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"BestPlanetsBroken\"",
+                        "",
+                        "BestPlanetsBroken"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Comment",
+                  "color": {
+                    "b": 109,
+                    "g": 230,
+                    "r": 255,
+                    "textB": 0,
+                    "textG": 0,
+                    "textR": 0
+                  },
+                  "comment": "Planet-mode HUD (surface progress bar) only in Planet Breaker; Endless shows only the Ember background.",
+                  "comment2": ""
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "StringVariable"
+                      },
+                      "parameters": [
+                        "GameMode",
+                        "=",
+                        "\"Endless\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "ProgressBack"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "ProgressFill"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "PlanetHudText"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgVerdant"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgFrost"
                       ],
                       "subInstructions": []
                     }
@@ -3240,6 +5749,163 @@
               "events": []
             },
             {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"GameOver\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "GameOverTime",
+                    ">=",
+                    "RestartDelay"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "HasAnyTouchOrMouseStarted"
+                  },
+                  "parameters": [
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "CollisionPoint"
+                  },
+                  "parameters": [
+                    "MenuButton",
+                    "TouchX(StartedTouchOrMouseId(0), \"GameOver\")",
+                    "TouchY(StartedTouchOrMouseId(0), \"GameOver\")"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Scene"
+                  },
+                  "parameters": [
+                    "",
+                    "\"MainMenu\"",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "SIMULATE AD REVIVE (TEST) button: it only REQUESTS a revive (RequestRevive = true); EV_Revive does the work. A future Playgama rewarded-ad 'rewarded' callback should set RequestRevive the same way. No ad is shown or faked here.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"GameOver\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "GameOverTime",
+                    ">=",
+                    "RestartDelay"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BooleanVariable"
+                  },
+                  "parameters": [
+                    "ReviveUsed",
+                    "False",
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "HasAnyTouchOrMouseStarted"
+                  },
+                  "parameters": [
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "CollisionPoint"
+                  },
+                  "parameters": [
+                    "ReviveButton",
+                    "TouchX(StartedTouchOrMouseId(0), \"GameOver\")",
+                    "TouchY(StartedTouchOrMouseId(0), \"GameOver\")"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetBooleanVariable"
+                  },
+                  "parameters": [
+                    "RequestRevive",
+                    "True",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
               "type": "BuiltinCommonInstructions::Comment",
               "color": {
                 "b": 109,
@@ -3316,6 +5982,1364 @@
                 }
               ],
               "events": []
+            }
+          ],
+          "parameters": []
+        }
+      ]
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "lastChangeTimeStamp": 0,
+      "name": "EV_PlanetMode",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "PLANET BREAKER \u2014 same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planets cycle Ember -> Verdant -> Frost -> Ember...; each lap adds PlanetCycleExtraDistance and difficulty keeps rising (see EV_CrackMovement).",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Planet setup",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Runs once at scene start and after every broken planet: picks the theme, target distance and theme modifiers (Verdant = more crystals, Frost = more barriers/solid barriers).",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameMode",
+                    "=",
+                    "\"Planet\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BooleanVariable"
+                  },
+                  "parameters": [
+                    "PlanetSetupPending",
+                    "True",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetBooleanVariable"
+                  },
+                  "parameters": [
+                    "PlanetSetupPending",
+                    "False",
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "PlanetTheme",
+                    "=",
+                    "mod(PlanetIndex, 3)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "PlanetStartWorldY",
+                    "=",
+                    "CrackWorldY"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "PlanetName",
+                        "=",
+                        "\"EMBER\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "RockTint",
+                        "=",
+                        "\"255;255;255\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeCrystalBonus",
+                        "=",
+                        "-0.04"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeWallBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeSolidBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTargetDistance",
+                        "=",
+                        "PlanetDistance1 + PlanetCycleExtraDistance * floor(PlanetIndex / 3)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Show"
+                      },
+                      "parameters": [
+                        "BgEmber",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgVerdant"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgFrost"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "1"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "PlanetName",
+                        "=",
+                        "\"VERDANT\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "RockTint",
+                        "=",
+                        "\"200;240;205\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeCrystalBonus",
+                        "=",
+                        "0.15"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeWallBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeSolidBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTargetDistance",
+                        "=",
+                        "PlanetDistance2 + PlanetCycleExtraDistance * floor(PlanetIndex / 3)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Show"
+                      },
+                      "parameters": [
+                        "BgVerdant",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgEmber"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgFrost"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "2"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "PlanetName",
+                        "=",
+                        "\"FROST\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "RockTint",
+                        "=",
+                        "\"190;215;255\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeCrystalBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeWallBonus",
+                        "=",
+                        "0.15"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeSolidBonus",
+                        "=",
+                        "0.08"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTargetDistance",
+                        "=",
+                        "PlanetDistance3 + PlanetCycleExtraDistance * floor(PlanetIndex / 3)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Show"
+                      },
+                      "parameters": [
+                        "BgFrost",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgEmber"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgVerdant"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Progress toward the surface",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameMode",
+                    "=",
+                    "\"Planet\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "PlanetDistance",
+                    "=",
+                    "max(0, floor((CrackWorldY - PlanetStartWorldY) / PixelsPerMeter))"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ResizableCapability::ResizableBehavior::SetWidth"
+                  },
+                  "parameters": [
+                    "ProgressFill",
+                    "Resizable",
+                    "=",
+                    "max(1, 396 * min(1, PlanetDistance / PlanetTargetDistance))"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "PlanetHudText",
+                    "Text",
+                    "=",
+                    "\"PLANET \" + ToString(PlanetIndex + 1) + \"  \" + PlanetName + \"   \" + ToString(min(PlanetDistance, PlanetTargetDistance)) + \" / \" + ToString(PlanetTargetDistance) + \" m\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetCenterX"
+                  },
+                  "parameters": [
+                    "PlanetHudText",
+                    "=",
+                    "SceneWindowWidth() / 2"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ChangeColor"
+                      },
+                      "parameters": [
+                        "ProgressFill",
+                        "\"255;150;50\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "1"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ChangeColor"
+                      },
+                      "parameters": [
+                        "ProgressFill",
+                        "\"90;240;180\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "2"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ChangeColor"
+                      },
+                      "parameters": [
+                        "ProgressFill",
+                        "\"160;190;255\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Reach the surface -> break the planet",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameMode",
+                    "=",
+                    "\"Planet\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BuiltinCommonInstructions::CompareNumbers"
+                  },
+                  "parameters": [
+                    "PlanetDistance",
+                    ">=",
+                    "PlanetTargetDistance"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetStringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"PlanetBreak\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "BreakTime",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetBooleanVariable"
+                  },
+                  "parameters": [
+                    "BreakBurstDone",
+                    "False",
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "BranchDirection",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "SlowTimeRemaining",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "Obstacles",
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "Powerups",
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "PlanetCX",
+                    "=",
+                    "SceneWindowWidth() / 2"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "PlanetCY",
+                    "=",
+                    "SceneWindowHeight() * 0.42"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                  },
+                  "parameters": [
+                    "PlanetLeft",
+                    "Animation",
+                    "=",
+                    "PlanetTheme"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                  },
+                  "parameters": [
+                    "PlanetRight",
+                    "Animation",
+                    "=",
+                    "PlanetTheme"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "PlanetBrokenText",
+                    "Text",
+                    "=",
+                    "PlanetName + \" BROKEN!\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Hide"
+                  },
+                  "parameters": [
+                    "PlanetBrokenText"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ShowLayer"
+                  },
+                  "parameters": [
+                    "",
+                    "\"Cinematic\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Event-driven animation (BreakTime seconds): 0-0.35 planet pops in, 0.35-0.75 a glowing crack runs down its centre, 0.75-1.45 the two halves fly apart with an ease-out, then a message; at BreakDuration the next planet starts.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"PlanetBreak\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "BreakTime",
+                    "+",
+                    "TimeDelta()"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "SplitOffset",
+                    "=",
+                    "170 * (1 - pow(1 - clamp((BreakTime - 0.75) / 0.7, 0, 1), 3))"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "PlanetLeft",
+                    "Scale",
+                    "=",
+                    "(1 - pow(1 - clamp(BreakTime / 0.35, 0, 1), 3))"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "PlanetRight",
+                    "Scale",
+                    "=",
+                    "(1 - pow(1 - clamp(BreakTime / 0.35, 0, 1), 3))"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetX"
+                  },
+                  "parameters": [
+                    "PlanetLeft",
+                    "=",
+                    "PlanetCX - SplitOffset"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "PlanetLeft",
+                    "=",
+                    "PlanetCY + SplitOffset * 0.15"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetX"
+                  },
+                  "parameters": [
+                    "PlanetRight",
+                    "=",
+                    "PlanetCX + SplitOffset"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "PlanetRight",
+                    "=",
+                    "PlanetCY - SplitOffset * 0.15"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetAngle"
+                  },
+                  "parameters": [
+                    "PlanetLeft",
+                    "=",
+                    "-SplitOffset * 0.08"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetAngle"
+                  },
+                  "parameters": [
+                    "PlanetRight",
+                    "=",
+                    "SplitOffset * 0.08"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetX"
+                  },
+                  "parameters": [
+                    "PlanetCrack",
+                    "=",
+                    "PlanetCX"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "PlanetCrack",
+                    "=",
+                    "PlanetCY - 140"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetY"
+                  },
+                  "parameters": [
+                    "PlanetCrack",
+                    "Scale",
+                    "=",
+                    "clamp((BreakTime - 0.35) / 0.4, 0, 1) * 0.875"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "OpacityCapability::OpacityBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "PlanetCrack",
+                    "Opacity",
+                    "=",
+                    "255 * (1 - clamp((BreakTime - 0.9) / 0.3, 0, 1))"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetCenterX"
+                  },
+                  "parameters": [
+                    "PlanetBrokenText",
+                    "=",
+                    "PlanetCX"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "PlanetBrokenText",
+                    "=",
+                    "PlanetCY + 200"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "BreakTime",
+                        ">=",
+                        "0.75"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "BooleanVariable"
+                      },
+                      "parameters": [
+                        "BreakBurstDone",
+                        "False",
+                        ""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetBooleanVariable"
+                      },
+                      "parameters": [
+                        "BreakBurstDone",
+                        "True",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Show"
+                      },
+                      "parameters": [
+                        "PlanetBrokenText",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Create"
+                      },
+                      "parameters": [
+                        "",
+                        "ImpactFlash",
+                        "PlanetCX",
+                        "PlanetCY",
+                        "\"Cinematic\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ScalableCapability::ScalableBehavior::SetValue"
+                      },
+                      "parameters": [
+                        "ImpactFlash",
+                        "Scale",
+                        "=",
+                        "2.5"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetZOrder"
+                      },
+                      "parameters": [
+                        "ImpactFlash",
+                        "=",
+                        "5"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Repeat",
+                      "repeatExpression": "16",
+                      "conditions": [],
+                      "actions": [
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "Create"
+                          },
+                          "parameters": [
+                            "",
+                            "Spark",
+                            "PlanetCX",
+                            "PlanetCY",
+                            "\"\""
+                          ],
+                          "subInstructions": []
+                        },
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "SetNumberObjectVariable"
+                          },
+                          "parameters": [
+                            "Spark",
+                            "VX",
+                            "=",
+                            "RandomFloatInRange(-420, 420)"
+                          ],
+                          "subInstructions": []
+                        },
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "SetNumberObjectVariable"
+                          },
+                          "parameters": [
+                            "Spark",
+                            "VY",
+                            "=",
+                            "RandomFloatInRange(-420, 420) - EffectiveSpeed"
+                          ],
+                          "subInstructions": []
+                        },
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "SetNumberObjectVariable"
+                          },
+                          "parameters": [
+                            "Spark",
+                            "Life",
+                            "=",
+                            "RandomFloatInRange(0.2, 0.4)"
+                          ],
+                          "subInstructions": []
+                        }
+                      ],
+                      "events": []
+                    }
+                  ]
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "BreakTime",
+                        ">=",
+                        "BreakDuration"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetsBroken",
+                        "+",
+                        "1"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetIndex",
+                        "+",
+                        "1"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetBooleanVariable"
+                      },
+                      "parameters": [
+                        "PlanetSetupPending",
+                        "True",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "NextRowWorldY",
+                        "=",
+                        "CrackWorldY + TipScreenY + FirstRowOffset"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "HideLayer"
+                      },
+                      "parameters": [
+                        "",
+                        "\"Cinematic\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "GameState",
+                        "=",
+                        "\"Playing\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
             }
           ],
           "parameters": []
@@ -3409,6 +7433,18 @@
                     "value": "SetNumberVariable"
                   },
                   "parameters": [
+                    "TotalDistance",
+                    "=",
+                    "Distance"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
                     "ScrollSpeed",
                     "=",
                     "min(MaxSpeed, BaseSpeed * pow(SpeedGrowth, RunTime / SpeedGrowthInterval))"
@@ -3455,6 +7491,51 @@
                         "EffectiveSpeed",
                         "=",
                         "ScrollSpeed * SlowTimeFactor"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Comment",
+                  "color": {
+                    "b": 109,
+                    "g": 230,
+                    "r": 255,
+                    "textB": 0,
+                    "textG": 0,
+                    "textR": 0
+                  },
+                  "comment": "Planet Breaker: difficulty steps up per planet (PlanetDifficultyStep) and rises a little within each planet; speed keeps growing with RunTime across planets.",
+                  "comment2": ""
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "StringVariable"
+                      },
+                      "parameters": [
+                        "GameMode",
+                        "=",
+                        "\"Planet\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "DifficultyLevel",
+                        "=",
+                        "clamp(PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)"
                       ],
                       "subInstructions": []
                     }
@@ -3957,7 +8038,7 @@
                     "value": "TiledSpriteObject::YOffset"
                   },
                   "parameters": [
-                    "Background",
+                    "Backgrounds",
                     "=",
                     "-CrackWorldY"
                   ],
@@ -4184,7 +8265,7 @@
                   "parameters": [
                     "WallChance",
                     "=",
-                    "lerp(WallChanceStart, WallChanceEnd, DifficultyLevel)"
+                    "lerp(WallChanceStart, WallChanceEnd, DifficultyLevel) + ThemeWallBonus"
                   ],
                   "subInstructions": []
                 },
@@ -4196,7 +8277,7 @@
                   "parameters": [
                     "CrystalChance",
                     "=",
-                    "lerp(CrystalChanceStart, CrystalChanceEnd, DifficultyLevel)"
+                    "lerp(CrystalChanceStart, CrystalChanceEnd, DifficultyLevel) + ThemeCrystalBonus"
                   ],
                   "subInstructions": []
                 },
@@ -4208,7 +8289,7 @@
                   "parameters": [
                     "SolidChance",
                     "=",
-                    "lerp(SolidChanceStart, SolidChanceEnd, DifficultyLevel)"
+                    "lerp(SolidChanceStart, SolidChanceEnd, DifficultyLevel) + ThemeSolidBonus"
                   ],
                   "subInstructions": []
                 },
@@ -5014,6 +9095,17 @@
                                 "5"
                               ],
                               "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "ChangeColor"
+                              },
+                              "parameters": [
+                                "RockSmall",
+                                "RockTint"
+                              ],
+                              "subInstructions": []
                             }
                           ],
                           "events": []
@@ -5071,6 +9163,17 @@
                                 "RockMedium",
                                 "=",
                                 "5"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "ChangeColor"
+                              },
+                              "parameters": [
+                                "RockMedium",
+                                "RockTint"
                               ],
                               "subInstructions": []
                             }
@@ -5951,7 +10054,7 @@
                     "value": "TiledSpriteObject::SetColor"
                   },
                   "parameters": [
-                    "Background",
+                    "Backgrounds",
                     "\"150;185;255\""
                   ],
                   "subInstructions": []
@@ -6006,7 +10109,7 @@
                     "value": "TiledSpriteObject::SetColor"
                   },
                   "parameters": [
-                    "Background",
+                    "Backgrounds",
                     "\"255;255;255\""
                   ],
                   "subInstructions": []
@@ -6953,6 +11056,46 @@
               "events": []
             },
             {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BooleanVariable"
+                  },
+                  "parameters": [
+                    "ReviveUsed",
+                    "True",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Hide"
+                  },
+                  "parameters": [
+                    "ReviveButton"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Hide"
+                  },
+                  "parameters": [
+                    "ReviveLabel"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
               "type": "BuiltinCommonInstructions::Comment",
               "color": {
                 "b": 109,
@@ -6962,7 +11105,7 @@
                 "textG": 0,
                 "textR": 0
               },
-              "comment": "Endless mode: personal best is saved locally.",
+              "comment": "Endless: best distance. Planet Breaker: best planets broken. Both saved locally.",
               "comment2": ""
             },
             {
@@ -6979,63 +11122,19 @@
                     "\"Endless\""
                   ],
                   "subInstructions": []
-                },
-                {
-                  "type": {
-                    "inverted": false,
-                    "value": "BuiltinCommonInstructions::CompareNumbers"
-                  },
-                  "parameters": [
-                    "Distance",
-                    ">",
-                    "BestEndlessDistance"
-                  ],
-                  "subInstructions": []
                 }
               ],
               "actions": [
                 {
                   "type": {
                     "inverted": false,
-                    "value": "SetNumberVariable"
+                    "value": "Hide"
                   },
                   "parameters": [
-                    "BestEndlessDistance",
-                    "=",
-                    "Distance"
+                    "GameOverPlanetsText"
                   ],
                   "subInstructions": []
                 },
-                {
-                  "type": {
-                    "inverted": false,
-                    "value": "EcrireFichierExp"
-                  },
-                  "parameters": [
-                    "\"CracklineSave\"",
-                    "\"BestEndlessDistance\"",
-                    "BestEndlessDistance"
-                  ],
-                  "subInstructions": []
-                },
-                {
-                  "type": {
-                    "inverted": false,
-                    "value": "Show"
-                  },
-                  "parameters": [
-                    "NewBestText",
-                    ""
-                  ],
-                  "subInstructions": []
-                }
-              ],
-              "events": []
-            },
-            {
-              "type": "BuiltinCommonInstructions::Standard",
-              "conditions": [],
-              "actions": [
                 {
                   "type": {
                     "inverted": false,
@@ -7046,6 +11145,245 @@
                     "Text",
                     "=",
                     "\"BEST: \" + ToString(BestEndlessDistance) + \" m\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "BuiltinCommonInstructions::CompareNumbers"
+                      },
+                      "parameters": [
+                        "Distance",
+                        ">",
+                        "BestEndlessDistance"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "BestEndlessDistance",
+                        "=",
+                        "Distance"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "EcrireFichierExp"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"BestEndlessDistance\"",
+                        "BestEndlessDistance"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Show"
+                      },
+                      "parameters": [
+                        "NewBestText",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                      },
+                      "parameters": [
+                        "GameOverBestText",
+                        "Text",
+                        "=",
+                        "\"BEST: \" + ToString(BestEndlessDistance) + \" m\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameMode",
+                    "=",
+                    "\"Planet\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Show"
+                  },
+                  "parameters": [
+                    "GameOverPlanetsText",
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "GameOverPlanetsText",
+                    "Text",
+                    "=",
+                    "\"PLANETS BROKEN: \" + ToString(PlanetsBroken)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "FinalDistanceText",
+                    "Text",
+                    "=",
+                    "\"TOTAL DISTANCE: \" + ToString(Distance) + \" m\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "GameOverBestText",
+                    "Text",
+                    "=",
+                    "\"BEST: \" + ToString(BestPlanetsBroken) + \" PLANETS\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "BuiltinCommonInstructions::CompareNumbers"
+                      },
+                      "parameters": [
+                        "PlanetsBroken",
+                        ">",
+                        "BestPlanetsBroken"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "BestPlanetsBroken",
+                        "=",
+                        "PlanetsBroken"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "EcrireFichierExp"
+                      },
+                      "parameters": [
+                        "\"CracklineSave\"",
+                        "\"BestPlanetsBroken\"",
+                        "BestPlanetsBroken"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Show"
+                      },
+                      "parameters": [
+                        "NewBestText",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+                      },
+                      "parameters": [
+                        "GameOverBestText",
+                        "Text",
+                        "=",
+                        "\"BEST: \" + ToString(BestPlanetsBroken) + \" PLANETS\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetCenterX"
+                  },
+                  "parameters": [
+                    "GameOverPlanetsText",
+                    "=",
+                    "SceneWindowWidth() / 2"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetCenterX"
+                  },
+                  "parameters": [
+                    "ReviveLabel",
+                    "=",
+                    "SceneWindowWidth() / 2"
                   ],
                   "subInstructions": []
                 },
@@ -7106,6 +11444,378 @@
     {
       "associatedLayout": "Gameplay",
       "lastChangeTimeStamp": 0,
+      "name": "EV_Revive",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "REVIVE (modular). Anything that sets RequestRevive = true while GameState is GameOver triggers it: today the SIMULATE AD REVIVE (TEST) button, later the Playgama rewarded-ad callback. One revive per run (ReviveUsed). Score, distance, speed, difficulty and planet progress are all kept.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "BooleanVariable"
+              },
+              "parameters": [
+                "RequestRevive",
+                "True",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetBooleanVariable"
+              },
+              "parameters": [
+                "RequestRevive",
+                "False",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"GameOver\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BooleanVariable"
+                  },
+                  "parameters": [
+                    "ReviveUsed",
+                    "False",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetBooleanVariable"
+                  },
+                  "parameters": [
+                    "ReviveUsed",
+                    "True",
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "InvulnerabilityRemaining",
+                    "=",
+                    "ReviveInvulnerability"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "GameOverTime",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "BranchDirection",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "CooldownTimer",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "HideLayer"
+                  },
+                  "parameters": [
+                    "",
+                    "\"GameOver\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Hide"
+                  },
+                  "parameters": [
+                    "NewBestText"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ChangeColor"
+                  },
+                  "parameters": [
+                    "CrackTip",
+                    "\"255;255;255\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetStringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Comment",
+                  "color": {
+                    "b": 109,
+                    "g": 230,
+                    "r": 255,
+                    "textB": 0,
+                    "textG": 0,
+                    "textR": 0
+                  },
+                  "comment": "Clear lethal obstacles around the crack so it can't die again immediately (the 2 s protection covers the rest).",
+                  "comment2": ""
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberObjectVariable"
+                      },
+                      "parameters": [
+                        "Obstacles",
+                        "WorldY",
+                        "<",
+                        "CrackWorldY + ReviveClearAhead"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberObjectVariable"
+                      },
+                      "parameters": [
+                        "Obstacles",
+                        "WorldY",
+                        ">",
+                        "CrackWorldY - ReviveClearBehind"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Delete"
+                      },
+                      "parameters": [
+                        "Obstacles",
+                        ""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "Protective glow while invulnerable.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "NumberVariable"
+              },
+              "parameters": [
+                "InvulnerabilityRemaining",
+                ">",
+                "0"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "Show"
+              },
+              "parameters": [
+                "ShieldGlow",
+                ""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetX"
+              },
+              "parameters": [
+                "ShieldGlow",
+                "=",
+                "CrackWorldX"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetY"
+              },
+              "parameters": [
+                "ShieldGlow",
+                "=",
+                "TipScreenY"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ScalableCapability::ScalableBehavior::SetValue"
+              },
+              "parameters": [
+                "ShieldGlow",
+                "Scale",
+                "=",
+                "1 + 0.08 * sin(TimeFromStart() * 18)"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "OpacityCapability::OpacityBehavior::SetValue"
+              },
+              "parameters": [
+                "ShieldGlow",
+                "Opacity",
+                "=",
+                "160 + 95 * sin(TimeFromStart() * 18)"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "NumberVariable"
+              },
+              "parameters": [
+                "InvulnerabilityRemaining",
+                "<=",
+                "0"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "Hide"
+              },
+              "parameters": [
+                "ShieldGlow"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        }
+      ]
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "lastChangeTimeStamp": 0,
       "name": "EV_Scoring",
       "events": [
         {
@@ -7160,6 +11870,51 @@
                 "DistanceText",
                 "=",
                 "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetCenterX"
+              },
+              "parameters": [
+                "BestText",
+                "=",
+                "SceneWindowWidth() / 2"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "StringVariable"
+              },
+              "parameters": [
+                "GameMode",
+                "=",
+                "\"Planet\""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+              },
+              "parameters": [
+                "BestText",
+                "Text",
+                "=",
+                "\"PLANETS BROKEN: \" + ToString(PlanetsBroken) + \"   BEST: \" + ToString(BestPlanetsBroken)"
               ],
               "subInstructions": []
             },
