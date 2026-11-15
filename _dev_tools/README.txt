@@ -8,3 +8,6 @@ gdexport.cpp       - loads game.json with GDevelop's own engine (built from sour
 run_tests2.py      - automated play-tests of the exported build in headless Chrome
 make_art3.py       - Phase 3 art (planets, themes, shield)
 run_tests3.py      - Phase 3 play-tests: menu, planets, split, revive, resolutions
+gen_sim3.py        - generator safety search incl. worms and fissures (any-position recovery), up to 520 px/s
+make_art4.py       - worm and fissure art
+run_tests4.py      - tests: 1k planet progression, fissures, worms

@@ -61,12 +61,12 @@ async def main():
         await page.screenshot(path=f'{SHOTS}/p3_01_menu.png')
         await enter(page, 'Planet'); st = await P(page)
         check('Planet Breaker button -> Gameplay in Planet mode', st['scene'] == 'Gameplay' and st['mode'] == 'Planet' and st['state'] == 'Playing')
-        check('planet 1 = Ember, 500 m, progress HUD shown', st['theme'] == 0 and st['target'] == 500 and st['hud'] and st['bg'] == [True, False, False], st['hudText'])
+        check('planet 1 = Ember, 1000 m, progress HUD shown', st['theme'] == 0 and st['target'] == 1000 and st['hud'] and st['bg'] == [True, False, False], st['hudText'])
         await asyncio.sleep(1.0); st2 = await P(page)
         check('surface progress follows distance', st2['pdist'] > st['pdist'] and abs(st2['pdist'] - math.floor(st2['wy'] / 20)) <= 1, f"{st['pdist']} -> {st2['pdist']} m")
         await page.evaluate(setnum('InvulnerabilityRemaining', '1e9'))   # progression tests: don't let random rocks end the run
         diffs = [st2['diff']]
-        expect = [(1, 650, [False, True, False]), (2, 800, [False, False, True]), (0, 650, [True, False, False])]
+        expect = [(1, 2000, [False, True, False]), (2, 3000, [False, False, True]), (0, 4000, [True, False, False])]
         for k, (theme, target, bg) in enumerate(expect):
             await finish_planet(page)
             s = await waitp(page, lambda s: s['state'] == 'PlanetBreak', 3)

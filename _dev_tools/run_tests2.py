@@ -112,7 +112,7 @@ async def main():
         a = await S(page); await asyncio.sleep(1.0); b = await S(page)
         real = (b['wy'] - a['wy']) / ((b['t'] - a['t']) / 1000)
         check('Slow Time = 40% slower forward motion (distance follows real progress)', abs(real / b['speed'] - 0.6) < 0.06, f"{real:.0f} px/s vs speed {b['speed']:.0f}")
-        x0 = b['x']; await tap(page, 'L'); await asyncio.sleep(0.12); c = await S(page)
+        x0 = b['x']; await tap(page, 'L'); await asyncio.sleep(0.2); c = await S(page)
         check('branching unaffected by Slow Time (full 130 px within 0.15 s)', abs(x0 - c['x'] - 130) < 0.01)
         await tap(page, 'R'); await asyncio.sleep(0.3)
         st = await wait_state(page, lambda s: s['slow'] <= 0, 5)

@@ -275,6 +275,24 @@
       },
       {
         "alwaysLoaded": false,
+        "file": "assets/worm.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "worm",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/fissure.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "fissure",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
         "file": "assets/planet_ember_left.png",
         "kind": "image",
         "metadata": "",
@@ -1394,6 +1412,9 @@
             },
             {
               "name": "Crystal"
+            },
+            {
+              "name": "Worm"
             }
           ]
         },
@@ -1408,6 +1429,9 @@
             },
             {
               "name": "BarrierBreakable"
+            },
+            {
+              "name": "Worm"
             }
           ]
         },
@@ -1610,9 +1634,54 @@
           "value": 0.6
         },
         {
+          "name": "WormChanceStart",
+          "type": "number",
+          "value": 0.03
+        },
+        {
+          "name": "WormChanceEnd",
+          "type": "number",
+          "value": 0.12
+        },
+        {
+          "name": "WormSpeedStart",
+          "type": "number",
+          "value": 110
+        },
+        {
+          "name": "WormSpeedEnd",
+          "type": "number",
+          "value": 210
+        },
+        {
+          "name": "WormMinX",
+          "type": "number",
+          "value": 80
+        },
+        {
+          "name": "WormMaxX",
+          "type": "number",
+          "value": 640
+        },
+        {
+          "name": "FissureChanceStart",
+          "type": "number",
+          "value": 0.02
+        },
+        {
+          "name": "FissureChanceEnd",
+          "type": "number",
+          "value": 0.07
+        },
+        {
+          "name": "FissureClearance",
+          "type": "number",
+          "value": 1000
+        },
+        {
           "name": "BlockerChanceStart",
           "type": "number",
-          "value": 0.75
+          "value": 0.85
         },
         {
           "name": "BlockerChanceEnd",
@@ -1665,34 +1734,44 @@
           "value": 0.3
         },
         {
-          "name": "PlanetDistance1",
+          "name": "PlanetDistanceStep",
           "type": "number",
-          "value": 500
+          "value": 1000
         },
         {
-          "name": "PlanetDistance2",
+          "name": "ThemeCount",
           "type": "number",
-          "value": 650
+          "value": 3
         },
         {
-          "name": "PlanetDistance3",
+          "name": "PlanetDifficultyStart",
           "type": "number",
-          "value": 800
-        },
-        {
-          "name": "PlanetCycleExtraDistance",
-          "type": "number",
-          "value": 150
+          "value": 0.15
         },
         {
           "name": "PlanetDifficultyStep",
           "type": "number",
-          "value": 0.15
+          "value": 0.2
         },
         {
           "name": "PlanetProgressDifficulty",
           "type": "number",
           "value": 0.2
+        },
+        {
+          "name": "PlanetSpeedStep",
+          "type": "number",
+          "value": 1.12
+        },
+        {
+          "name": "PlanetMaxSpeed",
+          "type": "number",
+          "value": 520
+        },
+        {
+          "name": "PlanetSpeedRampCap",
+          "type": "number",
+          "value": 60
         },
         {
           "name": "BreakDuration",
@@ -1996,6 +2075,26 @@
         },
         {
           "name": "ThemeSolidBonus",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "WormChance",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "FissureChance",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "WormSpeed",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PlanetTime",
           "type": "number",
           "value": 0
         },
@@ -3052,6 +3151,153 @@
                           {
                             "x": 76.0,
                             "y": 42.4
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "Worm",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [
+            {
+              "name": "WorldY",
+              "type": "number",
+              "value": 0
+            },
+            {
+              "name": "Dir",
+              "type": "number",
+              "value": 1
+            },
+            {
+              "name": "Speed",
+              "type": "number",
+              "value": 150
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": true,
+                      "image": "worm",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 70,
+                        "y": 33
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": [
+                        [
+                          {
+                            "x": 4,
+                            "y": 13
+                          },
+                          {
+                            "x": 136,
+                            "y": 13
+                          },
+                          {
+                            "x": 136,
+                            "y": 53
+                          },
+                          {
+                            "x": 4,
+                            "y": 53
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "Fissure",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [
+            {
+              "name": "WorldY",
+              "type": "number",
+              "value": 0
+            },
+            {
+              "name": "Used",
+              "type": "boolean",
+              "value": false
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": true,
+                      "image": "fissure",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 32
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": [
+                        [
+                          {
+                            "x": 0,
+                            "y": 20
+                          },
+                          {
+                            "x": 720,
+                            "y": 20
+                          },
+                          {
+                            "x": 720,
+                            "y": 44
+                          },
+                          {
+                            "x": 0,
+                            "y": 44
                           }
                         ]
                       ]
@@ -4669,6 +4915,12 @@
               },
               {
                 "objectName": "Crystal"
+              },
+              {
+                "objectName": "Worm"
+              },
+              {
+                "objectName": "Fissure"
               }
             ]
           },
@@ -6003,7 +6255,7 @@
             "textG": 0,
             "textR": 0
           },
-          "comment": "PLANET BREAKER \u2014 same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planets cycle Ember -> Verdant -> Frost -> Ember...; each lap adds PlanetCycleExtraDistance and difficulty keeps rising (see EV_CrackMovement).",
+          "comment": "PLANET BREAKER \u2014 same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planet N needs N x PlanetDistanceStep metres (1000, 2000, 3000...). Themes cycle Ember -> Verdant -> Frost (ThemeCount); every planet is faster and harder (see EV_CrackMovement).",
           "comment2": ""
         },
         {
@@ -6077,7 +6329,7 @@
                   "parameters": [
                     "PlanetTheme",
                     "=",
-                    "mod(PlanetIndex, 3)"
+                    "mod(PlanetIndex, ThemeCount)"
                   ],
                   "subInstructions": []
                 },
@@ -6090,6 +6342,18 @@
                     "PlanetStartWorldY",
                     "=",
                     "CrackWorldY"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "PlanetTime",
+                    "=",
+                    "0"
                   ],
                   "subInstructions": []
                 }
@@ -6180,7 +6444,7 @@
                       "parameters": [
                         "PlanetTargetDistance",
                         "=",
-                        "PlanetDistance1 + PlanetCycleExtraDistance * floor(PlanetIndex / 3)"
+                        "PlanetDistanceStep * (PlanetIndex + 1)"
                       ],
                       "subInstructions": []
                     },
@@ -6303,7 +6567,7 @@
                       "parameters": [
                         "PlanetTargetDistance",
                         "=",
-                        "PlanetDistance2 + PlanetCycleExtraDistance * floor(PlanetIndex / 3)"
+                        "PlanetDistanceStep * (PlanetIndex + 1)"
                       ],
                       "subInstructions": []
                     },
@@ -6426,7 +6690,7 @@
                       "parameters": [
                         "PlanetTargetDistance",
                         "=",
-                        "PlanetDistance3 + PlanetCycleExtraDistance * floor(PlanetIndex / 3)"
+                        "PlanetDistanceStep * (PlanetIndex + 1)"
                       ],
                       "subInstructions": []
                     },
@@ -7507,7 +7771,7 @@
                     "textG": 0,
                     "textR": 0
                   },
-                  "comment": "Planet Breaker: difficulty steps up per planet (PlanetDifficultyStep) and rises a little within each planet; speed keeps growing with RunTime across planets.",
+                  "comment": "Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and faster (x PlanetSpeedStep per planet, up to PlanetMaxSpeed); within a planet speed ramps for its first PlanetSpeedRampCap seconds and difficulty rises a little.",
                   "comment2": ""
                 },
                 {
@@ -7533,14 +7797,83 @@
                         "value": "SetNumberVariable"
                       },
                       "parameters": [
+                        "PlanetTime",
+                        "+",
+                        "TimeDelta()"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
                         "DifficultyLevel",
                         "=",
-                        "clamp(PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)"
+                        "clamp(PlanetDifficultyStart + PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ScrollSpeed",
+                        "=",
+                        "min(PlanetMaxSpeed, BaseSpeed * pow(PlanetSpeedStep, PlanetIndex) * pow(SpeedGrowth, min(PlanetTime, PlanetSpeedRampCap) / SpeedGrowthInterval))"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "EffectiveSpeed",
+                        "=",
+                        "ScrollSpeed"
                       ],
                       "subInstructions": []
                     }
                   ],
-                  "events": []
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "NumberVariable"
+                          },
+                          "parameters": [
+                            "SlowTimeRemaining",
+                            ">",
+                            "0"
+                          ],
+                          "subInstructions": []
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "inverted": false,
+                            "value": "SetNumberVariable"
+                          },
+                          "parameters": [
+                            "EffectiveSpeed",
+                            "=",
+                            "ScrollSpeed * SlowTimeFactor"
+                          ],
+                          "subInstructions": []
+                        }
+                      ],
+                      "events": []
+                    }
+                  ]
                 }
               ]
             }
@@ -8311,6 +8644,42 @@
                     "value": "SetNumberVariable"
                   },
                   "parameters": [
+                    "WormChance",
+                    "=",
+                    "lerp(WormChanceStart, WormChanceEnd, DifficultyLevel)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "FissureChance",
+                    "=",
+                    "lerp(FissureChanceStart, FissureChanceEnd, DifficultyLevel)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "WormSpeed",
+                    "=",
+                    "lerp(WormSpeedStart, WormSpeedEnd, DifficultyLevel)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
                     "PrevSafeLane",
                     "=",
                     "SafeLane"
@@ -8549,6 +8918,275 @@
                         "RowType",
                         "=",
                         "1"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "RowRoll",
+                        ">=",
+                        "EmptyChance + WallChance"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "RowRoll",
+                        "<",
+                        "EmptyChance + WallChance + WormChance"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "RowType",
+                        "=",
+                        "3"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "RowRoll",
+                        ">=",
+                        "EmptyChance + WallChance + WormChance"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "RowRoll",
+                        "<",
+                        "EmptyChance + WallChance + WormChance + FissureChance"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "RowType",
+                        "=",
+                        "4"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Comment",
+                  "color": {
+                    "b": 109,
+                    "g": 230,
+                    "r": 255,
+                    "textB": 0,
+                    "textG": 0,
+                    "textR": 0
+                  },
+                  "comment": "WORM row (RowType 3): only a burrowing worm, sweeping side to side between WormMinX and WormMaxX. Nothing else in the row, so there is always room to slip past it.",
+                  "comment2": ""
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "RowType",
+                        "=",
+                        "3"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Create"
+                      },
+                      "parameters": [
+                        "",
+                        "Worm",
+                        "RandomFloatInRange(WormMinX, WormMaxX)",
+                        "TipScreenY - (RowWorldY - CrackWorldY)",
+                        "\"\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberObjectVariable"
+                      },
+                      "parameters": [
+                        "Worm",
+                        "WorldY",
+                        "=",
+                        "RowWorldY"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberObjectVariable"
+                      },
+                      "parameters": [
+                        "Worm",
+                        "Dir",
+                        "=",
+                        "RandomInRange(0, 1) * 2 - 1"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberObjectVariable"
+                      },
+                      "parameters": [
+                        "Worm",
+                        "Speed",
+                        "=",
+                        "WormSpeed"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ChangeColor"
+                      },
+                      "parameters": [
+                        "Worm",
+                        "RockTint"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetZOrder"
+                      },
+                      "parameters": [
+                        "Worm",
+                        "=",
+                        "5"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Comment",
+                  "color": {
+                    "b": 109,
+                    "g": 230,
+                    "r": 255,
+                    "textB": 0,
+                    "textG": 0,
+                    "textR": 0
+                  },
+                  "comment": "FISSURE row (RowType 4): a full-width ground gap. Touching it forces a branch in a random direction (EV_Collisions). The next FissureClearance px stay empty so the player can always recover from either direction.",
+                  "comment2": ""
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "RowType",
+                        "=",
+                        "4"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Create"
+                      },
+                      "parameters": [
+                        "",
+                        "Fissure",
+                        "0",
+                        "TipScreenY - (RowWorldY - CrackWorldY)",
+                        "\"\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberObjectVariable"
+                      },
+                      "parameters": [
+                        "Fissure",
+                        "WorldY",
+                        "=",
+                        "RowWorldY"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetZOrder"
+                      },
+                      "parameters": [
+                        "Fissure",
+                        "=",
+                        "2"
                       ],
                       "subInstructions": []
                     }
@@ -8928,8 +9566,20 @@
                               },
                               "parameters": [
                                 "RowType",
-                                "!=",
-                                "0"
+                                ">=",
+                                "1"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "NumberVariable"
+                              },
+                              "parameters": [
+                                "RowType",
+                                "<=",
+                                "2"
                               ],
                               "subInstructions": []
                             },
@@ -9607,7 +10257,20 @@
                 },
                 {
                   "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [],
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "RowType",
+                        "!=",
+                        "4"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
                   "actions": [
                     {
                       "type": {
@@ -9618,6 +10281,38 @@
                         "NextRowWorldY",
                         "+",
                         "RowGap"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "RowType",
+                        "=",
+                        "4"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "NextRowWorldY",
+                        "+",
+                        "FissureClearance"
                       ],
                       "subInstructions": []
                     }
@@ -9725,6 +10420,284 @@
                   "parameters": [
                     "Powerups",
                     ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "Fissure",
+                    "=",
+                    "TipScreenY - (Fissure.WorldY - CrackWorldY)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PosY"
+                  },
+                  "parameters": [
+                    "Fissure",
+                    ">",
+                    "SceneWindowHeight() + 80"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "Fissure",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Burrowing worms",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Worms move sideways in world space (slowed by Slow Time like everything else) and turn around at WormMinX / WormMaxX.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetX"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "+",
+                    "Worm.Dir * Worm.Speed * TimeDelta() * EffectiveSpeed / ScrollSpeed"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetY"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "Scale",
+                    "=",
+                    "1 + 0.07 * sin(TimeFromStart() * 12 + Worm.X() * 0.05)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PosX"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "<",
+                    "WormMinX"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "Dir",
+                    "<",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "Dir",
+                    "=",
+                    "1"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PosX"
+                  },
+                  "parameters": [
+                    "Worm",
+                    ">",
+                    "WormMaxX"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "Dir",
+                    ">",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "Dir",
+                    "=",
+                    "-1"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "Dir",
+                    "<",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "FlippableCapability::FlippableBehavior::FlipX"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "Flippable",
+                    "yes"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "Dir",
+                    ">",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "FlippableCapability::FlippableBehavior::FlipX"
+                  },
+                  "parameters": [
+                    "Worm",
+                    "Flippable",
+                    "no"
                   ],
                   "subInstructions": []
                 }
@@ -10695,6 +11668,236 @@
       "lastChangeTimeStamp": 0,
       "name": "EV_Collisions",
       "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "FISSURE: touching a ground gap forces an immediate branch in a random direction (even mid-branch). Each fissure triggers once.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "StringVariable"
+              },
+              "parameters": [
+                "GameState",
+                "=",
+                "\"Playing\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "CollisionNP"
+              },
+              "parameters": [
+                "CrackHitbox",
+                "Fissure",
+                "",
+                "",
+                ""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "BooleanObjectVariable"
+              },
+              "parameters": [
+                "Fissure",
+                "Used",
+                "False",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetBooleanObjectVariable"
+              },
+              "parameters": [
+                "Fissure",
+                "Used",
+                "True",
+                ""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "BranchDirection",
+                "=",
+                "RandomInRange(0, 1) * 2 - 1"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "BranchTimer",
+                "=",
+                "0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "BranchStartX",
+                "=",
+                "CrackWorldX"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "CooldownTimer",
+                "=",
+                "0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "Hide"
+              },
+              "parameters": [
+                "HintText"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "Create"
+              },
+              "parameters": [
+                "",
+                "ImpactFlash",
+                "CrackWorldX",
+                "TipScreenY",
+                "\"\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ChangeColor"
+              },
+              "parameters": [
+                "ImpactFlash",
+                "\"255;160;60\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetZOrder"
+              },
+              "parameters": [
+                "ImpactFlash",
+                "=",
+                "12"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Repeat",
+              "repeatExpression": "8",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Create"
+                  },
+                  "parameters": [
+                    "",
+                    "Spark",
+                    "CrackWorldX",
+                    "TipScreenY",
+                    "\"\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "VX",
+                    "=",
+                    "BranchDirection * RandomFloatInRange(100, 320)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "VY",
+                    "=",
+                    "RandomFloatInRange(-200, 60)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "Life",
+                    "=",
+                    "RandomFloatInRange(0.2, 0.4)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ]
+        },
         {
           "type": "BuiltinCommonInstructions::Comment",
           "color": {

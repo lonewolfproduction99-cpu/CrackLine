@@ -27,6 +27,7 @@ def setov(obj, var, op, val): return A("SetNumberObjectVariable", obj, var, op, 
 def setx(obj, val, op="="): return A("SetX", obj, op, val)
 def sety(obj, val, op="="): return A("SetY", obj, op, val)
 def posy(obj, op, val): return C("PosY", obj, op, val)
+def posx(obj, op, val): return C("PosX", obj, op, val)
 def create(obj, x, y, layer='""'): return A("Create", "", obj, x, y, layer)
 def delete(obj): return A("Delete", obj, "")
 def opacity(obj, op, val): return A("OpacityCapability::OpacityBehavior::SetValue", obj, "Opacity", op, val)
@@ -56,12 +57,15 @@ TUNING = [
     ("SolidChanceStart", P["SolidChanceStart"]), ("SolidChanceEnd", P["SolidChanceEnd"]),
     ("BreakChanceStart", P["BreakChanceStart"]), ("BreakChanceEnd", P["BreakChanceEnd"]),
     ("WallBreakableShare", P["WallBreakableShare"]),
+    ("WormChanceStart", P["WormChanceStart"]), ("WormChanceEnd", P["WormChanceEnd"]), ("WormSpeedStart", P["WormSpeedStart"]), ("WormSpeedEnd", P["WormSpeedEnd"]),
+    ("WormMinX", P["WormMinX"]), ("WormMaxX", P["WormMaxX"]), ("FissureChanceStart", P["FissureChanceStart"]), ("FissureChanceEnd", P["FissureChanceEnd"]), ("FissureClearance", P["FissureClearance"]),
     ("BlockerChanceStart", P["BlockerChanceStart"]), ("BlockerChanceEnd", P["BlockerChanceEnd"]), ("CorridorStayChance", P["CorridorStayChance"]), ("LaneJitterX", P["LaneJitterX"]), ("RowJitterY", P["RowJitterY"]),
     ("PowerupChance", P["PowerupChance"]), ("PowerupCooldownTime", P["PowerupCooldownTime"]),
     ("SlowTimeDuration", P["SlowTimeDuration"]), ("SlowTimeFactor", P["SlowTimeFactor"]), ("StrengthMaxCharges", P["StrengthMaxCharges"]),
     ("RestartDelay", 0.3),
-    ("PlanetDistance1", 500), ("PlanetDistance2", 650), ("PlanetDistance3", 800), ("PlanetCycleExtraDistance", 150),
-    ("PlanetDifficultyStep", 0.15), ("PlanetProgressDifficulty", 0.2), ("BreakDuration", 2.0),
+    ("PlanetDistanceStep", 1000), ("ThemeCount", 3),
+    ("PlanetDifficultyStart", 0.15), ("PlanetDifficultyStep", 0.2), ("PlanetProgressDifficulty", 0.2),
+    ("PlanetSpeedStep", 1.12), ("PlanetMaxSpeed", 520), ("PlanetSpeedRampCap", 60), ("BreakDuration", 2.0),
     ("ReviveInvulnerability", 2), ("ReviveClearBehind", 250), ("ReviveClearAhead", 750),
 ]
 STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLevel", "CrackWorldX", "CrackWorldY", "TipScreenY",
@@ -71,7 +75,7 @@ STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLeve
          "LaneIter", "LaneWidth", "BlockerChance", "CrackLane", "CorridorShift", "TypeRoll", "ObjType", "LaneX", "ObjWorldY",
          "PowerupCooldown", "SlowTimeRemaining", "StrengthCharges", "InvulnerabilityRemaining", "GameOverTime",
          "TotalDistance", "PlanetIndex", "PlanetTheme", "PlanetsBroken", "PlanetTargetDistance", "PlanetDistance", "PlanetStartWorldY",
-         "ThemeCrystalBonus", "ThemeWallBonus", "ThemeSolidBonus", "BreakTime", "SplitOffset", "PlanetCX", "PlanetCY"]
+         "ThemeCrystalBonus", "ThemeWallBonus", "ThemeSolidBonus", "WormChance", "FissureChance", "WormSpeed", "PlanetTime", "BreakTime", "SplitOffset", "PlanetCX", "PlanetCY"]
 scene_vars = [num(n, v) for n, v in TUNING] + [st("GameState", "Playing"), st("RockTint", "255;255;255"), st("PlanetName", "EMBER")] + [num(n, 0) for n in STATE] + \
     [boo("ReviveUsed", False), boo("RequestRevive", False), boo("PlanetSetupPending", True), boo("BreakBurstDone", False)]
 global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("BestPlanetsBroken", 0)]
@@ -79,7 +83,7 @@ global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("Be
 # ---------------------------------------------------------------- resources & objects
 IMAGES = ["bg_soil", "rock_small", "rock_medium", "crack_tip", "crack_hitbox", "trail_segment", "spark", "impact_flash", "ui_overlay",
           "ui_button", "barrier_solid", "barrier_breakable", "crystal_purple", "crystal_pink", "crystal_cyan", "powerup_slow", "powerup_strength",
-          "bg_verdant", "bg_frost", "planet_crack", "shield_glow", "ui_white", "ui_button_blue"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")]
+          "bg_verdant", "bg_frost", "planet_crack", "shield_glow", "ui_white", "ui_button_blue", "worm", "fissure"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")]
 resources = [{"alwaysLoaded": False, "file": f"assets/{n}.png", "kind": "image", "metadata": "", "name": n, "smoothed": True, "userAdded": True} for n in IMAGES]
 
 import math
@@ -119,6 +123,8 @@ objects = [
     sprite("BarrierSolid", "barrier_solid", origin=(56, 32), mask=rect(56, 32, HIT["BarrierSolid"][1], HIT["BarrierSolid"][2]), variables=wvar),
     sprite("Crystal", "crystal_purple", origin=(48, 54), mask=octagon(48, 54, HIT["Crystal"][1]), variables=wvar,
            anims=[("Purple", "crystal_purple"), ("Pink", "crystal_pink"), ("Cyan", "crystal_cyan")]),
+    sprite("Worm", "worm", origin=(70, 33), mask=rect(70, 33, HIT["Worm"][1], HIT["Worm"][2]), variables=wvar + [num("Dir", 1), num("Speed", 150)]),
+    sprite("Fissure", "fissure", origin=(0, 32), mask=rect(360, 32, 360, 12), variables=wvar + [boo("Used", False)]),
     sprite("PowerSlow", "powerup_slow", origin=(40, 40), mask=octagon(40, 40, 36), variables=wvar),
     sprite("PowerStrength", "powerup_strength", origin=(40, 40), mask=octagon(40, 40, 36), variables=wvar),
     sprite("TrailSegment", "trail_segment", origin=(0, 24), center=(0, 24), variables=wvar),
@@ -155,15 +161,15 @@ folders = {"folderName": "__ROOT", "children": [
     {"folderName": "World", "children": [{"objectName": "BgEmber"}, {"objectName": "BgVerdant"}, {"objectName": "BgFrost"}]},
     {"folderName": "Planet", "children": [{"objectName": n} for n in ["PlanetLeft", "PlanetRight", "PlanetCrack", "PlanetBrokenText", "ShieldGlow"]]},
     {"folderName": "Crack", "children": [{"objectName": n} for n in ["CrackTip", "CrackHitbox", "TrailSegment", "Spark", "ImpactFlash"]]},
-    {"folderName": "Obstacles", "children": [{"objectName": n} for n in ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Crystal"]]},
+    {"folderName": "Obstacles", "children": [{"objectName": n} for n in ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Crystal", "Worm", "Fissure"]]},
     {"folderName": "Powerups", "children": [{"objectName": "PowerSlow"}, {"objectName": "PowerStrength"}]},
     {"folderName": "UI", "children": [{"objectName": n} for n in ["DistanceText", "BestText", "SlowText", "StrengthText", "HintText", "Overlay",
                                                                    "GameOverTitle", "FinalDistanceText", "GameOverBestText", "NewBestText", "RestartButton", "RestartLabel",
                                                                    "ReviveButton", "ReviveLabel", "MenuButton", "MenuLabel", "GameOverPlanetsText", "ProgressBack", "ProgressFill", "PlanetHudText"]]},
 ]}
 def grp(name, objs): return {"name": name, "objects": [{"name": o} for o in objs]}
-groups = [grp("Obstacles", ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Crystal"]),
-          grp("Breakable", ["RockSmall", "RockMedium", "BarrierBreakable"]),
+groups = [grp("Obstacles", ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Crystal", "Worm"]),
+          grp("Breakable", ["RockSmall", "RockMedium", "BarrierBreakable", "Worm"]),
           grp("Powerups", ["PowerSlow", "PowerStrength"]),
           grp("Backgrounds", ["BgEmber", "BgVerdant", "BgFrost"]), grp("Rocks", ["RockSmall", "RockMedium"])]
 
@@ -279,8 +285,12 @@ ev_movement = [
             setv("ScrollSpeed", "=", "min(MaxSpeed, BaseSpeed * pow(SpeedGrowth, RunTime / SpeedGrowthInterval))"),
             setv("EffectiveSpeed", "=", "ScrollSpeed"),
         ], [ev([isv("SlowTimeRemaining", ">", "0")], [setv("EffectiveSpeed", "=", "ScrollSpeed * SlowTimeFactor")]),
-            comment("Planet Breaker: difficulty steps up per planet (PlanetDifficultyStep) and rises a little within each planet; speed keeps growing with RunTime across planets."),
-            ev([iss("GameMode", '"Planet"')], [setv("DifficultyLevel", "=", "clamp(PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)")])]),
+            comment("Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and faster (x PlanetSpeedStep per planet, up to PlanetMaxSpeed); within a planet speed ramps for its first PlanetSpeedRampCap seconds and difficulty rises a little."),
+            ev([iss("GameMode", '"Planet"')], [setv("PlanetTime", "+", "TimeDelta()"),
+                setv("DifficultyLevel", "=", "clamp(PlanetDifficultyStart + PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)"),
+                setv("ScrollSpeed", "=", "min(PlanetMaxSpeed, BaseSpeed * pow(PlanetSpeedStep, PlanetIndex) * pow(SpeedGrowth, min(PlanetTime, PlanetSpeedRampCap) / SpeedGrowthInterval))"),
+                setv("EffectiveSpeed", "=", "ScrollSpeed")],
+               [ev([isv("SlowTimeRemaining", ">", "0")], [setv("EffectiveSpeed", "=", "ScrollSpeed * SlowTimeFactor")])])]),
     ]),
     group("Input (tap / click)", [
         comment("One tap = one branch. Taps during a branch or the short cooldown are ignored (no queueing). Left half = left, right half = right."),
@@ -355,6 +365,9 @@ ev_spawner = [
             setv("CrystalChance", "=", L("CrystalChanceStart", "CrystalChanceEnd") + " + ThemeCrystalBonus"),
             setv("SolidChance", "=", L("SolidChanceStart", "SolidChanceEnd") + " + ThemeSolidBonus"),
             setv("BreakChance", "=", L("BreakChanceStart", "BreakChanceEnd")),
+            setv("WormChance", "=", L("WormChanceStart", "WormChanceEnd")),
+            setv("FissureChance", "=", L("FissureChanceStart", "FissureChanceEnd")),
+            setv("WormSpeed", "=", L("WormSpeedStart", "WormSpeedEnd")),
             setv("PrevSafeLane", "=", "SafeLane"),
             setv("BlockerChance", "=", L("BlockerChanceStart", "BlockerChanceEnd")),
             setv("CrackLane", "=", "clamp(floor(CrackWorldX / LaneWidth), 0, LaneCount - 1)"),
@@ -369,6 +382,16 @@ ev_spawner = [
                     setv("CorridorMin", "=", "min(PrevSafeLane, SafeLane)"), setv("CorridorMax", "=", "max(PrevSafeLane, SafeLane) + 1")]),
             ev([isv("RowRoll", "<", "EmptyChance")], [setv("RowType", "=", "0")]),
             ev([isv("RowRoll", ">=", "EmptyChance"), isv("RowRoll", "<", "EmptyChance + WallChance")], [setv("RowType", "=", "1")]),
+            ev([isv("RowRoll", ">=", "EmptyChance + WallChance"), isv("RowRoll", "<", "EmptyChance + WallChance + WormChance")], [setv("RowType", "=", "3")]),
+            ev([isv("RowRoll", ">=", "EmptyChance + WallChance + WormChance"), isv("RowRoll", "<", "EmptyChance + WallChance + WormChance + FissureChance")], [setv("RowType", "=", "4")]),
+            comment("WORM row (RowType 3): only a burrowing worm, sweeping side to side between WormMinX and WormMaxX. Nothing else in the row, so there is always room to slip past it."),
+            ev([isv("RowType", "=", "3")], [
+                create("Worm", "RandomFloatInRange(WormMinX, WormMaxX)", screen_y("RowWorldY")), setov("Worm", "WorldY", "=", "RowWorldY"),
+                setov("Worm", "Dir", "=", "RandomInRange(0, 1) * 2 - 1"), setov("Worm", "Speed", "=", "WormSpeed"),
+                A("ChangeColor", "Worm", "RockTint"), A("SetZOrder", "Worm", "=", "5")]),
+            comment("FISSURE row (RowType 4): a full-width ground gap. Touching it forces a branch in a random direction (EV_Collisions). The next FissureClearance px stay empty so the player can always recover from either direction."),
+            ev([isv("RowType", "=", "4")], [
+                create("Fissure", "0", screen_y("RowWorldY")), setov("Fissure", "WorldY", "=", "RowWorldY"), A("SetZOrder", "Fissure", "=", "2")]),
             repeat("LaneCount", [], [
                 comment("Lanes inside the corridor are skipped: (lane - min) * (lane - max) > 0 only outside it."),
                 ev([cmp("(LaneIter - CorridorMin) * (LaneIter - CorridorMax)", ">", "0")], [
@@ -385,7 +408,7 @@ ev_spawner = [
                            [ev([cmp("RandomFloat(1)", ">=", "0.5")], [setv("ObjType", "=", "2")])]),
                     ]),
                     comment("Anti-camping: if this lane is where the crack is right now (and outside the corridor), block it with BlockerChance, so going straight is rarely safe."),
-                    ev([isv("ObjType", "=", "0"), isv("RowType", "!=", "0"), isv("LaneIter", "=", "CrackLane"), cmp("RandomFloat(1)", "<", "BlockerChance")],
+                    ev([isv("ObjType", "=", "0"), isv("RowType", ">=", "1"), isv("RowType", "<=", "2"), isv("LaneIter", "=", "CrackLane"), cmp("RandomFloat(1)", "<", "BlockerChance")],
                        [setv("ObjType", "=", "3")], [ev([isv("TypeRoll", ">=", "CrystalChance")], [setv("ObjType", "=", "1")],
                                                        [ev([cmp("RandomFloat(1)", ">=", "0.5")], [setv("ObjType", "=", "2")])])]),
                     ev([isv("ObjType", "=", "1")], spawn("RockSmall", "ObjWorldY", [A("ChangeColor", "RockSmall", "RockTint")])),
@@ -406,13 +429,25 @@ ev_spawner = [
                 ev([isv("TypeRoll", "<", "0.5")], spawn("PowerSlow", "ObjWorldY")),
                 ev([isv("TypeRoll", ">=", "0.5")], spawn("PowerStrength", "ObjWorldY")),
             ]),
-            ev([], [setv("NextRowWorldY", "+", "RowGap")]),
+            ev([isv("RowType", "!=", "4")], [setv("NextRowWorldY", "+", "RowGap")]),
+            ev([isv("RowType", "=", "4")], [setv("NextRowWorldY", "+", "FissureClearance")]),
         ]),
     ]),
     group("Scroll and clean up", [
         ev([], [sety("Obstacles", screen_y("Obstacles.WorldY")), sety("Powerups", screen_y("Powerups.WorldY"))]),
         ev([posy("Obstacles", ">", "SceneWindowHeight() + 120")], [delete("Obstacles")]),
         ev([posy("Powerups", ">", "SceneWindowHeight() + 120")], [delete("Powerups")]),
+        ev([], [sety("Fissure", screen_y("Fissure.WorldY"))]),
+        ev([posy("Fissure", ">", "SceneWindowHeight() + 80")], [delete("Fissure")]),
+    ]),
+    group("Burrowing worms", [
+        comment("Worms move sideways in world space (slowed by Slow Time like everything else) and turn around at WormMinX / WormMaxX."),
+        ev([PLAYING], [setx("Worm", "Worm.Dir * Worm.Speed * TimeDelta() * EffectiveSpeed / ScrollSpeed", op="+"),
+                       scaley("Worm", "=", "1 + 0.07 * sin(TimeFromStart() * 12 + Worm.X() * 0.05)")]),
+        ev([posx("Worm", "<", "WormMinX"), C("NumberObjectVariable", "Worm", "Dir", "<", "0")], [setov("Worm", "Dir", "=", "1")]),
+        ev([posx("Worm", ">", "WormMaxX"), C("NumberObjectVariable", "Worm", "Dir", ">", "0")], [setov("Worm", "Dir", "=", "-1")]),
+        ev([C("NumberObjectVariable", "Worm", "Dir", "<", "0")], [A("FlippableCapability::FlippableBehavior::FlipX", "Worm", "Flippable", "yes")]),
+        ev([C("NumberObjectVariable", "Worm", "Dir", ">", "0")], [A("FlippableCapability::FlippableBehavior::FlipX", "Worm", "Flippable", "no")]),
     ]),
 ]
 
@@ -442,6 +477,13 @@ ev_powerups = [
 ]
 
 ev_collisions = [
+    comment("FISSURE: touching a ground gap forces an immediate branch in a random direction (even mid-branch). Each fissure triggers once."),
+    ev([PLAYING, C("CollisionNP", "CrackHitbox", "Fissure", "", "", ""), C("BooleanObjectVariable", "Fissure", "Used", "False", "")], [
+        A("SetBooleanObjectVariable", "Fissure", "Used", "True", ""),
+        setv("BranchDirection", "=", "RandomInRange(0, 1) * 2 - 1"), setv("BranchTimer", "=", "0"), setv("BranchStartX", "=", "CrackWorldX"),
+        setv("CooldownTimer", "=", "0"), A("Hide", "HintText"),
+        create("ImpactFlash", "CrackWorldX", "TipScreenY"), color("ImpactFlash", "255;160;60"), A("SetZOrder", "ImpactFlash", "=", "12"),
+    ], [spark_burst("8", "BranchDirection * RandomFloatInRange(100, 320)", "RandomFloatInRange(-200, 60)")]),
     comment("COLLISIONS — only the small hidden CrackHitbox at the tip is tested. Order matters: first Crack Strength breaks Breakable obstacles (rocks, breakable barriers), then anything still touched kills, unless InvulnerabilityRemaining > 0 (used by the revive in Phase 3)."),
     ev([PLAYING, isv("StrengthCharges", ">", "0"), C("CollisionNP", "CrackHitbox", "Breakable", "", "", "")], [
         create("ImpactFlash", "Breakable.X()", "Breakable.Y()"), A("SetZOrder", "ImpactFlash", "=", "12"),
@@ -490,17 +532,17 @@ def theme(i, name, rocktint, cb, wb, sb, bg):
     hide = [A("Hide", o) for o in ("BgEmber", "BgVerdant", "BgFrost") if o != bg]
     return ev([isv("PlanetTheme", "=", str(i))], [sets("PlanetName", f'"{name}"'), sets("RockTint", f'"{rocktint}"'),
         setv("ThemeCrystalBonus", "=", cb), setv("ThemeWallBonus", "=", wb), setv("ThemeSolidBonus", "=", sb),
-        setv("PlanetTargetDistance", "=", f"PlanetDistance{i + 1} + PlanetCycleExtraDistance * floor(PlanetIndex / 3)"),
+        setv("PlanetTargetDistance", "=", "PlanetDistanceStep * (PlanetIndex + 1)"),
         A("Show", bg, "")] + hide)
 EASE = "(1 - pow(1 - clamp({}, 0, 1), 3))"
 ev_planet = [
-    comment("PLANET BREAKER — same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planets cycle Ember -> Verdant -> Frost -> Ember...; each lap adds PlanetCycleExtraDistance and difficulty keeps rising (see EV_CrackMovement)."),
+    comment("PLANET BREAKER — same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planet N needs N x PlanetDistanceStep metres (1000, 2000, 3000...). Themes cycle Ember -> Verdant -> Frost (ThemeCount); every planet is faster and harder (see EV_CrackMovement)."),
     group("Planet setup", [
         comment("Runs once at scene start and after every broken planet: picks the theme, target distance and theme modifiers (Verdant = more crystals, Frost = more barriers/solid barriers)."),
         ev([PLANET, C("BooleanVariable", "PlanetSetupPending", "True", "")], [
             A("SetBooleanVariable", "PlanetSetupPending", "False", ""),
-            setv("PlanetTheme", "=", "mod(PlanetIndex, 3)"),
-            setv("PlanetStartWorldY", "=", "CrackWorldY"),
+            setv("PlanetTheme", "=", "mod(PlanetIndex, ThemeCount)"),
+            setv("PlanetStartWorldY", "=", "CrackWorldY"), setv("PlanetTime", "=", "0"),
         ], [
             theme(0, "EMBER", "255;255;255", "-0.04", "0", "0", "BgEmber"),
             theme(1, "VERDANT", "200;240;205", "0.15", "0", "0", "BgVerdant"),

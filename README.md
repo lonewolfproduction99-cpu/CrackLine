@@ -9,17 +9,15 @@ and press **Preview** (▶). To keep your own editable copy, use **File → Save
 
 ## How to play
 The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER**.
-- **Planet Breaker:** you start at the planet's core and travel up to its surface. The progress bar under the score shows how far you have left. When you reach the surface, the planet splits in two and the next planet begins:
-  - Ember (500 m): mostly rocks.
-  - Verdant (650 m): more crystals.
-  - Frost (800 m): more barriers.
-  - The planets then cycle again, each lap 150 m longer and harder.
+- **Planet Breaker:** you start at the planet's core and travel up to its surface. The progress bar shows how far you have left. Planet 1 needs **1,000 m**, planet 2 needs 2,000 m, planet 3 needs 3,000 m, and so on. Each planet starts about 12% faster and noticeably harder. When you reach the surface, the planet splits in two and the next one begins. The themes cycle Ember → Verdant (more crystals) → Frost (more barriers).
 - **Game over:** you can RESTART, go back to the MAIN MENU, or use **SIMULATE AD REVIVE (TEST)** once per run. The revive clears nearby obstacles and gives you 2 seconds of protection, shown as a cyan ring. You keep your score.
 - Tap the left or right half of the screen to make the crack branch that way.
 - The game keeps speeding up. Survive as long as you can and try to beat your best distance.
 - **Blue clock (Slow Time):** the world moves 40% slower for 4 seconds.
 - **Orange bolt (Crack Strength):** gives you 3 charges. Each charge smashes one rock or one cracked barrier.
 - **Crystals** and **metal-banded barriers** always kill you, even when you have charges.
+- **Ground gaps (fissures)** stretch across the whole screen. Touching one jolts your crack into a branch in a random direction. Nothing spawns just after a gap, so you can always recover.
+- **Burrowing worms** tunnel sideways back and forth across a row. They kill on contact, but Crack Strength can smash them. They are tinted to match each planet.
 
 ## Where things are
 | What | Where |
@@ -44,12 +42,15 @@ Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"E
 - Every row keeps a **2-lane corridor** free of obstacles.
 - The corridor shifts by one lane on most rows. It stays put only `CorridorStayChance` (20%) of the time. On a shifting row, both the old and the new corridor lanes stay free, so the safe path never breaks.
 - The corridor starts off-centre, so the first rows teach branching.
-- **Anti-camping:** if the lane the crack is in is outside the corridor, it gets blocked with `BlockerChance` (75% rising to 90%). Holding straight is almost never safe.
+- **Anti-camping:** if the lane the crack is in is outside the corridor, it gets blocked with `BlockerChance` (85% rising to 90%). Holding straight is almost never safe.
 - A 2-lane gap is wider than one branch (130 px), so a branch can always land inside it.
-- Each row is one of three types:
+- Each row is one of five types:
   - **Empty:** no obstacles.
   - **Wall:** a barrier in every lane outside the corridor.
   - **Scatter:** each lane outside the corridor gets an obstacle with probability `Density`.
+  - **Worm:** one burrowing worm sweeps the row, and nothing else is in it.
+  - **Fissure:** a full-width gap, followed by `FissureClearance` px with no obstacles.
+- A simulation over 5 runs of 5 minutes each, reaching 520 px/s, checked every tap timing. It also confirmed that after each of about 100 fissures, the crack can recover from **any** position in **either** random direction.
 - As `DifficultyLevel` rises from 0 to 1 over 180 seconds, rows get denser and closer together, crystals and solid barriers appear more often, and empty rows get rarer.
 - Power-ups appear in the middle of the corridor, so they can always be reached safely.
 
@@ -63,14 +64,18 @@ Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"E
 | RowGapStart / RowGapEnd | 280 / 210 | spacing between rows, easy to hard |
 | DensityStart / DensityEnd | 0.40 / 0.65 | chance that a lane gets an obstacle |
 | EmptyChance*, WallChance*, CrystalChance*, SolidChance*, BreakChance* | see editor | how often each row and obstacle type appears |
-| BlockerChanceStart / End | 0.75 / 0.9 | chance that the crack's current lane gets blocked |
+| BlockerChanceStart / End | 0.85 / 0.9 | chance that the crack's current lane gets blocked |
 | CorridorStayChance | 0.2 | chance that the safe corridor doesn't move on a row |
 | FirstRowOffset | 600 | empty warm-up distance at the start |
 | PowerupChance / PowerupCooldownTime | 0.12 / 10 | how often power-ups appear |
 | SlowTimeDuration / SlowTimeFactor | 4 / 0.6 | how long Slow Time lasts and how much it slows the world |
 | StrengthMaxCharges | 3 | charges per Crack Strength pickup |
-| PlanetDistance1/2/3, PlanetCycleExtraDistance | 500 / 650 / 800, 150 | planet lengths, plus extra length per lap |
-| PlanetDifficultyStep / PlanetProgressDifficulty | 0.15 / 0.2 | difficulty added per planet, and within a planet |
+| PlanetDistanceStep | 1000 | planet N needs N × this many metres |
+| PlanetDifficultyStart / PlanetDifficultyStep / PlanetProgressDifficulty | 0.15 / 0.2 / 0.2 | starting difficulty, extra difficulty per planet, extra difficulty within a planet |
+| PlanetSpeedStep / PlanetMaxSpeed / PlanetSpeedRampCap | 1.12 / 520 / 60 | ×1.12 speed per planet, a 520 px/s cap, and how many seconds of each planet the speed ramps for |
+| ThemeCount | 3 | number of planet themes before they repeat (raise it when you add new planets) |
+| WormChanceStart/End, WormSpeedStart/End | 0.03→0.12, 110→210 | how often worm rows appear and how fast worms move |
+| FissureChanceStart/End, FissureClearance | 0.02→0.07, 1000 | how often ground gaps appear, and the empty distance after each one |
 | BreakDuration | 2.0 | length of the planet-split sequence in seconds |
 | ReviveInvulnerability / ReviveClearBehind / ReviveClearAhead | 2 / 250 / 750 | revive protection time and the area it clears |
 

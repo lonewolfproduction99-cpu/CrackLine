@@ -6,9 +6,10 @@ LANE_W = 720 / LANE_COUNT
 HIT = {
     "RockSmall": ("circle", 28), "RockMedium": ("circle", 44), "Crystal": ("circle", 28),
     "BarrierBreakable": ("rect", 50, 26), "BarrierSolid": ("rect", 50, 26),   # half-width, half-height
+    "Worm": ("rect", 66, 20),
 }
 IMG = {"RockSmall": 76, "RockMedium": 116, "Crystal": 96, "BarrierBreakable": (112, 64), "BarrierSolid": (112, 64)}
-BREAKABLE = {"RockSmall", "RockMedium", "BarrierBreakable"}
+BREAKABLE = {"RockSmall", "RockMedium", "BarrierBreakable", "Worm"}
 
 P = dict(
     BaseSpeed=180, MaxSpeed=420, SpeedGrowth=1.08, SpeedGrowthInterval=20,
@@ -21,8 +22,12 @@ P = dict(
     SolidChanceStart=0.00, SolidChanceEnd=0.12,
     BreakChanceStart=0.05, BreakChanceEnd=0.15,
     WallBreakableShare=0.6,
-    BlockerChanceStart=0.75, BlockerChanceEnd=0.9,   # chance a row blocks the lane the crack is in right now
-    CorridorStayChance=0.2,                       # chance the safe corridor does NOT drift on a row
+    BlockerChanceStart=0.85, BlockerChanceEnd=0.9,   # chance a row blocks the lane the crack is in right now
+    CorridorStayChance=0.2,
+    WormChanceStart=0.03, WormChanceEnd=0.12,        # row type: a burrowing worm sweeps the row side to side
+    WormSpeedStart=110, WormSpeedEnd=210, WormMinX=80, WormMaxX=640,
+    FissureChanceStart=0.02, FissureChanceEnd=0.07,  # row type: full-width ground gap -> forced random branch
+    FissureClearance=1000,                           # world px with no obstacles after a fissure                       # chance the safe corridor does NOT drift on a row
     LaneJitterX=8, RowJitterY=18,
     FirstRowOffset=600,          # first row this far above the top of the screen (warm-up)
     PowerupChance=0.12, PowerupCooldownTime=10,
