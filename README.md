@@ -1,51 +1,66 @@
-# CRACKLINE — Phase 1 prototype (GDevelop)
+# CRACKLINE: Phase 2 (Endless Depth), GDevelop
 
-Portrait 720×1280 arcade prototype. All gameplay is native GDevelop events, with no JavaScript.
+This is a portrait 720×1280 arcade game. All gameplay is built with native GDevelop events, with no JavaScript.
 
 ## Open it
-
-**On the tablet (web editor):** open
+On a tablet or in a browser, open
 `https://editor.gdevelop.io/?project=https://raw.githubusercontent.com/lonewolfproduction99-cpu/CrackLine/main/game.json`
-then press **Preview** (▶). Use **File → Save as** (cloud) to keep your own editable copy.
-
-**On a desktop:** unzip, then use GDevelop → Open project → `crackline/game.json`.
+and press **Preview** (▶). To keep your own editable copy, use **File → Save as** and choose cloud.
 
 ## How to play
-Tap the left half of the screen to branch left and the right half to branch right. A mouse click works the same way. Avoid the rocks. When you crash, tap **RESTART**.
+- Tap the left or right half of the screen to make the crack branch that way.
+- The game keeps speeding up. Survive as long as you can and try to beat your best distance.
+- **Blue clock (Slow Time):** the world moves 40% slower for 4 seconds.
+- **Orange bolt (Crack Strength):** gives you 3 charges. Each charge smashes one rock or one cracked barrier.
+- **Crystals** and **metal-banded barriers** always kill you, even when you have charges.
 
 ## Where things are
-| What | Where in GDevelop |
+| What | Where |
 |---|---|
-| Scene | `Gameplay` (layers: base, `HUD`, `GameOver`) |
-| Game state, restart, game-over overlay | External events `EV_GameState` |
-| Taps, branching, forward motion, scrolling | `EV_CrackMovement` |
-| Obstacle chunks (spawning, scrolling, cleanup) | `EV_ObstacleSpawner` |
-| Fracture trail and sparks | `EV_Trail` |
-| Death on collision | `EV_Collisions` |
-| Distance HUD | `EV_Scoring` |
-| Obstacle patterns | External layouts `Chunk0` … `Chunk8` (edit them visually) |
+| Scene setup, best-score loading, game over, restart | External events `EV_GameState` |
+| Speed and difficulty, taps, branching, scrolling | `EV_CrackMovement` |
+| Procedural obstacle rows and power-up spawning | `EV_ObstacleSpawner` |
+| Power-up pickup, timers and HUD | `EV_Powerups` |
+| Trail and sparks | `EV_Trail` |
+| Breaking obstacles, death, saving the best score | `EV_Collisions` |
+| Distance and best-score HUD | `EV_Scoring` |
 
-The scene's own event sheet only links these sheets, in this order.
+There is one scene, `Gameplay`. The global variable `GameMode` is set to `"Endless"`. Planet mode is planned for Phase 3 and will reuse this same scene.
+
+## How the obstacles are generated
+- The screen is split into 7 lanes, and a new row of obstacles appears every `RowGap` px.
+- Every row keeps a **2-lane corridor** free of obstacles.
+- The corridor shifts by at most one lane per row. On a shifting row, both the old and the new corridor lanes stay free, so the safe path never breaks.
+- A 2-lane gap is wider than one branch (130 px), so a branch can always land inside it.
+- Each row is one of three types:
+  - **Empty:** no obstacles.
+  - **Wall:** a barrier in every lane outside the corridor.
+  - **Scatter:** each lane outside the corridor gets an obstacle with probability `Density`.
+- As `DifficultyLevel` rises from 0 to 1 over 180 seconds, rows get denser and closer together, crystals and solid barriers appear more often, and empty rows get rarer.
+- Power-ups appear in the middle of the corridor, so they can always be reached safely.
 
 ## Tuning (scene variables of `Gameplay`)
 | Variable | Default | Meaning |
 |---|---|---|
-| BaseSpeed | 180 | scroll speed (px/s) |
-| BranchDistance | 130 | sideways px per tap |
-| BranchDuration | 0.15 | seconds per branch |
-| BranchCooldown | 0.08 | lockout after a branch |
-| TipScreenRatio | 0.7 | tip height on screen |
-| EdgeMargin | 30 | closest the crack gets to the screen edge |
-| PixelsPerMeter | 20 | distance unit |
-| TrailStep / TrailJitter / TrailMaxSegments | 14 / 8 / 160 | trail density, jaggedness and cap |
-| ChunkHeight / ChunkCount / ChunkLoopStart | 640 / 9 / 1 | obstacle chunk system |
-
-## Editing obstacle chunks
-Each `ChunkN` external layout is a 640 px tall strip. Here, y = 0 is the top of the chunk and y = 640 is the bottom, and x runs from 0 to 720. The grid shows the 7 lanes. Place `RockSmall` and `RockMedium` instances anywhere in it. If you add `Chunk9`, set `ChunkCount` to 10. `Chunk0` is the empty warm-up and only plays once.
+| BaseSpeed / MaxSpeed | 180 / 420 | scroll speed range in px/s |
+| SpeedGrowth / SpeedGrowthInterval | 1.08 / 20 | speed rises 8% every 20 seconds |
+| DifficultyRampTime | 180 | seconds until maximum difficulty |
+| BranchDistance / BranchDuration / BranchCooldown | 130 / 0.15 / 0.08 | how one branch behaves |
+| RowGapStart / RowGapEnd | 320 / 210 | spacing between rows, easy to hard |
+| DensityStart / DensityEnd | 0.30 / 0.65 | chance that a lane gets an obstacle |
+| EmptyChance*, WallChance*, CrystalChance*, SolidChance*, BreakChance* | see editor | how often each row and obstacle type appears |
+| FirstRowOffset | 600 | empty warm-up distance at the start |
+| PowerupChance / PowerupCooldownTime | 0.12 / 10 | how often power-ups appear |
+| SlowTimeDuration / SlowTimeFactor | 4 / 0.6 | how long Slow Time lasts and how much it slows the world |
+| StrengthMaxCharges | 3 | charges per Crack Strength pickup |
 
 ## Replacing the art
-Every sprite reads one PNG in `assets/`. Overwrite the file with the same name, or change the image in the object editor. Keep these points in mind:
-- **RockSmall / RockMedium**: the origin is at the image centre, and the hitbox is an octagon smaller than the rock so it feels forgiving. If you change the image size, redo the hitbox.
-- **TrailSegment**: the origin and centre point are on the middle of the left edge. The segment stretches to the right.
-- **CrackHitbox** is the real collision box at the tip. It is hidden while playing. **CrackTip** is only the glow.
-- `bg_soil.png` is a seamless tile that the `Background` tiled sprite scrolls.
+Every sprite reads one PNG file in `assets/`. To replace it, overwrite the file using the same name. Keep these details in mind:
+- Origins are at the centre of each image. Collision masks are polygons slightly smaller than the art, so hits feel fair.
+- `Crystal` has three animations: Purple, Pink and Cyan. The game picks one at random.
+- `TrailSegment` has its origin and centre point at the middle of its left edge, because the game stretches it to the right.
+- `CrackHitbox` is the real collision point. It is hidden in game.
+
+## Notes for publishing on Playgama later
+- The best score is saved with GDevelop storage. Playgama requires its Bridge storage instead, so this will be swapped when the SDK is added.
+- GDevelop's exported builds send an anonymous session ping to `api.gdevelop-app.com`. Playgama does not allow external analytics, so this needs to be switched off at export time.
