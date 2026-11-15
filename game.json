@@ -239,15 +239,6 @@
       },
       {
         "alwaysLoaded": false,
-        "file": "assets/planet_crack.png",
-        "kind": "image",
-        "metadata": "",
-        "name": "planet_crack",
-        "smoothed": true,
-        "userAdded": true
-      },
-      {
-        "alwaysLoaded": false,
         "file": "assets/shield_glow.png",
         "kind": "image",
         "metadata": "",
@@ -1484,14 +1475,24 @@
           "value": 420
         },
         {
-          "name": "SpeedGrowth",
+          "name": "SpeedStepDistance",
           "type": "number",
-          "value": 1.08
+          "value": 250
         },
         {
-          "name": "SpeedGrowthInterval",
+          "name": "SpeedStepFactor",
           "type": "number",
-          "value": 20
+          "value": 1.25
+        },
+        {
+          "name": "SpeedRampRate",
+          "type": "number",
+          "value": 120
+        },
+        {
+          "name": "SpeedTarget",
+          "type": "number",
+          "value": 180
         },
         {
           "name": "DifficultyRampTime",
@@ -1759,19 +1760,9 @@
           "value": 0.2
         },
         {
-          "name": "PlanetSpeedStep",
-          "type": "number",
-          "value": 1.12
-        },
-        {
           "name": "PlanetMaxSpeed",
           "type": "number",
           "value": 520
-        },
-        {
-          "name": "PlanetSpeedRampCap",
-          "type": "number",
-          "value": 60
         },
         {
           "name": "BreakDuration",
@@ -2090,11 +2081,6 @@
         },
         {
           "name": "WormSpeed",
-          "type": "number",
-          "value": 0
-        },
-        {
-          "name": "PlanetTime",
           "type": "number",
           "value": 0
         },
@@ -2584,22 +2570,6 @@
           "x": 360,
           "y": 540,
           "zOrder": 1,
-          "numberProperties": [],
-          "stringProperties": [],
-          "initialVariables": []
-        },
-        {
-          "angle": 0,
-          "customSize": false,
-          "height": 0,
-          "layer": "Cinematic",
-          "locked": false,
-          "name": "PlanetCrack",
-          "persistentUuid": "7da17cee-f962-5fb4-9b8e-d252e4f1ac48",
-          "width": 0,
-          "x": 360,
-          "y": 380,
-          "zOrder": 2,
           "numberProperties": [],
           "stringProperties": [],
           "initialVariables": []
@@ -4759,47 +4729,6 @@
           ]
         },
         {
-          "adaptCollisionMaskAutomatically": false,
-          "assetStoreId": "",
-          "name": "PlanetCrack",
-          "type": "Sprite",
-          "updateIfNotVisible": false,
-          "variables": [],
-          "effects": [],
-          "behaviors": [],
-          "animations": [
-            {
-              "name": "",
-              "useMultipleDirections": false,
-              "directions": [
-                {
-                  "looping": false,
-                  "timeBetweenFrames": 0.08,
-                  "sprites": [
-                    {
-                      "hasCustomCollisionMask": false,
-                      "image": "planet_crack",
-                      "points": [],
-                      "originPoint": {
-                        "name": "origine",
-                        "x": 20,
-                        "y": 0
-                      },
-                      "centerPoint": {
-                        "automatic": true,
-                        "name": "centre",
-                        "x": 0,
-                        "y": 0
-                      },
-                      "customCollisionMask": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
           "assetStoreId": "",
           "bold": true,
           "italic": false,
@@ -4866,9 +4795,6 @@
               },
               {
                 "objectName": "PlanetRight"
-              },
-              {
-                "objectName": "PlanetCrack"
               },
               {
                 "objectName": "PlanetBrokenText"
@@ -6344,18 +6270,6 @@
                     "CrackWorldY"
                   ],
                   "subInstructions": []
-                },
-                {
-                  "type": {
-                    "inverted": false,
-                    "value": "SetNumberVariable"
-                  },
-                  "parameters": [
-                    "PlanetTime",
-                    "=",
-                    "0"
-                  ],
-                  "subInstructions": []
                 }
               ],
               "events": [
@@ -7283,56 +7197,6 @@
                 {
                   "type": {
                     "inverted": false,
-                    "value": "SetX"
-                  },
-                  "parameters": [
-                    "PlanetCrack",
-                    "=",
-                    "PlanetCX"
-                  ],
-                  "subInstructions": []
-                },
-                {
-                  "type": {
-                    "inverted": false,
-                    "value": "SetY"
-                  },
-                  "parameters": [
-                    "PlanetCrack",
-                    "=",
-                    "PlanetCY - 140"
-                  ],
-                  "subInstructions": []
-                },
-                {
-                  "type": {
-                    "inverted": false,
-                    "value": "ScalableCapability::ScalableBehavior::SetY"
-                  },
-                  "parameters": [
-                    "PlanetCrack",
-                    "Scale",
-                    "=",
-                    "clamp((BreakTime - 0.35) / 0.4, 0, 1) * 0.875"
-                  ],
-                  "subInstructions": []
-                },
-                {
-                  "type": {
-                    "inverted": false,
-                    "value": "OpacityCapability::OpacityBehavior::SetValue"
-                  },
-                  "parameters": [
-                    "PlanetCrack",
-                    "Opacity",
-                    "=",
-                    "255 * (1 - clamp((BreakTime - 0.9) / 0.3, 0, 1))"
-                  ],
-                  "subInstructions": []
-                },
-                {
-                  "type": {
-                    "inverted": false,
                     "value": "SetCenterX"
                   },
                   "parameters": [
@@ -7647,7 +7511,7 @@
                 "textG": 0,
                 "textR": 0
               },
-              "comment": "Speed grows SpeedGrowth (8%) every SpeedGrowthInterval (20 s), smoothly, capped at MaxSpeed. DifficultyLevel goes 0 -> 1 over DifficultyRampTime and drives the obstacle generator. Slow Time multiplies the effective speed by SlowTimeFactor.",
+              "comment": "Speed jumps x SpeedStepFactor (1.25 = +25%) every SpeedStepDistance (250 m) travelled, capped at MaxSpeed (Endless) or PlanetMaxSpeed (Planet Breaker). Each jump eases in at SpeedRampRate px/s per second so it never lurches. DifficultyLevel goes 0 -> 1 over DifficultyRampTime and drives the obstacle generator. Slow Time multiplies the effective speed by SlowTimeFactor.",
               "comment2": ""
             },
             {
@@ -7709,26 +7573,102 @@
                     "value": "SetNumberVariable"
                   },
                   "parameters": [
-                    "ScrollSpeed",
+                    "SpeedTarget",
                     "=",
-                    "min(MaxSpeed, BaseSpeed * pow(SpeedGrowth, RunTime / SpeedGrowthInterval))"
-                  ],
-                  "subInstructions": []
-                },
-                {
-                  "type": {
-                    "inverted": false,
-                    "value": "SetNumberVariable"
-                  },
-                  "parameters": [
-                    "EffectiveSpeed",
-                    "=",
-                    "ScrollSpeed"
+                    "min(MaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))"
                   ],
                   "subInstructions": []
                 }
               ],
               "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Comment",
+                  "color": {
+                    "b": 109,
+                    "g": 230,
+                    "r": 255,
+                    "textB": 0,
+                    "textG": 0,
+                    "textR": 0
+                  },
+                  "comment": "Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and difficulty rises a little within each planet. Speed uses the same 250 m steps but may go up to PlanetMaxSpeed.",
+                  "comment2": ""
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "StringVariable"
+                      },
+                      "parameters": [
+                        "GameMode",
+                        "=",
+                        "\"Planet\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "DifficultyLevel",
+                        "=",
+                        "clamp(PlanetDifficultyStart + PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "SpeedTarget",
+                        "=",
+                        "min(PlanetMaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ScrollSpeed",
+                        "=",
+                        "min(SpeedTarget, ScrollSpeed + SpeedRampRate * TimeDelta())"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "EffectiveSpeed",
+                        "=",
+                        "ScrollSpeed"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
                 {
                   "type": "BuiltinCommonInstructions::Standard",
                   "conditions": [
@@ -7760,120 +7700,6 @@
                     }
                   ],
                   "events": []
-                },
-                {
-                  "type": "BuiltinCommonInstructions::Comment",
-                  "color": {
-                    "b": 109,
-                    "g": 230,
-                    "r": 255,
-                    "textB": 0,
-                    "textG": 0,
-                    "textR": 0
-                  },
-                  "comment": "Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and faster (x PlanetSpeedStep per planet, up to PlanetMaxSpeed); within a planet speed ramps for its first PlanetSpeedRampCap seconds and difficulty rises a little.",
-                  "comment2": ""
-                },
-                {
-                  "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "StringVariable"
-                      },
-                      "parameters": [
-                        "GameMode",
-                        "=",
-                        "\"Planet\""
-                      ],
-                      "subInstructions": []
-                    }
-                  ],
-                  "actions": [
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "SetNumberVariable"
-                      },
-                      "parameters": [
-                        "PlanetTime",
-                        "+",
-                        "TimeDelta()"
-                      ],
-                      "subInstructions": []
-                    },
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "SetNumberVariable"
-                      },
-                      "parameters": [
-                        "DifficultyLevel",
-                        "=",
-                        "clamp(PlanetDifficultyStart + PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)"
-                      ],
-                      "subInstructions": []
-                    },
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "SetNumberVariable"
-                      },
-                      "parameters": [
-                        "ScrollSpeed",
-                        "=",
-                        "min(PlanetMaxSpeed, BaseSpeed * pow(PlanetSpeedStep, PlanetIndex) * pow(SpeedGrowth, min(PlanetTime, PlanetSpeedRampCap) / SpeedGrowthInterval))"
-                      ],
-                      "subInstructions": []
-                    },
-                    {
-                      "type": {
-                        "inverted": false,
-                        "value": "SetNumberVariable"
-                      },
-                      "parameters": [
-                        "EffectiveSpeed",
-                        "=",
-                        "ScrollSpeed"
-                      ],
-                      "subInstructions": []
-                    }
-                  ],
-                  "events": [
-                    {
-                      "type": "BuiltinCommonInstructions::Standard",
-                      "conditions": [
-                        {
-                          "type": {
-                            "inverted": false,
-                            "value": "NumberVariable"
-                          },
-                          "parameters": [
-                            "SlowTimeRemaining",
-                            ">",
-                            "0"
-                          ],
-                          "subInstructions": []
-                        }
-                      ],
-                      "actions": [
-                        {
-                          "type": {
-                            "inverted": false,
-                            "value": "SetNumberVariable"
-                          },
-                          "parameters": [
-                            "EffectiveSpeed",
-                            "=",
-                            "ScrollSpeed * SlowTimeFactor"
-                          ],
-                          "subInstructions": []
-                        }
-                      ],
-                      "events": []
-                    }
-                  ]
                 }
               ]
             }

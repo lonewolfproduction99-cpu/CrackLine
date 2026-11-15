@@ -97,12 +97,14 @@ async def main():
         check('tap right = 130 px branch', abs(c2['x'] - c['x'] - 130) < 0.01)
         await page.screenshot(path=f'{SHOTS}/p2_01_start.png')
 
-        # --- speed scaling ---
-        await page.evaluate(setvar('RunTime', 100)); await asyncio.sleep(0.1); st = await S(page)
-        exp = 180 * 1.08 ** (st['runtime'] / 20)
-        check('speed +8% per 20 s (RunTime=100 -> ~264)', abs(st['speed'] - exp) < 1 and 255 < st['speed'] < 275, f"{st['speed']:.1f} vs {exp:.1f}")
+        # --- speed scaling: +25% every 250 m, eased in, capped at 420 ---
+        sp = []
+        for m in (250, 500, 750, 2000):
+            await page.evaluate(setvar('CrackWorldY', m * 20 + 5)); await asyncio.sleep(2.2); sp.append((await S(page))['speed'])
+        exp = [225, 281.25, 351.6, 420]
+        check('speed +25% every 250 m (225, 281, 352) and capped at 420', all(abs(a - b) < 1 for a, b in zip(sp, exp)), ', '.join(f'{v:.0f}' for v in sp))
         await page.evaluate(setvar('RunTime', 400)); await asyncio.sleep(0.1); st = await S(page)
-        check('speed capped at MaxSpeed 420', abs(st['speed'] - 420) < 0.01 and st['diff'] == 1, f"{st['speed']:.1f}, difficulty {st['diff']:.2f}")
+        check('difficulty reaches max after DifficultyRampTime', st['diff'] == 1)
         await page.evaluate(setvar('RunTime', 0)); await asyncio.sleep(0.1)
 
         # --- Slow Time pickup ---

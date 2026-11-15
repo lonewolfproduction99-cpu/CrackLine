@@ -9,10 +9,10 @@ and press **Preview** (▶). To keep your own editable copy, use **File → Save
 
 ## How to play
 The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER**.
-- **Planet Breaker:** you start at the planet's core and travel up to its surface. The progress bar shows how far you have left. Planet 1 needs **1,000 m**, planet 2 needs 2,000 m, planet 3 needs 3,000 m, and so on. Each planet starts about 12% faster and noticeably harder. When you reach the surface, the planet splits in two and the next one begins. The themes cycle Ember → Verdant (more crystals) → Frost (more barriers).
+- **Planet Breaker:** you start at the planet's core and travel up to its surface. The progress bar shows how far you have left. Planet 1 needs **1,000 m**, planet 2 needs 2,000 m, planet 3 needs 3,000 m, and so on. Each planet starts noticeably harder. When you reach the surface, the planet splits in two and the next one begins. The themes cycle Ember → Verdant (more crystals) → Frost (more barriers).
 - **Game over:** you can RESTART, go back to the MAIN MENU, or use **SIMULATE AD REVIVE (TEST)** once per run. The revive clears nearby obstacles and gives you 2 seconds of protection, shown as a cyan ring. You keep your score.
 - Tap the left or right half of the screen to make the crack branch that way.
-- The game keeps speeding up. Survive as long as you can and try to beat your best distance.
+- The game gets **25% faster every 250 m** (180 → 225 → 281 → 352 px/s and so on). Endless tops out at 420 px/s, and Planet Breaker tops out at 520 px/s. Survive as long as you can and try to beat your best distance.
 - **Blue clock (Slow Time):** the world moves 40% slower for 4 seconds.
 - **Orange bolt (Crack Strength):** gives you 3 charges. Each charge smashes one rock or one cracked barrier.
 - **Crystals** and **metal-banded barriers** always kill you, even when you have charges.
@@ -58,7 +58,7 @@ Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"E
 | Variable | Default | Meaning |
 |---|---|---|
 | BaseSpeed / MaxSpeed | 180 / 420 | scroll speed range in px/s |
-| SpeedGrowth / SpeedGrowthInterval | 1.08 / 20 | speed rises 8% every 20 seconds |
+| SpeedStepFactor / SpeedStepDistance / SpeedRampRate | 1.25 / 250 / 120 | +25% speed every 250 m; each jump eases in at 120 px/s per second |
 | DifficultyRampTime | 180 | seconds until maximum difficulty |
 | BranchDistance / BranchDuration / BranchCooldown | 130 / 0.15 / 0.08 | how one branch behaves |
 | RowGapStart / RowGapEnd | 280 / 210 | spacing between rows, easy to hard |
@@ -72,7 +72,7 @@ Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"E
 | StrengthMaxCharges | 3 | charges per Crack Strength pickup |
 | PlanetDistanceStep | 1000 | planet N needs N × this many metres |
 | PlanetDifficultyStart / PlanetDifficultyStep / PlanetProgressDifficulty | 0.15 / 0.2 / 0.2 | starting difficulty, extra difficulty per planet, extra difficulty within a planet |
-| PlanetSpeedStep / PlanetMaxSpeed / PlanetSpeedRampCap | 1.12 / 520 / 60 | ×1.12 speed per planet, a 520 px/s cap, and how many seconds of each planet the speed ramps for |
+| PlanetMaxSpeed | 520 | speed cap in Planet Breaker (Endless uses MaxSpeed 420) |
 | ThemeCount | 3 | number of planet themes before they repeat (raise it when you add new planets) |
 | WormChanceStart/End, WormSpeedStart/End | 0.03→0.12, 110→210 | how often worm rows appear and how fast worms move |
 | FissureChanceStart/End, FissureClearance | 0.02→0.07, 1000 | how often ground gaps appear, and the empty distance after each one |

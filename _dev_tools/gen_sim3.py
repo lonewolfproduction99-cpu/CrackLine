@@ -10,7 +10,9 @@ MAXSPEED = float(os.environ.get("SIM_MAXSPEED", 520))
 def lerp(a, b, x): return a + (b - a) * x
 def ease(p): return 1 - (1 - p) ** 2
 def clampx(x): return max(MINX, min(MAXX, x))
+STEPS = os.environ.get("SPEED_MODE") == "steps"
 def speed_at(t): return min(MAXSPEED, P["BaseSpeed"] * P["SpeedGrowth"] ** (t / P["SpeedGrowthInterval"]))
+def speed_wy(wy, t): return min(MAXSPEED, P["BaseSpeed"] * 1.25 ** math.floor(wy / 20 / 250)) if STEPS else speed_at(t)
 
 def worm_x(w, t):
     x0, d, v, t0 = w["x0"], w["dir"], w["v"], w["t0"]
@@ -93,7 +95,7 @@ def run(seed, duration, recovery_checks=True):
     states = {(360.0, 0, 0, 0, 0)}; done_f = set(); worst = None
     while t < duration:
         while wy + TIPY + SPAWN_MARGIN >= g.next: g.row(t)
-        t += dt; wy += speed_at(t) * dt
+        t += dt; wy += speed_wy(wy, t) * dt
         near = [o for o in g.objs if abs(o[2] - wy) < 80]; nw = [w for w in g.worms if abs(w["wy"] - wy) < 60]
         states = step(states, wy, t, near, nw)
         for f in g.fissures:
@@ -113,7 +115,7 @@ def recover(g, states, wy, t, f):
     end = f + P["FissureClearance"] + 3 * P["RowGapStart"]
     while wy < end:
         while wy + TIPY + SPAWN_MARGIN >= g.next: g.row(t)
-        t += dt; wy += speed_at(t) * dt
+        t += dt; wy += speed_wy(wy, t) * dt
         near = [o for o in g.objs if abs(o[2] - wy) < 80]; nw = [w for w in g.worms if abs(w["wy"] - wy) < 60]
         states = step(states, wy, t, near, nw)
         if not states: return False

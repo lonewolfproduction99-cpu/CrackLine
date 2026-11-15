@@ -29,12 +29,11 @@ async def main():
             s = await X(page); rows.append((s['idx'], s['target'], s['speed'], s['diff']))
         print('    planet start values (index, target m, speed, difficulty):', [(i, t, round(v, 1), round(d, 2)) for i, t, v, d in rows])
         check('planet goals are 1000, 2000, 3000, 4000 m', [r[1] for r in rows] == [1000, 2000, 3000, 4000])
-        exp = [180 * 1.12 ** i for i in range(4)]
-        check('each planet starts ~12% faster', all(abs(r[2] - e) / e < 0.03 for r, e in zip(rows, exp)), ', '.join(f'{r[2]:.0f}' for r in rows))
         check('each planet starts harder (+0.2 difficulty)', all(abs(r[3] - (0.15 + 0.2 * i)) < 0.02 for i, r in enumerate(rows)), ', '.join(f'{r[3]:.2f}' for r in rows))
-        await page.evaluate(setnum('PlanetIndex', 20)); await asyncio.sleep(0.2); s = await X(page)
-        check('planet speed capped at PlanetMaxSpeed 520', abs(s['speed'] - 520) < 0.01, f"{s['speed']:.0f}")
-        await page.evaluate(setnum('PlanetIndex', 3)); await asyncio.sleep(0.2)
+        await page.evaluate("() => { %s V('CrackWorldY').setNumber(26000); V('PlanetStartWorldY').setNumber(26000); V('TrailLastWorldY').setNumber(26000); }" % PRE)
+        await asyncio.sleep(3.5)
+        s = await X(page)
+        check('Planet Breaker: same 250 m steps, capped at PlanetMaxSpeed 520 (not 420)', abs(s['speed'] - 520) < 0.01, f"{s['speed']:.0f} px/s at {s['wy'] / 20:.0f} m")
         allerr += errors; await ctx.close()
 
         # ---------- fissures & worms (Endless, random rows suppressed) ----------

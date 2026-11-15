@@ -43,7 +43,7 @@ def num(n, v): return {"name": n, "type": "number", "value": v}
 def st(n, v): return {"name": n, "type": "string", "value": v}
 def boo(n, v): return {"name": n, "type": "boolean", "value": v}
 TUNING = [
-    ("BaseSpeed", P["BaseSpeed"]), ("MaxSpeed", P["MaxSpeed"]), ("SpeedGrowth", P["SpeedGrowth"]), ("SpeedGrowthInterval", P["SpeedGrowthInterval"]),
+    ("BaseSpeed", P["BaseSpeed"]), ("MaxSpeed", P["MaxSpeed"]), ("SpeedStepDistance", 250), ("SpeedStepFactor", 1.25), ("SpeedRampRate", 120), ("SpeedTarget", 180),
     ("DifficultyRampTime", P["DifficultyRampTime"]),
     ("BranchDuration", 0.15), ("BranchDistance", 130), ("BranchCooldown", 0.08),
     ("TipScreenRatio", 0.7), ("EdgeMargin", 30), ("PixelsPerMeter", 20),
@@ -65,7 +65,7 @@ TUNING = [
     ("RestartDelay", 0.3),
     ("PlanetDistanceStep", 1000), ("ThemeCount", 3),
     ("PlanetDifficultyStart", 0.15), ("PlanetDifficultyStep", 0.2), ("PlanetProgressDifficulty", 0.2),
-    ("PlanetSpeedStep", 1.12), ("PlanetMaxSpeed", 520), ("PlanetSpeedRampCap", 60), ("BreakDuration", 2.0),
+    ("PlanetMaxSpeed", 520), ("BreakDuration", 2.0),
     ("ReviveInvulnerability", 2), ("ReviveClearBehind", 250), ("ReviveClearAhead", 750),
 ]
 STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLevel", "CrackWorldX", "CrackWorldY", "TipScreenY",
@@ -75,7 +75,7 @@ STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLeve
          "LaneIter", "LaneWidth", "BlockerChance", "CrackLane", "CorridorShift", "TypeRoll", "ObjType", "LaneX", "ObjWorldY",
          "PowerupCooldown", "SlowTimeRemaining", "StrengthCharges", "InvulnerabilityRemaining", "GameOverTime",
          "TotalDistance", "PlanetIndex", "PlanetTheme", "PlanetsBroken", "PlanetTargetDistance", "PlanetDistance", "PlanetStartWorldY",
-         "ThemeCrystalBonus", "ThemeWallBonus", "ThemeSolidBonus", "WormChance", "FissureChance", "WormSpeed", "PlanetTime", "BreakTime", "SplitOffset", "PlanetCX", "PlanetCY"]
+         "ThemeCrystalBonus", "ThemeWallBonus", "ThemeSolidBonus", "WormChance", "FissureChance", "WormSpeed", "BreakTime", "SplitOffset", "PlanetCX", "PlanetCY"]
 scene_vars = [num(n, v) for n, v in TUNING] + [st("GameState", "Playing"), st("RockTint", "255;255;255"), st("PlanetName", "EMBER")] + [num(n, 0) for n in STATE] + \
     [boo("ReviveUsed", False), boo("RequestRevive", False), boo("PlanetSetupPending", True), boo("BreakBurstDone", False)]
 global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("BestPlanetsBroken", 0)]
@@ -83,7 +83,7 @@ global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("Be
 # ---------------------------------------------------------------- resources & objects
 IMAGES = ["bg_soil", "rock_small", "rock_medium", "crack_tip", "crack_hitbox", "trail_segment", "spark", "impact_flash", "ui_overlay",
           "ui_button", "barrier_solid", "barrier_breakable", "crystal_purple", "crystal_pink", "crystal_cyan", "powerup_slow", "powerup_strength",
-          "bg_verdant", "bg_frost", "planet_crack", "shield_glow", "ui_white", "ui_button_blue", "worm", "fissure"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")]
+          "bg_verdant", "bg_frost", "shield_glow", "ui_white", "ui_button_blue", "worm", "fissure"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")]
 resources = [{"alwaysLoaded": False, "file": f"assets/{n}.png", "kind": "image", "metadata": "", "name": n, "smoothed": True, "userAdded": True} for n in IMAGES]
 
 import math
@@ -154,12 +154,11 @@ objects = [
     textobj("PlanetHudText", "EMBER  0 / 500 m", 26, rgb="255;240;214"),
     sprite("PlanetLeft", "planet_ember_left", origin=(160, 160), anims=[(t.capitalize(), f"planet_{t}_left") for t in ("ember", "verdant", "frost")]),
     sprite("PlanetRight", "planet_ember_right", origin=(160, 160), anims=[(t.capitalize(), f"planet_{t}_right") for t in ("ember", "verdant", "frost")]),
-    sprite("PlanetCrack", "planet_crack", origin=(20, 0)),
     textobj("PlanetBrokenText", "EMBER BROKEN!", 56, rgb="255;230;140"),
 ]
 folders = {"folderName": "__ROOT", "children": [
     {"folderName": "World", "children": [{"objectName": "BgEmber"}, {"objectName": "BgVerdant"}, {"objectName": "BgFrost"}]},
-    {"folderName": "Planet", "children": [{"objectName": n} for n in ["PlanetLeft", "PlanetRight", "PlanetCrack", "PlanetBrokenText", "ShieldGlow"]]},
+    {"folderName": "Planet", "children": [{"objectName": n} for n in ["PlanetLeft", "PlanetRight", "PlanetBrokenText", "ShieldGlow"]]},
     {"folderName": "Crack", "children": [{"objectName": n} for n in ["CrackTip", "CrackHitbox", "TrailSegment", "Spark", "ImpactFlash"]]},
     {"folderName": "Obstacles", "children": [{"objectName": n} for n in ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Crystal", "Worm", "Fissure"]]},
     {"folderName": "Powerups", "children": [{"objectName": "PowerSlow"}, {"objectName": "PowerStrength"}]},
@@ -194,7 +193,7 @@ instances = [
     inst("ProgressBack", 160, 200, layer="HUD", z=1, w=400, h=18), inst("ProgressFill", 162, 202, layer="HUD", z=2, w=396, h=14),
     inst("PlanetHudText", 200, 224, layer="HUD", z=1),
     inst("PlanetLeft", 360, 540, layer="Cinematic", z=1), inst("PlanetRight", 360, 540, layer="Cinematic", z=1),
-    inst("PlanetCrack", 360, 380, layer="Cinematic", z=2), inst("PlanetBrokenText", 160, 800, layer="Cinematic", z=3),
+    inst("PlanetBrokenText", 160, 800, layer="Cinematic", z=3),
 ]
 def layer(name, visible=True):
     return {"ambientLightColorB": 200, "ambientLightColorG": 200, "ambientLightColorR": 200, "camera3DFarPlaneDistance": 10000,
@@ -277,20 +276,20 @@ ev_gamestate = [
 ev_movement = [
     comment("CRACK MOVEMENT — the crack tip stays at TipScreenY; the world scrolls instead. CrackWorldY = distance travelled upward in px."),
     group("Speed and difficulty", [
-        comment("Speed grows SpeedGrowth (8%) every SpeedGrowthInterval (20 s), smoothly, capped at MaxSpeed. DifficultyLevel goes 0 -> 1 over DifficultyRampTime and drives the obstacle generator. Slow Time multiplies the effective speed by SlowTimeFactor."),
+        comment("Speed jumps x SpeedStepFactor (1.25 = +25%) every SpeedStepDistance (250 m) travelled, capped at MaxSpeed (Endless) or PlanetMaxSpeed (Planet Breaker). Each jump eases in at SpeedRampRate px/s per second so it never lurches. DifficultyLevel goes 0 -> 1 over DifficultyRampTime and drives the obstacle generator. Slow Time multiplies the effective speed by SlowTimeFactor."),
         ev([PLAYING], [
             setv("RunTime", "+", "TimeDelta()"),
             setv("DifficultyLevel", "=", "clamp(RunTime / DifficultyRampTime, 0, 1)"),
             setv("TotalDistance", "=", "Distance"),
-            setv("ScrollSpeed", "=", "min(MaxSpeed, BaseSpeed * pow(SpeedGrowth, RunTime / SpeedGrowthInterval))"),
-            setv("EffectiveSpeed", "=", "ScrollSpeed"),
-        ], [ev([isv("SlowTimeRemaining", ">", "0")], [setv("EffectiveSpeed", "=", "ScrollSpeed * SlowTimeFactor")]),
-            comment("Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and faster (x PlanetSpeedStep per planet, up to PlanetMaxSpeed); within a planet speed ramps for its first PlanetSpeedRampCap seconds and difficulty rises a little."),
-            ev([iss("GameMode", '"Planet"')], [setv("PlanetTime", "+", "TimeDelta()"),
+            setv("SpeedTarget", "=", "min(MaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))"),
+        ], [
+            comment("Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and difficulty rises a little within each planet. Speed uses the same 250 m steps but may go up to PlanetMaxSpeed."),
+            ev([iss("GameMode", '"Planet"')], [
                 setv("DifficultyLevel", "=", "clamp(PlanetDifficultyStart + PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)"),
-                setv("ScrollSpeed", "=", "min(PlanetMaxSpeed, BaseSpeed * pow(PlanetSpeedStep, PlanetIndex) * pow(SpeedGrowth, min(PlanetTime, PlanetSpeedRampCap) / SpeedGrowthInterval))"),
-                setv("EffectiveSpeed", "=", "ScrollSpeed")],
-               [ev([isv("SlowTimeRemaining", ">", "0")], [setv("EffectiveSpeed", "=", "ScrollSpeed * SlowTimeFactor")])])]),
+                setv("SpeedTarget", "=", "min(PlanetMaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))")]),
+            ev([], [setv("ScrollSpeed", "=", "min(SpeedTarget, ScrollSpeed + SpeedRampRate * TimeDelta())"), setv("EffectiveSpeed", "=", "ScrollSpeed")]),
+            ev([isv("SlowTimeRemaining", ">", "0")], [setv("EffectiveSpeed", "=", "ScrollSpeed * SlowTimeFactor")]),
+        ]),
     ]),
     group("Input (tap / click)", [
         comment("One tap = one branch. Taps during a branch or the short cooldown are ignored (no queueing). Left half = left, right half = right."),
@@ -542,7 +541,7 @@ ev_planet = [
         ev([PLANET, C("BooleanVariable", "PlanetSetupPending", "True", "")], [
             A("SetBooleanVariable", "PlanetSetupPending", "False", ""),
             setv("PlanetTheme", "=", "mod(PlanetIndex, ThemeCount)"),
-            setv("PlanetStartWorldY", "=", "CrackWorldY"), setv("PlanetTime", "=", "0"),
+            setv("PlanetStartWorldY", "=", "CrackWorldY"),
         ], [
             theme(0, "EMBER", "255;255;255", "-0.04", "0", "0", "BgEmber"),
             theme(1, "VERDANT", "200;240;205", "0.15", "0", "0", "BgVerdant"),
@@ -578,9 +577,6 @@ ev_planet = [
             setx("PlanetLeft", "PlanetCX - SplitOffset"), sety("PlanetLeft", "PlanetCY + SplitOffset * 0.15"),
             setx("PlanetRight", "PlanetCX + SplitOffset"), sety("PlanetRight", "PlanetCY - SplitOffset * 0.15"),
             A("SetAngle", "PlanetLeft", "=", "-SplitOffset * 0.08"), A("SetAngle", "PlanetRight", "=", "SplitOffset * 0.08"),
-            setx("PlanetCrack", "PlanetCX"), sety("PlanetCrack", "PlanetCY - 140"),
-            scaley("PlanetCrack", "=", "clamp((BreakTime - 0.35) / 0.4, 0, 1) * 0.875"),
-            opacity("PlanetCrack", "=", "255 * (1 - clamp((BreakTime - 0.9) / 0.3, 0, 1))"),
             A("SetCenterX", "PlanetBrokenText", "=", "PlanetCX"), sety("PlanetBrokenText", "PlanetCY + 200"),
         ], [
             ev([isv("BreakTime", ">=", "0.75"), C("BooleanVariable", "BreakBurstDone", "False", "")], [
