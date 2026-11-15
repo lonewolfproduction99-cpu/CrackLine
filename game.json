@@ -1,0 +1,4073 @@
+{
+  "firstLayout": "Gameplay",
+  "gdVersion": {
+    "build": 99,
+    "major": 4,
+    "minor": 0,
+    "revision": 0
+  },
+  "properties": {
+    "adaptGameResolutionAtRuntime": true,
+    "antialiasingMode": "none",
+    "antialisingEnabledOnMobile": false,
+    "folderProject": false,
+    "orientation": "portrait",
+    "packageName": "com.lonewolfproduction.crackline",
+    "pixelsRounding": false,
+    "projectUuid": "50ed4565-ff90-5d83-b7da-d4ed3ca7cf07",
+    "scaleMode": "linear",
+    "sizeOnStartupMode": "adaptHeight",
+    "templateSlug": "",
+    "useExternalSourceFiles": false,
+    "version": "0.1.0",
+    "name": "CRACKLINE",
+    "description": "Phase 1 prototype",
+    "author": "",
+    "windowWidth": 720,
+    "windowHeight": 1280,
+    "latestCompilationDirectory": "",
+    "maxFPS": 60,
+    "minFPS": 20,
+    "verticalSync": false,
+    "platformSpecificAssets": {},
+    "loadingScreen": {
+      "backgroundColor": 2101764,
+      "backgroundFadeInDuration": 0.2,
+      "backgroundImageResourceName": "",
+      "gdevelopLogoStyle": "light",
+      "logoAndProgressFadeInDuration": 0.2,
+      "logoAndProgressLogoFadeInDelay": 0.2,
+      "minDuration": 0,
+      "progressBarColor": 16753190,
+      "progressBarHeight": 20,
+      "progressBarMaxWidth": 200,
+      "progressBarMinWidth": 40,
+      "progressBarWidthPercent": 30,
+      "showGDevelopSplash": true,
+      "showProgressBar": true
+    },
+    "watermark": {
+      "placement": "bottom-left",
+      "showWatermark": true
+    },
+    "authorIds": [],
+    "authorUsernames": [],
+    "categories": [],
+    "playableDevices": [
+      "mobile"
+    ],
+    "extensionProperties": [],
+    "platforms": [
+      {
+        "name": "GDevelop JS platform"
+      }
+    ],
+    "currentPlatform": "GDevelop JS platform"
+  },
+  "resources": {
+    "resources": [
+      {
+        "alwaysLoaded": false,
+        "file": "assets/bg_soil.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "bg_soil",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/rock_small.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "rock_small",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/rock_medium.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "rock_medium",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/crack_tip.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "crack_tip",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/crack_hitbox.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "crack_hitbox",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/trail_segment.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "trail_segment",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/spark.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "spark",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/impact_flash.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "impact_flash",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/ui_overlay.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "ui_overlay",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/ui_button.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "ui_button",
+        "smoothed": true,
+        "userAdded": true
+      }
+    ],
+    "resourceFolders": []
+  },
+  "objects": [],
+  "objectsGroups": [],
+  "variables": [],
+  "layouts": [
+    {
+      "b": 40,
+      "disableInputWhenNotFocused": true,
+      "mangledName": "Gameplay",
+      "name": "Gameplay",
+      "r": 110,
+      "standardSortMethod": true,
+      "stopSoundsOnStartup": true,
+      "title": "",
+      "v": 60,
+      "uiSettings": {
+        "grid": false,
+        "gridType": "rectangular",
+        "gridWidth": 32,
+        "gridHeight": 32,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      },
+      "objectsGroups": [
+        {
+          "name": "Obstacles",
+          "objects": [
+            {
+              "name": "RockSmall"
+            },
+            {
+              "name": "RockMedium"
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "name": "BaseSpeed",
+          "type": "number",
+          "value": 180
+        },
+        {
+          "name": "BranchDuration",
+          "type": "number",
+          "value": 0.18
+        },
+        {
+          "name": "BranchDistance",
+          "type": "number",
+          "value": 65
+        },
+        {
+          "name": "BranchCooldown",
+          "type": "number",
+          "value": 0.08
+        },
+        {
+          "name": "TipScreenRatio",
+          "type": "number",
+          "value": 0.7
+        },
+        {
+          "name": "EdgeMargin",
+          "type": "number",
+          "value": 30
+        },
+        {
+          "name": "PixelsPerMeter",
+          "type": "number",
+          "value": 20
+        },
+        {
+          "name": "TrailStep",
+          "type": "number",
+          "value": 14
+        },
+        {
+          "name": "TrailJitter",
+          "type": "number",
+          "value": 6
+        },
+        {
+          "name": "TrailMaxSegments",
+          "type": "number",
+          "value": 160
+        },
+        {
+          "name": "ChunkHeight",
+          "type": "number",
+          "value": 640
+        },
+        {
+          "name": "ChunkCount",
+          "type": "number",
+          "value": 9
+        },
+        {
+          "name": "ChunkLoopStart",
+          "type": "number",
+          "value": 1
+        },
+        {
+          "name": "SpawnMargin",
+          "type": "number",
+          "value": 100
+        },
+        {
+          "name": "RestartDelay",
+          "type": "number",
+          "value": 0.3
+        },
+        {
+          "name": "GameState",
+          "type": "string",
+          "value": "Playing"
+        },
+        {
+          "name": "ScrollSpeed",
+          "type": "number",
+          "value": 180
+        },
+        {
+          "name": "Distance",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "CrackWorldX",
+          "type": "number",
+          "value": 360
+        },
+        {
+          "name": "CrackWorldY",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "TipScreenY",
+          "type": "number",
+          "value": 896
+        },
+        {
+          "name": "BranchDirection",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "BranchTimer",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "BranchStartX",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "CooldownTimer",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "TrailLastX",
+          "type": "number",
+          "value": 360
+        },
+        {
+          "name": "TrailLastWorldY",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "TrailNewX",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "NextChunkWorldY",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "ChunkIndex",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "GameOverTime",
+          "type": "number",
+          "value": 0
+        }
+      ],
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 3200,
+          "layer": "",
+          "locked": false,
+          "name": "Background",
+          "persistentUuid": "f2f5c9db-1779-5c9c-950c-5a237ad14b58",
+          "width": 720,
+          "x": 0,
+          "y": -800,
+          "zOrder": -10,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "CrackTip",
+          "persistentUuid": "c2251d6d-1716-5ff3-bad5-4fb4d9280654",
+          "width": 0,
+          "x": 360,
+          "y": 896,
+          "zOrder": 10,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "CrackHitbox",
+          "persistentUuid": "4a6d0fe9-d111-5118-95a4-f9d172523ad8",
+          "width": 0,
+          "x": 360,
+          "y": 896,
+          "zOrder": 11,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "HUD",
+          "locked": false,
+          "name": "DistanceText",
+          "persistentUuid": "f1a3ce05-e2d3-5508-888f-b7aa3bae1db7",
+          "width": 0,
+          "x": 140,
+          "y": 50,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "HUD",
+          "locked": false,
+          "name": "HintText",
+          "persistentUuid": "94305471-2522-5114-990c-a4a4058288b1",
+          "width": 0,
+          "x": 90,
+          "y": 1040,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 3000,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "Overlay",
+          "persistentUuid": "97a85817-fde0-5808-a776-50fc8354e1a8",
+          "width": 720,
+          "x": 0,
+          "y": -400,
+          "zOrder": 0,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "GameOverTitle",
+          "persistentUuid": "73af97c7-5d56-5224-88d6-1f402d1cc588",
+          "width": 0,
+          "x": 130,
+          "y": 330,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "FinalDistanceText",
+          "persistentUuid": "54651233-5564-514c-abcb-245d2cf056d6",
+          "width": 0,
+          "x": 150,
+          "y": 470,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "RestartButton",
+          "persistentUuid": "52b0a8b5-a39d-5af4-a5f1-de43e38f2ba2",
+          "width": 0,
+          "x": 360,
+          "y": 650,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "GameOver",
+          "locked": false,
+          "name": "RestartLabel",
+          "persistentUuid": "37595ccc-1c7b-53cf-b0be-f7f0e5b88760",
+          "width": 0,
+          "x": 270,
+          "y": 618,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "objects": [
+        {
+          "assetStoreId": "",
+          "name": "Background",
+          "type": "TiledSpriteObject::TiledSprite",
+          "texture": "bg_soil",
+          "width": 720,
+          "height": 3000,
+          "variables": [],
+          "effects": [],
+          "behaviors": []
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "RockSmall",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [
+            {
+              "name": "WorldY",
+              "type": "number",
+              "value": 0
+            },
+            {
+              "name": "Ready",
+              "type": "boolean",
+              "value": false
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": true,
+                      "image": "rock_small",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 38,
+                        "y": 38
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": [
+                        [
+                          {
+                            "x": 66.0,
+                            "y": 49.6
+                          },
+                          {
+                            "x": 49.6,
+                            "y": 66.0
+                          },
+                          {
+                            "x": 26.4,
+                            "y": 66.0
+                          },
+                          {
+                            "x": 10.0,
+                            "y": 49.6
+                          },
+                          {
+                            "x": 10.0,
+                            "y": 26.4
+                          },
+                          {
+                            "x": 26.4,
+                            "y": 10.0
+                          },
+                          {
+                            "x": 49.6,
+                            "y": 10.0
+                          },
+                          {
+                            "x": 66.0,
+                            "y": 26.4
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "RockMedium",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [
+            {
+              "name": "WorldY",
+              "type": "number",
+              "value": 0
+            },
+            {
+              "name": "Ready",
+              "type": "boolean",
+              "value": false
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": true,
+                      "image": "rock_medium",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 58,
+                        "y": 58
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": [
+                        [
+                          {
+                            "x": 102.0,
+                            "y": 76.22
+                          },
+                          {
+                            "x": 76.22,
+                            "y": 102.0
+                          },
+                          {
+                            "x": 39.78,
+                            "y": 102.0
+                          },
+                          {
+                            "x": 14.0,
+                            "y": 76.22
+                          },
+                          {
+                            "x": 14.0,
+                            "y": 39.78
+                          },
+                          {
+                            "x": 39.78,
+                            "y": 14.0
+                          },
+                          {
+                            "x": 76.22,
+                            "y": 14.0
+                          },
+                          {
+                            "x": 102.0,
+                            "y": 39.78
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "TrailSegment",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [
+            {
+              "name": "WorldY",
+              "type": "number",
+              "value": 0
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_segment",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 12
+                      },
+                      "centerPoint": {
+                        "automatic": false,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 12
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "CrackTip",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "crack_tip",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 32,
+                        "y": 32
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "CrackHitbox",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "crack_hitbox",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 6,
+                        "y": 6
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "Spark",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [
+            {
+              "name": "VX",
+              "type": "number",
+              "value": 0
+            },
+            {
+              "name": "VY",
+              "type": "number",
+              "value": 0
+            },
+            {
+              "name": "Life",
+              "type": "number",
+              "value": 0.35
+            }
+          ],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "spark",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 6,
+                        "y": 6
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "ImpactFlash",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "impact_flash",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "DistanceText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "DISTANCE: 0000 m",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 38,
+          "color": {
+            "r": 255,
+            "g": 240,
+            "b": 214
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "DISTANCE: 0000 m",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 38,
+            "color": "255;240;214"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "HintText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "TAP LEFT OR RIGHT TO BRANCH",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 30,
+          "color": {
+            "r": 255,
+            "g": 230,
+            "b": 170
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "TAP LEFT OR RIGHT TO BRANCH",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 30,
+            "color": "255;230;170"
+          }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "Overlay",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_overlay",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "GameOverTitle",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "GAME OVER",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 84,
+          "color": {
+            "r": 255,
+            "g": 214,
+            "b": 120
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "GAME OVER",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 84,
+            "color": "255;214;120"
+          }
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "FinalDistanceText",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "DISTANCE: 0000 m",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 44,
+          "color": {
+            "r": 255,
+            "g": 240,
+            "b": 214
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "DISTANCE: 0000 m",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 44,
+            "color": "255;240;214"
+          }
+        },
+        {
+          "adaptCollisionMaskAutomatically": false,
+          "assetStoreId": "",
+          "name": "RestartButton",
+          "type": "Sprite",
+          "updateIfNotVisible": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "animations": [
+            {
+              "name": "",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "ui_button",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 180,
+                        "y": 55
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "assetStoreId": "",
+          "bold": true,
+          "italic": false,
+          "name": "RestartLabel",
+          "smoothed": true,
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "RESTART",
+          "font": "",
+          "textAlignment": "center",
+          "characterSize": 48,
+          "color": {
+            "r": 80,
+            "g": 26,
+            "b": 6
+          },
+          "content": {
+            "bold": true,
+            "isOutlineEnabled": true,
+            "isShadowEnabled": true,
+            "italic": false,
+            "outlineColor": "70;24;8",
+            "outlineThickness": 4,
+            "shadowAngle": 90,
+            "shadowBlurRadius": 2,
+            "shadowColor": "0;0;0",
+            "shadowDistance": 4,
+            "shadowOpacity": 120,
+            "smoothed": true,
+            "underlined": false,
+            "text": "RESTART",
+            "font": "",
+            "textAlignment": "center",
+            "characterSize": 48,
+            "color": "80;26;6"
+          }
+        }
+      ],
+      "objectsFolderStructure": {
+        "folderName": "__ROOT",
+        "children": [
+          {
+            "folderName": "World",
+            "children": [
+              {
+                "objectName": "Background"
+              }
+            ]
+          },
+          {
+            "folderName": "Crack",
+            "children": [
+              {
+                "objectName": "CrackTip"
+              },
+              {
+                "objectName": "CrackHitbox"
+              },
+              {
+                "objectName": "TrailSegment"
+              },
+              {
+                "objectName": "Spark"
+              },
+              {
+                "objectName": "ImpactFlash"
+              }
+            ]
+          },
+          {
+            "folderName": "Obstacles",
+            "children": [
+              {
+                "objectName": "RockSmall"
+              },
+              {
+                "objectName": "RockMedium"
+              }
+            ]
+          },
+          {
+            "folderName": "UI",
+            "children": [
+              {
+                "objectName": "DistanceText"
+              },
+              {
+                "objectName": "HintText"
+              },
+              {
+                "objectName": "Overlay"
+              },
+              {
+                "objectName": "GameOverTitle"
+              },
+              {
+                "objectName": "FinalDistanceText"
+              },
+              {
+                "objectName": "RestartButton"
+              },
+              {
+                "objectName": "RestartLabel"
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "CRACKLINE \u2014 Phase 1 prototype. Each system lives in its own external events sheet (Project manager > External events). Order matters: state, movement, spawning, trail, collisions, HUD.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Link",
+          "include": {
+            "includeConfig": 0
+          },
+          "target": "EV_GameState"
+        },
+        {
+          "type": "BuiltinCommonInstructions::Link",
+          "include": {
+            "includeConfig": 0
+          },
+          "target": "EV_CrackMovement"
+        },
+        {
+          "type": "BuiltinCommonInstructions::Link",
+          "include": {
+            "includeConfig": 0
+          },
+          "target": "EV_ObstacleSpawner"
+        },
+        {
+          "type": "BuiltinCommonInstructions::Link",
+          "include": {
+            "includeConfig": 0
+          },
+          "target": "EV_Trail"
+        },
+        {
+          "type": "BuiltinCommonInstructions::Link",
+          "include": {
+            "includeConfig": 0
+          },
+          "target": "EV_Collisions"
+        },
+        {
+          "type": "BuiltinCommonInstructions::Link",
+          "include": {
+            "includeConfig": 0
+          },
+          "target": "EV_Scoring"
+        }
+      ],
+      "layers": [
+        {
+          "ambientLightColorB": 200,
+          "ambientLightColorG": 200,
+          "ambientLightColorR": 200,
+          "camera3DFarPlaneDistance": 10000,
+          "camera3DFieldOfView": 45,
+          "camera3DNearPlaneDistance": 3,
+          "cameraType": "",
+          "followBaseLayerCamera": false,
+          "isLightingLayer": false,
+          "isLocked": false,
+          "name": "",
+          "renderingType": "",
+          "visibility": true,
+          "cameras": [
+            {
+              "defaultSize": true,
+              "defaultViewport": true,
+              "height": 0,
+              "viewportBottom": 1,
+              "viewportLeft": 0,
+              "viewportRight": 1,
+              "viewportTop": 0,
+              "width": 0
+            }
+          ],
+          "effects": []
+        },
+        {
+          "ambientLightColorB": 200,
+          "ambientLightColorG": 200,
+          "ambientLightColorR": 200,
+          "camera3DFarPlaneDistance": 10000,
+          "camera3DFieldOfView": 45,
+          "camera3DNearPlaneDistance": 3,
+          "cameraType": "",
+          "followBaseLayerCamera": false,
+          "isLightingLayer": false,
+          "isLocked": false,
+          "name": "HUD",
+          "renderingType": "",
+          "visibility": true,
+          "cameras": [
+            {
+              "defaultSize": true,
+              "defaultViewport": true,
+              "height": 0,
+              "viewportBottom": 1,
+              "viewportLeft": 0,
+              "viewportRight": 1,
+              "viewportTop": 0,
+              "width": 0
+            }
+          ],
+          "effects": []
+        },
+        {
+          "ambientLightColorB": 200,
+          "ambientLightColorG": 200,
+          "ambientLightColorR": 200,
+          "camera3DFarPlaneDistance": 10000,
+          "camera3DFieldOfView": 45,
+          "camera3DNearPlaneDistance": 3,
+          "cameraType": "",
+          "followBaseLayerCamera": false,
+          "isLightingLayer": false,
+          "isLocked": false,
+          "name": "GameOver",
+          "renderingType": "",
+          "visibility": false,
+          "cameras": [
+            {
+              "defaultSize": true,
+              "defaultViewport": true,
+              "height": 0,
+              "viewportBottom": 1,
+              "viewportLeft": 0,
+              "viewportRight": 1,
+              "viewportTop": 0,
+              "width": 0
+            }
+          ],
+          "effects": []
+        }
+      ],
+      "behaviorsSharedData": []
+    }
+  ],
+  "externalEvents": [
+    {
+      "associatedLayout": "Gameplay",
+      "lastChangeTimeStamp": 0,
+      "name": "EV_GameState",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "GAME STATE \u2014 scene setup, game over overlay and restart. GameState is \"Playing\" or \"GameOver\".",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Scene start",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SceneJustBegins"
+                  },
+                  "parameters": [
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "TipScreenY",
+                    "=",
+                    "SceneWindowHeight() * TipScreenRatio"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "CrackWorldX",
+                    "=",
+                    "SceneWindowWidth() / 2"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "CrackWorldY",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "ScrollSpeed",
+                    "=",
+                    "BaseSpeed"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "TrailLastX",
+                    "=",
+                    "CrackWorldX"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "TrailLastWorldY",
+                    "=",
+                    "CrackWorldY"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "NextChunkWorldY",
+                    "=",
+                    "TipScreenY"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "ChunkIndex",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetStringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "HideLayer"
+                  },
+                  "parameters": [
+                    "",
+                    "\"GameOver\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Hide"
+                  },
+                  "parameters": [
+                    "CrackHitbox"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "OpacityCapability::OpacityBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "Overlay",
+                    "Opacity",
+                    "=",
+                    "170"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "HintText",
+                    "=",
+                    "SceneWindowHeight() * 0.82"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "GameOverTitle",
+                    "=",
+                    "SceneWindowHeight() * 0.26"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "FinalDistanceText",
+                    "=",
+                    "SceneWindowHeight() * 0.37"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "RestartButton",
+                    "=",
+                    "SceneWindowHeight() * 0.52"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "RestartLabel",
+                    "=",
+                    "RestartButton.Y() - 32"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Game over",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Count time spent on the game over screen (prevents a frantic tap from restarting instantly).",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"GameOver\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "GameOverTime",
+                    "+",
+                    "TimeDelta()"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Restart: tap/click the RESTART button. Restarting the scene resets every scene variable to its default.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"GameOver\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "GameOverTime",
+                    ">=",
+                    "RestartDelay"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "HasAnyTouchOrMouseStarted"
+                  },
+                  "parameters": [
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "CollisionPoint"
+                  },
+                  "parameters": [
+                    "RestartButton",
+                    "TouchX(StartedTouchOrMouseId(0), \"GameOver\")",
+                    "TouchY(StartedTouchOrMouseId(0), \"GameOver\")"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Scene"
+                  },
+                  "parameters": [
+                    "",
+                    "\"Gameplay\"",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Impact flash fades out and grows.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "OpacityCapability::OpacityBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ImpactFlash",
+                    "Opacity",
+                    "-",
+                    "900 * TimeDelta()"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "ImpactFlash",
+                    "Scale",
+                    "+",
+                    "4 * TimeDelta()"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "OpacityCapability::OpacityBehavior::Value"
+                  },
+                  "parameters": [
+                    "ImpactFlash",
+                    "Opacity",
+                    "<=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "ImpactFlash",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        }
+      ]
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "lastChangeTimeStamp": 0,
+      "name": "EV_CrackMovement",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "CRACK MOVEMENT \u2014 the crack tip stays at TipScreenY; the world scrolls instead. CrackWorldY = distance travelled upward in px.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Input (tap / click)",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "One tap = one branch. Taps during a branch or the short cooldown are ignored (no queueing). Left half = left, right half = right.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "HasAnyTouchOrMouseStarted"
+                  },
+                  "parameters": [
+                    ""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "BranchDirection",
+                    "=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "CooldownTimer",
+                    "<=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "BuiltinCommonInstructions::CompareNumbers"
+                      },
+                      "parameters": [
+                        "TouchX(StartedTouchOrMouseId(0), \"\")",
+                        "<",
+                        "SceneWindowWidth() / 2"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "BranchDirection",
+                        "=",
+                        "-1"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "BuiltinCommonInstructions::CompareNumbers"
+                      },
+                      "parameters": [
+                        "TouchX(StartedTouchOrMouseId(0), \"\")",
+                        ">=",
+                        "SceneWindowWidth() / 2"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "BranchDirection",
+                        "=",
+                        "1"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "BranchTimer",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "BranchStartX",
+                        "=",
+                        "CrackWorldX"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "HintText"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Repeat",
+                  "repeatExpression": "5",
+                  "conditions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Create"
+                      },
+                      "parameters": [
+                        "",
+                        "Spark",
+                        "CrackWorldX",
+                        "TipScreenY",
+                        "\"\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberObjectVariable"
+                      },
+                      "parameters": [
+                        "Spark",
+                        "VX",
+                        "=",
+                        "-BranchDirection * RandomFloatInRange(60, 200)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberObjectVariable"
+                      },
+                      "parameters": [
+                        "Spark",
+                        "VY",
+                        "=",
+                        "RandomFloatInRange(-140, 40)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberObjectVariable"
+                      },
+                      "parameters": [
+                        "Spark",
+                        "Life",
+                        "=",
+                        "RandomFloatInRange(0.2, 0.4)"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Branch motion",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Lateral offset follows an ease-out curve over BranchDuration, so the branch starts fast (responsive) and lands softly. Position is computed from elapsed time, so the total distance is frame-rate independent. Clamped to the screen so the crack can never get stuck.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "CooldownTimer",
+                    ">",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "CooldownTimer",
+                    "-",
+                    "TimeDelta()"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberVariable"
+                  },
+                  "parameters": [
+                    "BranchDirection",
+                    "!=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "BranchTimer",
+                    "+",
+                    "TimeDelta()"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "BranchTimer",
+                        "<",
+                        "BranchDuration"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "CrackWorldX",
+                        "=",
+                        "clamp(BranchStartX + BranchDirection * BranchDistance * (1 - pow(1 - BranchTimer / BranchDuration, 2)), EdgeMargin, SceneWindowWidth() - EdgeMargin)"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "BranchTimer",
+                        ">=",
+                        "BranchDuration"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "CrackWorldX",
+                        "=",
+                        "clamp(BranchStartX + BranchDirection * BranchDistance, EdgeMargin, SceneWindowWidth() - EdgeMargin)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "BranchDirection",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "CooldownTimer",
+                        "=",
+                        "BranchCooldown"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Forward motion and scrolling",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "CrackWorldY",
+                    "+",
+                    "ScrollSpeed * TimeDelta()"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "Distance",
+                    "=",
+                    "floor(CrackWorldY / PixelsPerMeter)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "TiledSpriteObject::YOffset"
+                  },
+                  "parameters": [
+                    "Background",
+                    "=",
+                    "-CrackWorldY"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Place the visual tip and the (hidden) hitbox on the crack's logical position.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetX"
+                  },
+                  "parameters": [
+                    "CrackTip",
+                    "=",
+                    "CrackWorldX"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "CrackTip",
+                    "=",
+                    "TipScreenY"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetX"
+                  },
+                  "parameters": [
+                    "CrackHitbox",
+                    "=",
+                    "CrackWorldX"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "CrackHitbox",
+                    "=",
+                    "TipScreenY"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "CrackTip",
+                    "Scale",
+                    "=",
+                    "1 + 0.12 * sin(TimeFromStart() * 14)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        }
+      ]
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "lastChangeTimeStamp": 0,
+      "name": "EV_ObstacleSpawner",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "OBSTACLE SPAWNER (Phase 1: hand-made chunks). Each chunk is an external layout named Chunk0, Chunk1, ... that is ChunkHeight px tall. Edit them visually in the editor (Project manager > External layouts). Chunk0 is a warm-up; after the last one the sequence loops back to ChunkLoopStart.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Spawn next chunk",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BuiltinCommonInstructions::CompareNumbers"
+                  },
+                  "parameters": [
+                    "CrackWorldY + TipScreenY + SpawnMargin",
+                    ">=",
+                    "NextChunkWorldY"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BuiltinExternalLayouts::CreateObjectsFromExternalLayout"
+                  },
+                  "parameters": [
+                    "",
+                    "\"Chunk\" + ToString(ChunkIndex)",
+                    "0",
+                    "TipScreenY - (NextChunkWorldY - CrackWorldY) - ChunkHeight",
+                    "0"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "NextChunkWorldY",
+                    "+",
+                    "ChunkHeight"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "ChunkIndex",
+                    "+",
+                    "1"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "ChunkIndex",
+                        ">=",
+                        "ChunkCount"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ChunkIndex",
+                        "=",
+                        "ChunkLoopStart"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                }
+              ]
+            },
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Freshly created obstacles: record their logical world position once.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BooleanObjectVariable"
+                  },
+                  "parameters": [
+                    "Obstacles",
+                    "Ready",
+                    "False",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Obstacles",
+                    "WorldY",
+                    "=",
+                    "CrackWorldY + TipScreenY - Obstacles.Y()"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetBooleanObjectVariable"
+                  },
+                  "parameters": [
+                    "Obstacles",
+                    "Ready",
+                    "True",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Scroll and clean up",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "Obstacles",
+                    "=",
+                    "TipScreenY - (Obstacles.WorldY - CrackWorldY)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PosY"
+                  },
+                  "parameters": [
+                    "Obstacles",
+                    ">",
+                    "SceneWindowHeight() + 120"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "Obstacles",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        }
+      ]
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "lastChangeTimeStamp": 0,
+      "name": "EV_Trail",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "FRACTURE TRAIL \u2014 visual only (never tested for collisions). A segment is laid every TrailStep px from the last trail point to the current (slightly jittered) tip position, then scrolls with the world.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Lay segments",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "StringVariable"
+                  },
+                  "parameters": [
+                    "GameState",
+                    "=",
+                    "\"Playing\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "BuiltinCommonInstructions::CompareNumbers"
+                  },
+                  "parameters": [
+                    "DistanceBetweenPositions(TrailLastX, TrailLastWorldY, CrackWorldX, CrackWorldY)",
+                    ">=",
+                    "TrailStep"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SceneInstancesCount"
+                  },
+                  "parameters": [
+                    "",
+                    "TrailSegment",
+                    "<",
+                    "TrailMaxSegments"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "TrailNewX",
+                    "=",
+                    "CrackWorldX + RandomFloatInRange(-TrailJitter, TrailJitter)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Create"
+                  },
+                  "parameters": [
+                    "",
+                    "TrailSegment",
+                    "TrailLastX",
+                    "TipScreenY - (TrailLastWorldY - CrackWorldY)",
+                    "\"\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "TrailSegment",
+                    "WorldY",
+                    "=",
+                    "TrailLastWorldY"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetAngle"
+                  },
+                  "parameters": [
+                    "TrailSegment",
+                    "=",
+                    "ToDeg(atan2(-(CrackWorldY - TrailLastWorldY), TrailNewX - TrailLastX))"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetX"
+                  },
+                  "parameters": [
+                    "TrailSegment",
+                    "Scale",
+                    "=",
+                    "(DistanceBetweenPositions(TrailLastX, TrailLastWorldY, TrailNewX, CrackWorldY) + 2) / 32"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetY"
+                  },
+                  "parameters": [
+                    "TrailSegment",
+                    "Scale",
+                    "=",
+                    "RandomFloatInRange(0.75, 1.15)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetZOrder"
+                  },
+                  "parameters": [
+                    "TrailSegment",
+                    "=",
+                    "1"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "TrailLastX",
+                    "=",
+                    "TrailNewX"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "TrailLastWorldY",
+                    "=",
+                    "CrackWorldY"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Scroll and clean up",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "TrailSegment",
+                    "=",
+                    "TipScreenY - (TrailSegment.WorldY - CrackWorldY)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "PosY"
+                  },
+                  "parameters": [
+                    "TrailSegment",
+                    ">",
+                    "SceneWindowHeight() + 40"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "TrailSegment",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "type": "BuiltinCommonInstructions::Group",
+          "colorR": 74,
+          "colorG": 176,
+          "colorB": 228,
+          "creationTime": 0,
+          "name": "Sparks",
+          "source": "",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "Small sparks when the crack changes direction (or breaks). Cheap: a handful of sprites moved by events, deleted after ~0.3 s.",
+              "comment2": ""
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetX"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "+",
+                    "Spark.VX * TimeDelta()"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetY"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "+",
+                    "(Spark.VY + ScrollSpeed) * TimeDelta()"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "Life",
+                    "-",
+                    "TimeDelta()"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "OpacityCapability::OpacityBehavior::SetValue"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "Opacity",
+                    "=",
+                    "clamp(Spark.Life / 0.3, 0, 1) * 255"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetZOrder"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "=",
+                    "9"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "NumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "Life",
+                    "<=",
+                    "0"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Delete"
+                  },
+                  "parameters": [
+                    "Spark",
+                    ""
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ],
+          "parameters": []
+        }
+      ]
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "lastChangeTimeStamp": 0,
+      "name": "EV_Collisions",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "COLLISIONS \u2014 only the small hidden CrackHitbox at the tip is tested, against the Obstacles group (simple octagon masks). The trail never collides.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "StringVariable"
+              },
+              "parameters": [
+                "GameState",
+                "=",
+                "\"Playing\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "CollisionNP"
+              },
+              "parameters": [
+                "CrackHitbox",
+                "Obstacles",
+                "",
+                "",
+                ""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetStringVariable"
+              },
+              "parameters": [
+                "GameState",
+                "=",
+                "\"GameOver\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetNumberVariable"
+              },
+              "parameters": [
+                "BranchDirection",
+                "=",
+                "0"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "Create"
+              },
+              "parameters": [
+                "",
+                "ImpactFlash",
+                "CrackWorldX",
+                "TipScreenY",
+                "\"\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "SetZOrder"
+              },
+              "parameters": [
+                "ImpactFlash",
+                "=",
+                "12"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ChangeColor"
+              },
+              "parameters": [
+                "CrackTip",
+                "\"255;120;90\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+              },
+              "parameters": [
+                "FinalDistanceText",
+                "Text",
+                "=",
+                "\"DISTANCE: \" + ToString(Distance) + \" m\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ShowLayer"
+              },
+              "parameters": [
+                "",
+                "\"GameOver\""
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "Hide"
+              },
+              "parameters": [
+                "HintText"
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Repeat",
+              "repeatExpression": "12",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "Create"
+                  },
+                  "parameters": [
+                    "",
+                    "Spark",
+                    "CrackWorldX",
+                    "TipScreenY",
+                    "\"\""
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "VX",
+                    "=",
+                    "RandomFloatInRange(-260, 260)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "VY",
+                    "=",
+                    "RandomFloatInRange(-320, 120)"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberObjectVariable"
+                  },
+                  "parameters": [
+                    "Spark",
+                    "Life",
+                    "=",
+                    "RandomFloatInRange(0.2, 0.4)"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetCenterX"
+                  },
+                  "parameters": [
+                    "FinalDistanceText",
+                    "=",
+                    "SceneWindowWidth() / 2"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "lastChangeTimeStamp": 0,
+      "name": "EV_Scoring",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Comment",
+          "color": {
+            "b": 109,
+            "g": 230,
+            "r": 255,
+            "textB": 0,
+            "textG": 0,
+            "textR": 0
+          },
+          "comment": "SCORING / HUD \u2014 distance is derived from the logical world position (CrackWorldY), not from frame counts.",
+          "comment2": ""
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "inverted": false,
+                "value": "TextContainerCapability::TextContainerBehavior::SetValue"
+              },
+              "parameters": [
+                "DistanceText",
+                "Text",
+                "=",
+                "\"DISTANCE: \" + StrRepeat(\"0\", max(0, 4 - StrLength(ToString(Distance)))) + ToString(Distance) + \" m\""
+              ],
+              "subInstructions": []
+            }
+          ],
+          "events": []
+        }
+      ]
+    }
+  ],
+  "eventsFunctionsExtensions": [],
+  "externalLayouts": [
+    {
+      "associatedLayout": "Gameplay",
+      "name": "Chunk0",
+      "instances": [],
+      "editionSettings": {
+        "grid": true,
+        "gridType": "rectangular",
+        "gridWidth": 102.857,
+        "gridHeight": 80,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      }
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "name": "Chunk1",
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "4b64de88-283b-50e6-a78f-faa5f75e3b0d",
+          "width": 0,
+          "x": 360.0,
+          "y": 320,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "editionSettings": {
+        "grid": true,
+        "gridType": "rectangular",
+        "gridWidth": 102.857,
+        "gridHeight": 80,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      }
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "name": "Chunk2",
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "24035534-9cfd-548d-8b19-2659f136a744",
+          "width": 0,
+          "x": 51.4,
+          "y": 320,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "66c6f948-2d57-5c2e-a8a8-551f0070447a",
+          "width": 0,
+          "x": 462.9,
+          "y": 320,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "editionSettings": {
+        "grid": true,
+        "gridType": "rectangular",
+        "gridWidth": 102.857,
+        "gridHeight": 80,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      }
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "name": "Chunk3",
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "dc902674-4106-5599-afd5-bf530c314208",
+          "width": 0,
+          "x": 462.9,
+          "y": 240,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "fca9b2a6-0c10-5bf6-bd5f-677912967703",
+          "width": 0,
+          "x": 565.7,
+          "y": 280,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "7197b8c2-651e-5c58-bf11-e4134808ad6a",
+          "width": 0,
+          "x": 605.7,
+          "y": 220,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "0d93cce4-cc92-510f-91cf-695586ae2bf9",
+          "width": 0,
+          "x": 154.3,
+          "y": 520,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "editionSettings": {
+        "grid": true,
+        "gridType": "rectangular",
+        "gridWidth": 102.857,
+        "gridHeight": 80,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      }
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "name": "Chunk4",
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "10d29cd0-c904-5815-b4eb-8a3be13e43b5",
+          "width": 0,
+          "x": 51.4,
+          "y": 300,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "cb686af7-5702-574b-89cb-70be6331bec8",
+          "width": 0,
+          "x": 154.3,
+          "y": 300,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "ed98aab6-03cd-5092-8324-250cfebd62eb",
+          "width": 0,
+          "x": 257.1,
+          "y": 300,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "0fa2a46c-5d0a-5556-923f-f8fa77da1e7c",
+          "width": 0,
+          "x": 565.7,
+          "y": 300,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "122b4089-e7e2-5546-a7ec-eac81291c460",
+          "width": 0,
+          "x": 668.6,
+          "y": 300,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "editionSettings": {
+        "grid": true,
+        "gridType": "rectangular",
+        "gridWidth": 102.857,
+        "gridHeight": 80,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      }
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "name": "Chunk5",
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "2ce9c514-427e-582c-a7f5-43563b0f1b9d",
+          "width": 0,
+          "x": 154.3,
+          "y": 80,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "c41628ef-3c7a-5bc6-bf38-e23f87440616",
+          "width": 0,
+          "x": 565.7,
+          "y": 280,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "f673d7ac-ff8e-5107-a3c4-65f84a500d67",
+          "width": 0,
+          "x": 257.1,
+          "y": 480,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "editionSettings": {
+        "grid": true,
+        "gridType": "rectangular",
+        "gridWidth": 102.857,
+        "gridHeight": 80,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      }
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "name": "Chunk6",
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "96cbc7b4-8e10-5676-80b0-e06a6d8f1e9c",
+          "width": 0,
+          "x": 257.1,
+          "y": 420,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "59c4af0e-9a3d-54f2-b56c-abe04f10631b",
+          "width": 0,
+          "x": 360.0,
+          "y": 420,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "d63ca023-9df2-5b45-95b5-5d8775eabac7",
+          "width": 0,
+          "x": 462.9,
+          "y": 420,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "e61a2293-c82b-5836-8cfd-5bb2b784aed8",
+          "width": 0,
+          "x": 565.7,
+          "y": 420,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "41fd650d-4275-5f94-8cff-6dd42ba3e86e",
+          "width": 0,
+          "x": 668.6,
+          "y": 420,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "editionSettings": {
+        "grid": true,
+        "gridType": "rectangular",
+        "gridWidth": 102.857,
+        "gridHeight": 80,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      }
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "name": "Chunk7",
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "09048a27-2dde-5e89-b5cb-d45f8fcce142",
+          "width": 0,
+          "x": 51.4,
+          "y": 180,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "34a515cd-4023-5a65-b099-7b9c03f9f8f1",
+          "width": 0,
+          "x": 154.3,
+          "y": 180,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "8a721251-676f-5d22-a2d2-ba8207d9d217",
+          "width": 0,
+          "x": 257.1,
+          "y": 180,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "106371cb-e916-57c3-b9a3-d0ed8bf2ce15",
+          "width": 0,
+          "x": 360.0,
+          "y": 180,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "93e5d077-8691-58b9-8097-68089c66b27e",
+          "width": 0,
+          "x": 462.9,
+          "y": 180,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "editionSettings": {
+        "grid": true,
+        "gridType": "rectangular",
+        "gridWidth": 102.857,
+        "gridHeight": 80,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      }
+    },
+    {
+      "associatedLayout": "Gameplay",
+      "name": "Chunk8",
+      "instances": [
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockMedium",
+          "persistentUuid": "72b85aff-44a7-5161-be45-4bf30ffb0341",
+          "width": 0,
+          "x": 360.0,
+          "y": 150,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "41215d93-e348-5059-b41f-480afbcf9f6b",
+          "width": 0,
+          "x": 51.4,
+          "y": 430,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "0045f9bd-e4e1-58a3-bbef-84687e91d60b",
+          "width": 0,
+          "x": 668.6,
+          "y": 430,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "RockSmall",
+          "persistentUuid": "e90081a4-026d-5500-b959-eaabce82a3c0",
+          "width": 0,
+          "x": 360.0,
+          "y": 600,
+          "zOrder": 5,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        }
+      ],
+      "editionSettings": {
+        "grid": true,
+        "gridType": "rectangular",
+        "gridWidth": 102.857,
+        "gridHeight": 80,
+        "gridOffsetX": 0,
+        "gridOffsetY": 0,
+        "gridColor": 10401023,
+        "gridAlpha": 0.8,
+        "snap": false,
+        "zoomFactor": 0.5,
+        "windowMask": true
+      }
+    }
+  ],
+  "externalSourceFiles": []
+}
