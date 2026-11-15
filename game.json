@@ -13981,19 +13981,6 @@
                                     "5"
                                   ],
                                   "subInstructions": []
-                                },
-                                {
-                                  "type": {
-                                    "inverted": false,
-                                    "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
-                                  },
-                                  "parameters": [
-                                    "Crystal",
-                                    "Animation",
-                                    "=",
-                                    "RandomInRange(0, 2)"
-                                  ],
-                                  "subInstructions": []
                                 }
                               ],
                               "events": [
@@ -14036,7 +14023,20 @@
                                         "Crystal",
                                         "Scale",
                                         "=",
-                                        "0.45"
+                                        "0.55"
+                                      ],
+                                      "subInstructions": []
+                                    },
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                                      },
+                                      "parameters": [
+                                        "Crystal",
+                                        "Animation",
+                                        "=",
+                                        "1"
                                       ],
                                       "subInstructions": []
                                     }
@@ -14082,7 +14082,20 @@
                                         "Crystal",
                                         "Scale",
                                         "=",
-                                        "0.7"
+                                        "0.75"
+                                      ],
+                                      "subInstructions": []
+                                    },
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                                      },
+                                      "parameters": [
+                                        "Crystal",
+                                        "Animation",
+                                        "=",
+                                        "0"
                                       ],
                                       "subInstructions": []
                                     }
@@ -14129,6 +14142,19 @@
                                         "Scale",
                                         "=",
                                         "1"
+                                      ],
+                                      "subInstructions": []
+                                    },
+                                    {
+                                      "type": {
+                                        "inverted": false,
+                                        "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                                      },
+                                      "parameters": [
+                                        "Crystal",
+                                        "Animation",
+                                        "=",
+                                        "2"
                                       ],
                                       "subInstructions": []
                                     }
@@ -14290,7 +14316,7 @@
                     "textG": 0,
                     "textR": 0
                   },
-                  "comment": "Corridor crystal: GemChance per row (Verdant planets get more), placed in the safe corridor between this row and the next, so it is always reachable. Sizes: small (5 points, small pickup area), medium (3), large (1).",
+                  "comment": "Corridor crystal: GemChance per row (Verdant planets get more), placed in the safe corridor between this row and the next, so it is always reachable. Pink small = 5 points (small pickup area), purple medium = 3, blue large = 1.",
                   "comment2": ""
                 },
                 {
@@ -14478,19 +14504,6 @@
                             "5"
                           ],
                           "subInstructions": []
-                        },
-                        {
-                          "type": {
-                            "inverted": false,
-                            "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
-                          },
-                          "parameters": [
-                            "Crystal",
-                            "Animation",
-                            "=",
-                            "RandomInRange(0, 2)"
-                          ],
-                          "subInstructions": []
                         }
                       ],
                       "events": [
@@ -14533,7 +14546,20 @@
                                 "Crystal",
                                 "Scale",
                                 "=",
-                                "0.45"
+                                "0.55"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                              },
+                              "parameters": [
+                                "Crystal",
+                                "Animation",
+                                "=",
+                                "1"
                               ],
                               "subInstructions": []
                             }
@@ -14579,7 +14605,20 @@
                                 "Crystal",
                                 "Scale",
                                 "=",
-                                "0.7"
+                                "0.75"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                              },
+                              "parameters": [
+                                "Crystal",
+                                "Animation",
+                                "=",
+                                "0"
                               ],
                               "subInstructions": []
                             }
@@ -14626,6 +14665,19 @@
                                 "Scale",
                                 "=",
                                 "1"
+                              ],
+                              "subInstructions": []
+                            },
+                            {
+                              "type": {
+                                "inverted": false,
+                                "value": "AnimatableCapability::AnimatableBehavior::SetIndex"
+                              },
+                              "parameters": [
+                                "Crystal",
+                                "Animation",
+                                "=",
+                                "2"
                               ],
                               "subInstructions": []
                             }

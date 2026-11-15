@@ -380,10 +380,12 @@ L = lambda a, b: f"lerp({a}, {b}, DifficultyLevel)"
 def gem_spawn():
     """Create a collectible crystal at (LaneX, ObjWorldY) with size GemSize: 0 small = 5 pts, 1 medium = 3 pts, 2 large = 1 pt."""
     # size events are SUB-events of the Create event, so they only affect the crystal just created
-    return [ev([], spawn("Crystal", "ObjWorldY", [A("AnimatableCapability::AnimatableBehavior::SetIndex", "Crystal", "Animation", "=", "RandomInRange(0, 2)")]), [
-            ev([isv("GemSize", "=", "0")], [setov("Crystal", "Value", "=", "5"), scale("Crystal", "=", "0.45")]),
-            ev([isv("GemSize", "=", "1")], [setov("Crystal", "Value", "=", "3"), scale("Crystal", "=", "0.7")]),
-            ev([isv("GemSize", "=", "2")], [setov("Crystal", "Value", "=", "1"), scale("Crystal", "=", "1")])])]
+    # colour always matches size/value: PINK small = 5, PURPLE medium = 3, BLUE large = 1  (animations: 0 Purple, 1 Pink, 2 Cyan)
+    anim = lambda i: A("AnimatableCapability::AnimatableBehavior::SetIndex", "Crystal", "Animation", "=", str(i))
+    return [ev([], spawn("Crystal", "ObjWorldY"), [
+            ev([isv("GemSize", "=", "0")], [setov("Crystal", "Value", "=", "5"), scale("Crystal", "=", "0.55"), anim(1)]),
+            ev([isv("GemSize", "=", "1")], [setov("Crystal", "Value", "=", "3"), scale("Crystal", "=", "0.75"), anim(0)]),
+            ev([isv("GemSize", "=", "2")], [setov("Crystal", "Value", "=", "1"), scale("Crystal", "=", "1"), anim(2)])])]
 ev_spawner = [
     comment("PROCEDURAL OBSTACLE ROWS with a guaranteed safe route. The screen is split into LaneCount (7) lanes. Every row keeps a 2-lane wide CORRIDOR free (SafeLane and SafeLane+1). The corridor drifts by at most one lane per row (on most rows), and on a drift row the lanes of both the old and new corridor stay free, so the corridor is continuous. A 2-lane gap is always wider than one branch (130 px), so a branch can always land inside it. This rule was validated offline by brute-force searching every tap timing over 60 random 5-minute runs at the real speeds (tools: gen_sim.py)."),
     comment("Row types: EMPTY (nothing), WALL (every lane outside the corridor gets a reinforced barrier, a share of them breakable), SCATTER (each lane outside the corridor gets an obstacle with probability Density). Density, row spacing and the share of crystals/solid barriers rise with DifficultyLevel; empty rows become rarer."),
@@ -455,7 +457,7 @@ ev_spawner = [
                 ]),
                 ev([], [setv("LaneIter", "+", "1")]),
             ]),
-            comment("Corridor crystal: GemChance per row (Verdant planets get more), placed in the safe corridor between this row and the next, so it is always reachable. Sizes: small (5 points, small pickup area), medium (3), large (1)."),
+            comment("Corridor crystal: GemChance per row (Verdant planets get more), placed in the safe corridor between this row and the next, so it is always reachable. Pink small = 5 points (small pickup area), purple medium = 3, blue large = 1."),
             ev([isv("RowType", "<=", "2"), cmp("RandomFloat(1)", "<", "GemChance + ThemeCrystalBonus")], [
                 setv("LaneX", "=", "(SafeLane + RandomInRange(0, 1) + 0.5) * LaneWidth"), setv("ObjWorldY", "=", "RowWorldY + RowGap * 0.28"),
                 setv("GemRoll", "=", "RandomFloat(1)"), setv("GemSize", "=", "2")], [

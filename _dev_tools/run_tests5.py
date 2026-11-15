@@ -12,7 +12,7 @@ JS_G = '''() => { %s const g = n => G(n);
   if (sc.getName() === 'Gameplay') { out.state = V('GameState').getAsString(); out.run = V('RunCrystals').getAsNumber(); out.gemText = txt('GemText');
     out.goGems = txt('GameOverGemsText'); out.tipAnim = sc.getObjects('CrackTip')[0].getAnimation();
     out.trailAnims = [...new Set(sc.getObjects('TrailSegment').map(o => o.getAnimation()))];
-    out.gems = sc.getObjects('Crystal').map(o => ({id: o.id, v: o.getVariables().get('Value').getAsNumber(), s: o.getScale(), x: o.getX(), wy: o.getVariables().get('WorldY').getAsNumber()})); }
+    out.gems = sc.getObjects('Crystal').map(o => ({id: o.id, v: o.getVariables().get('Value').getAsNumber(), s: o.getScale(), a: o.getAnimation(), x: o.getX(), wy: o.getVariables().get('WorldY').getAsNumber()})); }
   return out; }''' % PRE
 async def Gs(page): return await page.evaluate(JS_G)
 async def waitg(page, cond, timeout):
@@ -30,7 +30,7 @@ async def to_scene(page, name, btn):
     await click_obj(page, btn); await waitg(page, lambda s: s['scene'] == name, 5); await asyncio.sleep(0.4)
 def gem(value, scale, ahead, dx=0):
     return '''() => { %s const o = sc.createObject('Crystal'); o.setX(V('CrackWorldX').getAsNumber() + %f); o.setScale(%f);
-      o.getVariables().get('Value').setNumber(%d); o.getVariables().get('WorldY').setNumber(V('CrackWorldY').getAsNumber() + %f); return o.id; }''' % (PRE, dx, scale, value, ahead)
+      o.getVariables().get('Value').setNumber(%d); o.setAnimation({5: 1, 3: 0, 1: 2}[%d]); o.getVariables().get('WorldY').setNumber(V('CrackWorldY').getAsNumber() + %f); return o.id; }''' % (PRE, dx, scale, value, value, ahead)
 
 async def main():
     allerr = []
@@ -49,11 +49,11 @@ async def main():
         await to_scene(page, 'MainMenu', 'BackButton')
         await to_scene(page, 'Gameplay', 'EndlessButton'); await asyncio.sleep(0.3)
         await page.evaluate(setnum('NextRowWorldY', '1e9'))
-        for v, sc_, dx in [(5, 0.45, 0), (3, 0.7, 0), (1, 1.0, 0)]:
+        for v, sc_, dx in [(5, 0.55, 0), (3, 0.75, 0), (1, 1.0, 0)]:
             await page.evaluate(gem(v, sc_, 70, dx)); await asyncio.sleep(0.8)
         s = await Gs(page)
         check('crystals are points, not hazards: small 5 + medium 3 + large 1 = 9', s['state'] == 'Playing' and s['run'] == 9 and s['wallet'] == 9 and s['gemText'] == '9', f"run {s['run']}, wallet {s['wallet']}")
-        await page.evaluate(gem(5, 0.45, 70, 34)); await asyncio.sleep(0.8); s = await Gs(page)
+        await page.evaluate(gem(5, 0.55, 70, 34)); await asyncio.sleep(0.8); s = await Gs(page)
         check('small crystal has a small pickup area (34 px to the side = missed)', s['run'] == 9)
         await page.evaluate(gem(1, 1.0, 70, 34)); await asyncio.sleep(0.8); s = await Gs(page)
         check('large crystal has a big pickup area (34 px to the side = collected)', s['run'] == 10)
@@ -66,9 +66,11 @@ async def main():
             for o in st['objs']: objs[o['id']] = o
             await asyncio.sleep(0.1)
         vals = {}
-        for g in gems.values(): vals[(g['v'], round(g['s'], 2))] = vals.get((g['v'], round(g['s'], 2)), 0) + 1
-        ok_map = all(k in [(5, 0.45), (3, 0.7), (1, 1.0)] for k in vals)
-        check('generator spawns all three crystal sizes with the right values', ok_map and len(vals) == 3, str(vals))
+        COL = {0: 'purple', 1: 'pink', 2: 'blue'}
+        for g in gems.values():
+            k = (g['v'], round(g['s'], 2), COL[g['a']]); vals[k] = vals.get(k, 0) + 1
+        ok_map = all(k in [(5, 0.55, 'pink'), (3, 0.75, 'purple'), (1, 1.0, 'blue')] for k in vals)
+        check('crystal colour always matches size and value (pink 5 small, purple 3 medium, blue 1 large)', ok_map and len(vals) == 3, str(vals))
         haz = [o for o in objs.values() if o['t'] in ('RockSmall', 'RockMedium', 'BarrierBreakable', 'BarrierSolid')]
         R = {'RockSmall': 28, 'RockMedium': 44, 'BarrierBreakable': 50, 'BarrierSolid': 50}
         overl = [g for g in gems.values() for o in haz if abs(g['x'] - o['x']) < R[o['t']] + 30 * g['s'] - 4 and abs(g['wy'] - o['wy']) < 26 + 30 * g['s'] - 4 and (o['t'].startswith('Barrier') or math.hypot(g['x'] - o['x'], g['wy'] - o['wy']) < R[o['t']] + 30 * g['s'] - 4)]

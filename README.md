@@ -16,7 +16,7 @@ The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER*
 - **Blue clock (Slow Time):** the world moves 40% slower for 4 seconds.
 - **Orange bolt (Crack Strength):** gives you 3 charges. Each charge smashes one rock or one cracked barrier.
 - **Metal-banded barriers** always kill you, even when you have charges.
-- **Crystals are points.** Small ones are worth 5 but are harder to grab. Medium ones are worth 3 and large ones are worth 1. Most appear in the safe path; some riskier ones sit between obstacles. Verdant planets have more of them. Your crystal total is saved on the device.
+- **Crystals are points**, and the colour always tells you the value: **pink** (small, hardest to grab) = 5, **purple** (medium) = 3, **blue** (large) = 1. Most appear in the safe path; some riskier ones sit between obstacles. Verdant planets have more of them. Your crystal total is saved on the device.
 - **Shop:** spend crystals on crack styles. Classic is free, then Frostbite 150, Venom 300, Amethyst 500, Inferno 800 and Shadow 1200. Tap a style to buy it, or tap one you own to use it. The style recolours the trail, tip and sparks.
 - **Ground gaps (fissures)** stretch across the whole screen. Touching one jolts your crack into a branch in a random direction. Nothing spawns just after a gap, so you can always recover.
 - **Burrowing worms** tunnel sideways back and forth across a row. They kill on contact, but Crack Strength can smash them. They are tinted to match each planet.
