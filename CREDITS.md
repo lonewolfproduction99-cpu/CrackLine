@@ -12,6 +12,8 @@ Only mechanical edits were made (resize, crop/split, recolour, 9-slice, tiling, 
 | bg_soil.png | terrain_grass_block_center.png | New Platformer Pack | Kenney (kenney.nl) | CC0 1.0 | tile, upscaled 2x (Ember) |
 | bg_verdant.png | terrain_purple_block_center.png | New Platformer Pack | Kenney (kenney.nl) | CC0 1.0 | tile, upscaled 2x, recoloured green (Verdant) |
 | bg_frost.png | terrain_snow_block_center.png | New Platformer Pack | Kenney (kenney.nl) | CC0 1.0 | tile, upscaled 2x, recoloured blue (Frost) |
+| bg_magma.png | terrain_stone_block_center.png | New Platformer Pack | Kenney (kenney.nl) | CC0 1.0 | tile, upscaled 2x, recoloured dark red (Magma) |
+| bg_umbra.png | terrain_purple_block_center.png | New Platformer Pack | Kenney (kenney.nl) | CC0 1.0 | tile, upscaled 2x, recoloured violet (Umbra) |
 | rock_small.png | meteorBrown_big2.png | Space Shooter Redux | Kenney (kenney.nl) | CC0 1.0 | resized |
 | rock_medium.png | meteorBrown_big1.png | Space Shooter Redux | Kenney (kenney.nl) | CC0 1.0 | resized |
 | barrier_breakable.png | elementStone012.png | Physics Assets | Kenney (kenney.nl) | CC0 1.0 | resized, recoloured warm stone (breakable) |
@@ -27,6 +29,8 @@ Only mechanical edits were made (resize, crop/split, recolour, 9-slice, tiling, 
 | planet_ember_left/right.png | planet08.png | Planets | Kenney (kenney.nl) | CC0 1.0 | resized and cut into two halves |
 | planet_verdant_left/right.png | planet03.png | Planets | Kenney (kenney.nl) | CC0 1.0 | resized and cut into two halves |
 | planet_frost_left/right.png | planet07.png | Planets | Kenney (kenney.nl) | CC0 1.0 | resized and cut into two halves |
+| planet_magma_left/right.png | planet02.png | Planets | Kenney (kenney.nl) | CC0 1.0 | resized and cut into two halves |
+| planet_umbra_left/right.png | planet09.png | Planets | Kenney (kenney.nl) | CC0 1.0 | resized and cut into two halves |
 | trail_<style>.png | trace_07_rotated.png | Particle Pack | Kenney (kenney.nl) | CC0 1.0 | middle slice of the streak, resized, tinted per crack style (two tinted layers) |
 | tip_<style>.png | magic_05.png | Particle Pack | Kenney (kenney.nl) | CC0 1.0 | resized, tinted per crack style (two tinted layers) |
 | spark.png | star_04.png | Particle Pack | Kenney (kenney.nl) | CC0 1.0 | resized (tinted in game) |

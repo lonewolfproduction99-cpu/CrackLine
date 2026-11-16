@@ -31,6 +31,8 @@ def tile_up(img, factor): return img.resize((img.width * factor, img.height * fa
 save(tile_up(src(f'{NP}/Tiles/Double/terrain_grass_block_center.png', 'New Platformer Pack'), 2), 'bg_soil.png', 'tile, upscaled 2x (Ember)')
 save(multiply(tile_up(src(f'{NP}/Tiles/Double/terrain_purple_block_center.png', 'New Platformer Pack'), 2), (150, 225, 185)), 'bg_verdant.png', 'tile, upscaled 2x, recoloured green (Verdant)')
 save(multiply(tile_up(src(f'{NP}/Tiles/Double/terrain_snow_block_center.png', 'New Platformer Pack'), 2), (175, 195, 255)), 'bg_frost.png', 'tile, upscaled 2x, recoloured blue (Frost)')
+save(multiply(tile_up(src(f'{NP}/Tiles/Double/terrain_stone_block_center.png', 'New Platformer Pack'), 2), (170, 80, 60)), 'bg_magma.png', 'tile, upscaled 2x, recoloured dark red (Magma)')
+save(multiply(tile_up(src(f'{NP}/Tiles/Double/terrain_purple_block_center.png', 'New Platformer Pack'), 2), (175, 130, 235)), 'bg_umbra.png', 'tile, upscaled 2x, recoloured violet (Umbra)')
 save(fit(src(f'{K}/Space Shooter Remastered/Meteors/meteorBrown_big2.png', 'Space Shooter Redux'), 76, 76), 'rock_small.png', 'resized')
 save(fit(src(f'{K}/Space Shooter Remastered/Meteors/meteorBrown_big1.png', 'Space Shooter Redux'), 116, 116), 'rock_medium.png', 'resized')
 save(fit(multiply(src(f'{K}/Physics Assets/Stone elements/elementStone012.png', 'Physics Assets'), (215, 165, 120)), 112, 64), 'barrier_breakable.png', 'resized, recoloured warm stone (breakable)')
@@ -54,7 +56,7 @@ pu.alpha_composite(hg, ((80 - hg.width) // 2, (80 - hg.height) // 2)); save(pu, 
 save(fit(src(f'{K}/Space Shooter Remastered/Power-ups/powerupRed_bolt.png', 'Space Shooter Redux'), 80, 80), 'powerup_strength.png', 'resized')
 # planets (split into halves along a jagged vertical line)
 import random
-for name, f in (('ember', 'planet08'), ('verdant', 'planet03'), ('frost', 'planet07')):
+for name, f in (('ember', 'planet08'), ('verdant', 'planet03'), ('frost', 'planet07'), ('magma', 'planet02'), ('umbra', 'planet09')):
     p = src(f'{K}/Planets/Planets/{f}.png', 'Planets').resize((320, 320), Image.LANCZOS)
     rnd = random.Random(name); pts = [(160 + rnd.uniform(-10, 10), y) for y in range(0, 321, 20)]
     left = Image.new('L', (320, 320), 0); ImageDraw.Draw(left).polygon([(0, 0)] + pts + [(0, 320)], fill=255); right = ImageOps.invert(left)
@@ -64,7 +66,8 @@ for name, f in (('ember', 'planet08'), ('verdant', 'planet03'), ('frost', 'plane
     CREDITS[-1] = CREDITS[-1] + (f'planet_{name}_left/right.png', 'resized and cut into two halves'); print('planet', name)
 # ---------- crack, effects ----------
 STY = {'classic': ((255, 200, 70), (255, 245, 215)), 'frostbite': ((90, 200, 255), (225, 250, 255)), 'venom': ((120, 240, 70), (235, 255, 215)),
-       'amethyst': ((190, 110, 255), (245, 225, 255)), 'inferno': ((255, 80, 40), (255, 230, 190)), 'shadow': ((120, 50, 200), (215, 190, 255))}
+       'amethyst': ((190, 110, 255), (245, 225, 255)), 'inferno': ((255, 80, 40), (255, 230, 190)), 'shadow': ((120, 50, 200), (215, 190, 255)),
+       'sunburst': ((255, 230, 60), (255, 255, 255)), 'aurora': ((40, 255, 190), (255, 170, 235))}
 trace = src(f'{PP}/rotated/trace_07_rotated.png', 'Particle Pack')
 tip = src(f'{PP}/magic_05.png', 'Particle Pack')
 for s, (col, core) in STY.items():

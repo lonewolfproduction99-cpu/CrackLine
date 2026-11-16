@@ -64,10 +64,10 @@ TUNING = [
     ("PowerupChance", P["PowerupChance"]), ("PowerupCooldownTime", P["PowerupCooldownTime"]),
     ("SlowTimeDuration", P["SlowTimeDuration"]), ("SlowTimeFactor", P["SlowTimeFactor"]), ("StrengthMaxCharges", P["StrengthMaxCharges"]),
     ("RestartDelay", 0.3),
-    ("PlanetDistanceStep", 1000), ("ThemeCount", 3),
+    ("PlanetDistanceStep", 1000), ("ThemeCount", 5),
     ("PlanetDifficultyStart", 0.15), ("PlanetDifficultyStep", 0.2), ("PlanetProgressDifficulty", 0.2),
     ("PlanetMaxSpeed", 520), ("BreakDuration", 2.0),
-    ("GemChance", 0.5), ("RiskyGemChance", 0.15), ("RestartFromShop", 0),
+    ("GemChance", 0.4), ("RiskyGemChance", 0.12), ("RestartFromShop", 0),
     ("ReviveInvulnerability", 2), ("ReviveClearBehind", 250), ("ReviveClearAhead", 750),
 ]
 STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLevel", "CrackWorldX", "CrackWorldY", "TipScreenY",
@@ -77,22 +77,22 @@ STATE = ["ScrollSpeed", "EffectiveSpeed", "Distance", "RunTime", "DifficultyLeve
          "LaneIter", "LaneWidth", "BlockerChance", "CrackLane", "CorridorShift", "TypeRoll", "ObjType", "LaneX", "ObjWorldY",
          "PowerupCooldown", "SlowTimeRemaining", "StrengthCharges", "InvulnerabilityRemaining", "GameOverTime",
          "TotalDistance", "PlanetIndex", "PlanetTheme", "PlanetsBroken", "PlanetTargetDistance", "PlanetDistance", "PlanetStartWorldY",
-         "ThemeCrystalBonus", "ThemeWallBonus", "ThemeSolidBonus", "WormChance", "FissureChance", "WormSpeed", "RunCrystals", "GemSize", "GemRoll", "BreakTime", "SplitOffset", "PlanetCX", "PlanetCY"]
+         "ThemeCrystalBonus", "ThemeWallBonus", "ThemeSolidBonus", "ThemeWormBonus", "ThemeFissureBonus", "WormChance", "FissureChance", "WormSpeed", "RunCrystals", "GemSize", "GemRoll", "BreakTime", "SplitOffset", "PlanetCX", "PlanetCY"]
 scene_vars = [num(n, v) for n, v in TUNING] + [st("GameState", "Playing"), st("RockTint", "255;255;255"), st("PlanetName", "EMBER")] + [num(n, 0) for n in STATE] + \
     [boo("ReviveUsed", False), boo("RequestRevive", False), boo("PlanetSetupPending", True), boo("BreakBurstDone", False)]
-STYLES = ["Classic", "Frostbite", "Venom", "Amethyst", "Inferno", "Shadow"]
-STYLE_PRICES = [0, 150, 300, 500, 800, 1200]
-STYLE_SPARKS = ["255;210;110", "150;230;255", "180;255;120", "220;160;255", "255;130;90", "170;120;255"]
+STYLES = ["Classic", "Frostbite", "Venom", "Amethyst", "Inferno", "Shadow", "Sunburst", "Aurora"]
+STYLE_PRICES = [0, 150, 300, 500, 800, 1200, 1600, 2000]
+STYLE_SPARKS = ["255;210;110", "150;230;255", "180;255;120", "220;160;255", "255;130;90", "170;120;255", "255;240;120", "120;255;210"]
 def arr(n, typ, vals): return {"name": n, "type": "array", "children": [{"type": typ, "value": v} for v in vals]}
 global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("BestPlanetsBroken", 0),
-               num("CrystalWallet", 0), num("EquippedStyle", 0), num("Muted", 0), st("OwnedStyles", "100000"),
+               num("CrystalWallet", 0), num("EquippedStyle", 0), num("Muted", 0), st("OwnedStyles", "10000000"),
                arr("StyleNames", "string", [s.upper() for s in STYLES]), arr("StylePrices", "number", STYLE_PRICES), arr("StyleSparkColors", "string", STYLE_SPARKS)]
 
 # ---------------------------------------------------------------- resources & objects
 IMAGES = ["bg_soil", "rock_small", "rock_medium", "crack_hitbox", "ui_card", "spark", "impact_flash", "ui_overlay",
           "ui_button", "barrier_solid", "barrier_breakable", "crystal_purple", "crystal_pink", "crystal_cyan", "powerup_slow", "powerup_strength",
-          "bg_verdant", "bg_frost", "shield_glow", "ui_white", "ui_button_blue", "worm", "worm_b", "fissure", "icon_audio_on", "icon_audio_off"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost") for s in ("left", "right")] + \
-    [f"{k}_{s.lower()}" for s in ["Classic", "Frostbite", "Venom", "Amethyst", "Inferno", "Shadow"] for k in ("trail", "tip")]
+          "bg_verdant", "bg_frost", "bg_magma", "bg_umbra", "shield_glow", "ui_white", "ui_button_blue", "worm", "worm_b", "fissure", "icon_audio_on", "icon_audio_off"] + [f"planet_{t}_{s}" for t in ("ember", "verdant", "frost", "magma", "umbra") for s in ("left", "right")] + \
+    [f"{k}_{s.lower()}" for s in STYLES for k in ("trail", "tip")]
 resources = [{"alwaysLoaded": False, "file": f"assets/{n}.png", "kind": "image", "metadata": "", "name": n, "smoothed": True, "userAdded": True} for n in IMAGES]
 SOUNDS = ["sfx_branch", "sfx_break", "sfx_crash", "sfx_fissure", "sfx_crystal", "sfx_powerup", "sfx_click", "sfx_error", "sfx_buy", "sfx_revive", "jingle_gameover", "jingle_planet"]
 resources += [{"file": f"audio/{n}.ogg", "kind": "audio", "metadata": "", "name": n, "preloadAsMusic": False, "preloadAsSound": True, "preloadInCache": False, "userAdded": True} for n in SOUNDS]
@@ -132,7 +132,7 @@ def textobj(name, s, size, rgb="255;240;214", bold=True, align="center"):
 wvar = [num("WorldY", 0)]
 objects = [
 ] + [{"assetStoreId": "", "name": n, "type": "TiledSpriteObject::TiledSprite", "texture": t, "width": 720, "height": 3000,
-     "variables": [], "effects": [], "behaviors": []} for n, t in (("BgEmber", "bg_soil"), ("BgVerdant", "bg_verdant"), ("BgFrost", "bg_frost"))] + [
+     "variables": [], "effects": [], "behaviors": []} for n, t in (("BgEmber", "bg_soil"), ("BgVerdant", "bg_verdant"), ("BgFrost", "bg_frost"), ("BgMagma", "bg_magma"), ("BgUmbra", "bg_umbra"))] + [
     sprite("RockSmall", "rock_small", origin=(38, 38), mask=octagon(38, 38, HIT["RockSmall"][1]), variables=wvar),
     sprite("RockMedium", "rock_medium", origin=(58, 58), mask=octagon(58, 58, HIT["RockMedium"][1]), variables=wvar),
     sprite("BarrierBreakable", "barrier_breakable", origin=(56, 32), mask=rect(56, 32, HIT["BarrierBreakable"][1], HIT["BarrierBreakable"][2]), variables=wvar),
@@ -172,12 +172,12 @@ objects = [
     sprite("ShieldGlow", "shield_glow", origin=(70, 70)),
     sprite("ProgressBack", "ui_white"), sprite("ProgressFill", "ui_white"),
     textobj("PlanetHudText", "EMBER  0 / 500 m", 26, rgb="255;240;214"),
-    sprite("PlanetLeft", "planet_ember_left", origin=(160, 160), anims=[(t.capitalize(), f"planet_{t}_left") for t in ("ember", "verdant", "frost")]),
-    sprite("PlanetRight", "planet_ember_right", origin=(160, 160), anims=[(t.capitalize(), f"planet_{t}_right") for t in ("ember", "verdant", "frost")]),
+    sprite("PlanetLeft", "planet_ember_left", origin=(160, 160), anims=[(t.capitalize(), f"planet_{t}_left") for t in ("ember", "verdant", "frost", "magma", "umbra")]),
+    sprite("PlanetRight", "planet_ember_right", origin=(160, 160), anims=[(t.capitalize(), f"planet_{t}_right") for t in ("ember", "verdant", "frost", "magma", "umbra")]),
     textobj("PlanetBrokenText", "EMBER BROKEN!", 56, rgb="255;230;140"),
 ]
 folders = {"folderName": "__ROOT", "children": [
-    {"folderName": "World", "children": [{"objectName": "BgEmber"}, {"objectName": "BgVerdant"}, {"objectName": "BgFrost"}]},
+    {"folderName": "World", "children": [{"objectName": n} for n in ("BgEmber", "BgVerdant", "BgFrost", "BgMagma", "BgUmbra")]},
     {"folderName": "Planet", "children": [{"objectName": n} for n in ["PlanetLeft", "PlanetRight", "PlanetBrokenText", "ShieldGlow"]]},
     {"folderName": "Crack", "children": [{"objectName": n} for n in ["CrackTip", "CrackHitbox", "TrailSegment", "Spark", "ImpactFlash"]]},
     {"folderName": "Obstacles", "children": [{"objectName": n} for n in ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Worm", "Fissure"]]},
@@ -191,14 +191,14 @@ def grp(name, objs): return {"name": name, "objects": [{"name": o} for o in objs
 groups = [grp("Obstacles", ["RockSmall", "RockMedium", "BarrierBreakable", "BarrierSolid", "Worm"]),
           grp("Breakable", ["RockSmall", "RockMedium", "BarrierBreakable", "Worm"]),
           grp("Powerups", ["PowerSlow", "PowerStrength"]),
-          grp("Backgrounds", ["BgEmber", "BgVerdant", "BgFrost"]), grp("Rocks", ["RockSmall", "RockMedium"])]
+          grp("Backgrounds", list(("BgEmber", "BgVerdant", "BgFrost", "BgMagma", "BgUmbra"))), grp("Rocks", ["RockSmall", "RockMedium"])]
 
 def inst(name, x, y, z=0, layer="", w=0, h=0):
     return {"angle": 0, "customSize": bool(w), "height": h, "layer": layer, "locked": False, "name": name,
             "persistentUuid": uid(f"{name}-{layer}"), "width": w, "x": x, "y": y, "zOrder": z,
             "numberProperties": [], "stringProperties": [], "initialVariables": []}
 instances = [
-    inst("BgEmber", 0, -800, z=-12, w=720, h=3200), inst("BgVerdant", 0, -800, z=-11, w=720, h=3200), inst("BgFrost", 0, -800, z=-10, w=720, h=3200),
+    inst("BgEmber", 0, -800, z=-12, w=720, h=3200), inst("BgVerdant", 0, -800, z=-11, w=720, h=3200), inst("BgFrost", 0, -800, z=-10, w=720, h=3200), inst("BgMagma", 0, -800, z=-9, w=720, h=3200), inst("BgUmbra", 0, -800, z=-8, w=720, h=3200),
     inst("ShieldGlow", 360, 896, z=12),
     inst("CrackTip", 360, 896, z=10), inst("CrackHitbox", 360, 896, z=11),
     inst("DistanceText", 140, 40, layer="HUD", z=1), inst("BestText", 250, 104, layer="HUD", z=1),
@@ -239,6 +239,7 @@ def load_profile():
         ev([C("GroupExists", SAVE, KW)], [A("ReadNumberFromStorage", SAVE, KW, "", "CrystalWallet")]),
         ev([C("GroupExists", SAVE, KE)], [A("ReadNumberFromStorage", SAVE, KE, "", "EquippedStyle")]),
         ev([C("GroupExists", SAVE, KO)], [A("ReadStringFromStorage", SAVE, KO, "", "OwnedStyles")]),
+        ev([], [sets("OwnedStyles", f'OwnedStyles + StrRepeat("0", max(0, {len(STYLES)} - StrLength(OwnedStyles)))')]),   # older saves had fewer styles
         ev([C("GroupExists", SAVE, KM)], [A("ReadNumberFromStorage", SAVE, KM, "", "Muted")]),
         ev([], [A("SetGlobalVolume", "", "=", "100 * (1 - Muted)")]),
     ]
@@ -290,7 +291,7 @@ ev_gamestate = [
             comment("Equipped crack style (bought in the Shop) recolours the tip, trail and sparks."),
             ev([], [A("AnimatableCapability::AnimatableBehavior::SetIndex", "CrackTip", "Animation", "=", "EquippedStyle"), scale("GemIcon", "=", "0.36")]),
             comment("Planet-mode HUD (surface progress bar) only in Planet Breaker; Endless shows only the Ember background."),
-            ev([iss("GameMode", '"Endless"')], [A("Hide", "ProgressBack"), A("Hide", "ProgressFill"), A("Hide", "PlanetHudText"), A("Hide", "BgVerdant"), A("Hide", "BgFrost")]),
+            ev([iss("GameMode", '"Endless"')], [A("Hide", "ProgressBack"), A("Hide", "ProgressFill"), A("Hide", "PlanetHudText"), A("Hide", "BgVerdant"), A("Hide", "BgFrost"), A("Hide", "BgMagma"), A("Hide", "BgUmbra")]),
         ]),
     ]),
     group("Sound toggle", [comment("Speaker button (top-left of the HUD). Taps on it never count as a branch tap.")] + mute_events('"HUD"')),
@@ -431,8 +432,8 @@ ev_spawner = [
             setv("CrystalChance", "=", L("CrystalChanceStart", "CrystalChanceEnd") + " + ThemeCrystalBonus"),
             setv("SolidChance", "=", L("SolidChanceStart", "SolidChanceEnd") + " + ThemeSolidBonus"),
             setv("BreakChance", "=", L("BreakChanceStart", "BreakChanceEnd")),
-            setv("WormChance", "=", L("WormChanceStart", "WormChanceEnd")),
-            setv("FissureChance", "=", L("FissureChanceStart", "FissureChanceEnd")),
+            setv("WormChance", "=", L("WormChanceStart", "WormChanceEnd") + " + ThemeWormBonus"),
+            setv("FissureChance", "=", L("FissureChanceStart", "FissureChanceEnd") + " + ThemeFissureBonus"),
             setv("WormSpeed", "=", L("WormSpeedStart", "WormSpeedEnd")),
             setv("PrevSafeLane", "=", "SafeLane"),
             setv("BlockerChance", "=", L("BlockerChanceStart", "BlockerChanceEnd")),
@@ -617,15 +618,16 @@ ev_scoring = [
 
 
 PLANET = iss("GameMode", '"Planet"')
-def theme(i, name, rocktint, cb, wb, sb, bg):
-    hide = [A("Hide", o) for o in ("BgEmber", "BgVerdant", "BgFrost") if o != bg]
+def theme(i, name, rocktint, cb, wb, sb, bg, wormb="0", fisb="0"):
+    hide = [A("Hide", o) for o in ("BgEmber", "BgVerdant", "BgFrost", "BgMagma", "BgUmbra") if o != bg]
     return ev([isv("PlanetTheme", "=", str(i))], [sets("PlanetName", f'"{name}"'), sets("RockTint", f'"{rocktint}"'),
         setv("ThemeCrystalBonus", "=", cb), setv("ThemeWallBonus", "=", wb), setv("ThemeSolidBonus", "=", sb),
+        setv("ThemeWormBonus", "=", wormb), setv("ThemeFissureBonus", "=", fisb),
         setv("PlanetTargetDistance", "=", "PlanetDistanceStep * (PlanetIndex + 1)"),
         A("Show", bg, "")] + hide)
 EASE = "(1 - pow(1 - clamp({}, 0, 1), 3))"
 ev_planet = [
-    comment("PLANET BREAKER — same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planet N needs N x PlanetDistanceStep metres (1000, 2000, 3000...). Themes cycle Ember -> Verdant -> Frost (ThemeCount); every planet is faster and harder (see EV_CrackMovement)."),
+    comment("PLANET BREAKER — same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planet N needs N x PlanetDistanceStep metres (1000, 2000, 3000...). Themes cycle Ember -> Verdant -> Frost -> Magma (more lava gaps) -> Umbra (more worms) (ThemeCount); every planet is faster and harder (see EV_CrackMovement)."),
     group("Planet setup", [
         comment("Runs once at scene start and after every broken planet: picks the theme, target distance and theme modifiers (Verdant = more crystals, Frost = more barriers/solid barriers)."),
         ev([PLANET, C("BooleanVariable", "PlanetSetupPending", "True", "")], [
@@ -636,6 +638,8 @@ ev_planet = [
             theme(0, "EMBER", "255;255;255", "-0.04", "0", "0", "BgEmber"),
             theme(1, "VERDANT", "200;240;205", "0.15", "0", "0", "BgVerdant"),
             theme(2, "FROST", "190;215;255", "0", "0.15", "0.08", "BgFrost"),
+            theme(3, "MAGMA", "255;170;150", "0", "0", "0.04", "BgMagma", fisb="0.06"),
+            theme(4, "UMBRA", "215;190;255", "0.05", "0.05", "0", "BgUmbra", wormb="0.08"),
         ]),
     ]),
     group("Progress toward the surface", [
@@ -646,7 +650,9 @@ ev_planet = [
             A("SetCenterX", "PlanetHudText", "=", "SceneWindowWidth() / 2"),
         ], [ev([isv("PlanetTheme", "=", "0")], [color("ProgressFill", "255;150;50")]),
             ev([isv("PlanetTheme", "=", "1")], [color("ProgressFill", "90;240;180")]),
-            ev([isv("PlanetTheme", "=", "2")], [color("ProgressFill", "160;190;255")])]),
+            ev([isv("PlanetTheme", "=", "2")], [color("ProgressFill", "160;190;255")]),
+            ev([isv("PlanetTheme", "=", "3")], [color("ProgressFill", "255;90;60")]),
+            ev([isv("PlanetTheme", "=", "4")], [color("ProgressFill", "190;140;255")])]),
     ]),
     group("Reach the surface -> break the planet", [
         ev([PLANET, PLAYING, cmp("PlanetDistance", ">=", "PlanetTargetDistance")], [
@@ -789,18 +795,18 @@ def sinst(name, k, z):
 shop_instances = [inst("ShopBg", 0, -800, z=-10, w=720, h=3200), inst("ShopTitle", 30, 20, z=2), inst("WalletText", 420, 30, z=2),
                   inst("BackButton", 360, 1180, z=2), inst("BackLabel", 300, 1150, z=3), inst("ShopMsg", 200, 1080, z=4)] + \
                  [sinst(n, k, z) for k in range(len(STYLES)) for n, z in (("ShopCard", 1), ("ShopTrail", 2), ("ShopTip", 3), ("ShopName", 4), ("ShopPrice", 4))]
-COLX = "(190 + mod({o}.StyleIndex, 2) * 340)"
-ROWY = f"({CY} - 205 + floor({{o}}.StyleIndex / 2) * 170)"
+COLX = "(125 + mod({o}.StyleIndex, 3) * 235)"
+ROWY = f"({CY} - 205 + floor({{o}}.StyleIndex / 3) * 170)"
 def place(o, dx, dy, center=False):
     acts = [sety(o, ROWY.format(o=o) + f" + {dy}")]
     acts.append(A("SetCenterX", o, "=", COLX.format(o=o) + f" + {dx}") if center else setx(o, COLX.format(o=o) + f" + {dx}"))
     return acts
 shop_events = [
     comment("SHOP — crack styles. Prices and names live in the global arrays StylePrices / StyleNames (index = StyleIndex 0-5). Owned styles are a string of 0/1 flags (OwnedStyles, e.g. \"110000\"); EquippedStyle is the index in use. Everything is saved on the device. NOTE: Playgama will require its Bridge storage instead."),
-    ev([C("SceneJustBegins", "")], [scale("ShopCard", "=", "0.8"), scale("ShopTip", "=", "0.55"), scalex("ShopTrail", "=", "6.5"), scaley("ShopTrail", "=", "0.55"),
+    ev([C("SceneJustBegins", "")], [scalex("ShopCard", "=", "0.7"), scaley("ShopCard", "=", "0.8"), scale("ShopTip", "=", "0.55"), scalex("ShopTrail", "=", "5.4"), scaley("ShopTrail", "=", "0.55"),
         scale("BackButton", "=", "0.7"), sety("ShopTitle", f"{CY} - 352"), sety("WalletText", f"{CY} - 342"),
         sety("BackButton", f"{CY} + 312"), sety("BackLabel", "BackButton.Y() - 27"), sety("ShopMsg", f"{CY} + 222")]
-       + place("ShopCard", 0, 0) + place("ShopTrail", -104, -6) + place("ShopTip", 0, -6)
+       + place("ShopCard", 0, 0) + place("ShopTrail", -86, -6) + place("ShopTip", 0, -6)
        + [A("AnimatableCapability::AnimatableBehavior::SetIndex", "ShopTrail", "Animation", "=", "ShopTrail.StyleIndex"),
           A("AnimatableCapability::AnimatableBehavior::SetIndex", "ShopTip", "Animation", "=", "ShopTip.StyleIndex")],
        load_profile()),
@@ -808,7 +814,7 @@ shop_events = [
     {"type": "BuiltinCommonInstructions::ForEach", "object": "ShopName", "conditions": [], "actions": [text("ShopName", "StyleNames[ShopName.StyleIndex]")] + place("ShopName", 0, -66, center=True), "events": []},
     {"type": "BuiltinCommonInstructions::ForEach", "object": "ShopPrice", "conditions": [], "actions": [
         text("ShopPrice", '"PRICE: " + ToString(StylePrices[ShopPrice.StyleIndex])'), A("TextObject::ChangeColor", "ShopPrice", '"160;240;255"')], "events": [
-        ev([C("BuiltinCommonInstructions::CompareStrings", "SubStr(OwnedStyles, ShopPrice.StyleIndex, 1)", "=", '"1"')], [text("ShopPrice", '"OWNED: TAP TO USE"'), A("TextObject::ChangeColor", "ShopPrice", '"255;240;214"')]),
+        ev([C("BuiltinCommonInstructions::CompareStrings", "SubStr(OwnedStyles, ShopPrice.StyleIndex, 1)", "=", '"1"')], [text("ShopPrice", '"OWNED"'), A("TextObject::ChangeColor", "ShopPrice", '"255;240;214"')]),
         ev([C("NumberObjectVariable", "ShopPrice", "StyleIndex", "=", "EquippedStyle")], [text("ShopPrice", '"EQUIPPED"'), A("TextObject::ChangeColor", "ShopPrice", '"120;255;160"')]),
         ev([], place("ShopPrice", 0, 34, center=True))]},
     ev([], [color("ShopCard", "255;255;255"), text("WalletText", '"CRYSTALS: " + ToString(CrystalWallet)'), A("SetCenterX", "BackLabel", "=", "SceneWindowWidth() / 2"),

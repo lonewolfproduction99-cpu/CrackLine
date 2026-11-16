@@ -12,7 +12,7 @@ JS_P = '''() => { %s if (!sc) return null; const vis = n => sc.getObjects(n).len
     dist: V('Distance') ? V('Distance').getAsNumber() : null, runtime: V('RunTime') ? V('RunTime').getAsNumber() : null, wy: V('CrackWorldY') ? V('CrackWorldY').getAsNumber() : null,
     bestP: G('BestPlanetsBroken').getAsNumber(), bestE: G('BestEndlessDistance').getAsNumber(),
     cinematic: sc.hasLayer('Cinematic') ? sc.getLayer('Cinematic').isVisible() : null, gameOver: sc.hasLayer('GameOver') ? sc.getLayer('GameOver').isVisible() : null,
-    bg: ['BgEmber', 'BgVerdant', 'BgFrost'].map(vis), shield: vis('ShieldGlow'), reviveBtn: vis('ReviveButton'), hud: vis('PlanetHudText'),
+    bg: ['BgEmber', 'BgVerdant', 'BgFrost', 'BgMagma', 'BgUmbra'].map(vis), shield: vis('ShieldGlow'), reviveBtn: vis('ReviveButton'), hud: vis('PlanetHudText'),
     hudText: sc.getObjects('PlanetHudText').length ? sc.getObjects('PlanetHudText')[0].getText() : '', goPlanets: sc.getObjects('GameOverPlanetsText').length ? sc.getObjects('GameOverPlanetsText')[0].getText() : '',
     menuBest: sc.getObjects('MenuBestText').length ? sc.getObjects('MenuBestText')[0].getText() : '',
     nObs: ['RockSmall','RockMedium','BarrierBreakable','BarrierSolid','Worm'].reduce((a, n) => a + sc.getObjects(n).length, 0) }; }''' % PRE
@@ -61,12 +61,12 @@ async def main():
         await page.screenshot(path=f'{SHOTS}/p3_01_menu.png')
         await enter(page, 'Planet'); st = await P(page)
         check('Planet Breaker button -> Gameplay in Planet mode', st['scene'] == 'Gameplay' and st['mode'] == 'Planet' and st['state'] == 'Playing')
-        check('planet 1 = Ember, 1000 m, progress HUD shown', st['theme'] == 0 and st['target'] == 1000 and st['hud'] and st['bg'] == [True, False, False], st['hudText'])
+        check('planet 1 = Ember, 1000 m, progress HUD shown', st['theme'] == 0 and st['target'] == 1000 and st['hud'] and st['bg'] == [True, False, False, False, False], st['hudText'])
         await asyncio.sleep(1.0); st2 = await P(page)
         check('surface progress follows distance', st2['pdist'] > st['pdist'] and abs(st2['pdist'] - math.floor(st2['wy'] / 20)) <= 1, f"{st['pdist']} -> {st2['pdist']} m")
         await page.evaluate(setnum('InvulnerabilityRemaining', '1e9'))   # progression tests: don't let random rocks end the run
         diffs = [st2['diff']]
-        expect = [(1, 2000, [False, True, False]), (2, 3000, [False, False, True]), (0, 4000, [True, False, False])]
+        expect = [(1, 2000, [False, True, False, False, False]), (2, 3000, [False, False, True, False, False]), (3, 4000, [False, False, False, True, False]), (4, 5000, [False, False, False, False, True]), (0, 6000, [True, False, False, False, False])]
         for k, (theme, target, bg) in enumerate(expect):
             await finish_planet(page)
             s = await waitp(page, lambda s: s['state'] == 'PlanetBreak', 3)
@@ -76,7 +76,7 @@ async def main():
                 await asyncio.sleep(0.6); await page.screenshot(path=f'{SHOTS}/p3_03_split.png')
             t0 = time.time()
             s = await waitp(page, lambda s: s['state'] == 'Playing' and s['idx'] == k + 1 and s['hudText'].startswith(f'PLANET {k + 2} '), 10); dur = time.time() - t0 + (1.15 if k == 0 else 0)
-            check(f'planet {k + 1} broken -> planet {k + 2} ({["Ember", "Verdant", "Frost"][theme]}, {target} m)',
+            check(f'planet {k + 1} broken -> planet {k + 2} ({["Ember", "Verdant", "Frost", "Magma", "Umbra"][theme]}, {target} m)',
                   s['broken'] == k + 1 and s['idx'] == k + 1 and s['theme'] == theme and s['target'] == target and s['bg'] == bg and not s['cinematic'],
                   f"split sequence ~{dur:.1f}s, HUD: {s['hudText']}")
             diffs.append(s['diff'])
@@ -84,14 +84,14 @@ async def main():
                 await page.screenshot(path=f'{SHOTS}/p3_04_verdant.png')
                 s = await waitp(page, lambda s: s['nObs'] > 0, 8)
                 check('obstacles resume on the next planet', s['nObs'] > 0)
-            if k == 1:
-                await asyncio.sleep(4); await page.screenshot(path=f'{SHOTS}/p3_05_frost.png')
+            if k in (1, 2, 3):
+                await asyncio.sleep(3); await page.screenshot(path=f'{SHOTS}/p3_05_{["", "frost", "magma", "umbra"][k]}.png')
         check('difficulty rises from planet to planet', all(diffs[i + 1] > diffs[i] for i in range(len(diffs) - 1)), ', '.join(f'{d:.2f}' for d in diffs))
         # death in planet mode
         await page.evaluate(setnum('InvulnerabilityRemaining', '0'))
         await page.evaluate(setnum('NextRowWorldY', '1e9'))
         await page.evaluate(put('BarrierSolid', 0, 70)); s = await waitp(page, lambda s: s['state'] == 'GameOver', 3)
-        check('planet-mode game over shows planets broken + saves best', s['state'] == 'GameOver' and s['goPlanets'] == 'PLANETS BROKEN: 3' and s['bestP'] == 3, s['goPlanets'])
+        check('planet-mode game over shows planets broken + saves best', s['state'] == 'GameOver' and s['goPlanets'] == 'PLANETS BROKEN: 5' and s['bestP'] == 5, s['goPlanets'])
         await asyncio.sleep(0.5); await page.screenshot(path=f'{SHOTS}/p3_06_gameover.png')
         check('revive button offered on first death', s['reviveBtn'])
         before = await P(page)
@@ -99,7 +99,7 @@ async def main():
         await click_obj(page, 'ReviveButton')
         s = await waitp(page, lambda s: s['state'] == 'Playing', 2)
         check('revive resumes play with 2 s protection + glow', s['state'] == 'Playing' and s['reviveUsed'] and 1.5 < s['inv'] <= 2 and s['shield'], f"inv {s['inv']:.2f}")
-        check('revive keeps score, planets and difficulty', s['broken'] == 3 and s['dist'] >= before['dist'] and s['runtime'] >= before['runtime'] and s['idx'] == 3)
+        check('revive keeps score, planets and difficulty', s['broken'] == 5 and s['dist'] >= before['dist'] and s['runtime'] >= before['runtime'] and s['idx'] == 5)
         check('revive clears nearby lethal obstacles', s['nObs'] == 0, f"{s['nObs']} left")
         await page.screenshot(path=f'{SHOTS}/p3_07_revived.png')
         await page.evaluate(put('BarrierSolid', 0, 60)); await asyncio.sleep(0.6); s = await P(page)
@@ -114,10 +114,10 @@ async def main():
         check('restart in Planet mode starts again at planet 1', s['mode'] == 'Planet' and s['idx'] == 0 and s['broken'] == 0 and s['theme'] == 0 and not s['reviveUsed'] and s['wy'] < 200)
         await page.evaluate(setnum('NextRowWorldY', '1e9')); await page.evaluate(put('BarrierSolid', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
         await asyncio.sleep(0.5); await click_obj(page, 'MenuButton'); s = await waitp(page, lambda s: s['scene'] == 'MainMenu', 3); await asyncio.sleep(0.3); s = await P(page)
-        check('MAIN MENU button returns to menu, showing bests', s['scene'] == 'MainMenu' and '3 PLANETS' in s['menuBest'], s['menuBest'])
+        check('MAIN MENU button returns to menu, showing bests', s['scene'] == 'MainMenu' and '5 PLANETS' in s['menuBest'], s['menuBest'])
         # endless mode from menu, revive there too
         await enter(page, 'Endless'); s = await P(page)
-        check('Endless from menu: no planet HUD, Ember only', s['mode'] == 'Endless' and not s['hud'] and s['bg'] == [True, False, False])
+        check('Endless from menu: no planet HUD, Ember only', s['mode'] == 'Endless' and not s['hud'] and s['bg'] == [True, False, False, False, False])
         await page.evaluate(setnum('NextRowWorldY', '1e9')); await page.evaluate(put('BarrierSolid', 0, 60)); await waitp(page, lambda s: s['state'] == 'GameOver', 3)
         for _ in range(3):
             await asyncio.sleep(0.5); await click_obj(page, 'ReviveButton'); s = await waitp(page, lambda s: s['state'] == 'Playing', 2)

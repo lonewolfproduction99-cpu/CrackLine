@@ -230,6 +230,24 @@
       },
       {
         "alwaysLoaded": false,
+        "file": "assets/bg_magma.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "bg_magma",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/bg_umbra.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "bg_umbra",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
         "file": "assets/shield_glow.png",
         "kind": "image",
         "metadata": "",
@@ -356,6 +374,42 @@
       },
       {
         "alwaysLoaded": false,
+        "file": "assets/planet_magma_left.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_magma_left",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_magma_right.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_magma_right",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_umbra_left.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_umbra_left",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/planet_umbra_right.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "planet_umbra_right",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
         "file": "assets/trail_classic.png",
         "kind": "image",
         "metadata": "",
@@ -459,6 +513,42 @@
         "kind": "image",
         "metadata": "",
         "name": "tip_shadow",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/trail_sunburst.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "trail_sunburst",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/tip_sunburst.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "tip_sunburst",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/trail_aurora.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "trail_aurora",
+        "smoothed": true,
+        "userAdded": true
+      },
+      {
+        "alwaysLoaded": false,
+        "file": "assets/tip_aurora.png",
+        "kind": "image",
+        "metadata": "",
+        "name": "tip_aurora",
         "smoothed": true,
         "userAdded": true
       },
@@ -621,7 +711,7 @@
     {
       "name": "OwnedStyles",
       "type": "string",
-      "value": "100000"
+      "value": "10000000"
     },
     {
       "name": "StyleNames",
@@ -650,6 +740,14 @@
         {
           "type": "string",
           "value": "SHADOW"
+        },
+        {
+          "type": "string",
+          "value": "SUNBURST"
+        },
+        {
+          "type": "string",
+          "value": "AURORA"
         }
       ]
     },
@@ -680,6 +778,14 @@
         {
           "type": "number",
           "value": 1200
+        },
+        {
+          "type": "number",
+          "value": 1600
+        },
+        {
+          "type": "number",
+          "value": 2000
         }
       ]
     },
@@ -710,6 +816,14 @@
         {
           "type": "string",
           "value": "170;120;255"
+        },
+        {
+          "type": "string",
+          "value": "255;240;120"
+        },
+        {
+          "type": "string",
+          "value": "120;255;210"
         }
       ]
     }
@@ -1811,6 +1925,25 @@
                     "\"OwnedStyles\"",
                     "",
                     "OwnedStyles"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetStringVariable"
+                  },
+                  "parameters": [
+                    "OwnedStyles",
+                    "=",
+                    "OwnedStyles + StrRepeat(\"0\", max(0, 8 - StrLength(OwnedStyles)))"
                   ],
                   "subInstructions": []
                 }
@@ -3174,6 +3307,226 @@
               "value": 5
             }
           ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopCard",
+          "persistentUuid": "88344de2-2547-58f4-b28e-817146b12656",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 6
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTrail",
+          "persistentUuid": "61f10c36-8de0-517c-94e8-03474543939b",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 6
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTip",
+          "persistentUuid": "6ea28e49-a6df-5dfb-8fa9-0d16c838ab41",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 6
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopName",
+          "persistentUuid": "7901c79d-3787-51e9-8b15-b6838f9bfde0",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 6
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopPrice",
+          "persistentUuid": "feed6676-00b2-5e78-b81a-b0f0193abb77",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 6
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopCard",
+          "persistentUuid": "1a1e803f-fc9f-55db-9910-318bb22bdca0",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 1,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 7
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTrail",
+          "persistentUuid": "37df8008-c89f-53e5-bfac-163f55e93fea",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 2,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 7
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopTip",
+          "persistentUuid": "6da775ee-1618-5ea4-9d2c-73fc26c00b3c",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 3,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 7
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopName",
+          "persistentUuid": "7099245d-e518-5b9f-845a-dc37990e6601",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 7
+            }
+          ]
+        },
+        {
+          "angle": 0,
+          "customSize": false,
+          "height": 0,
+          "layer": "",
+          "locked": false,
+          "name": "ShopPrice",
+          "persistentUuid": "47696b5c-ce04-5803-a556-1177841a4f58",
+          "width": 0,
+          "x": 0,
+          "y": 0,
+          "zOrder": 4,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": [
+            {
+              "name": "StyleIndex",
+              "type": "number",
+              "value": 7
+            }
+          ]
         }
       ],
       "objects": [
@@ -3506,6 +3859,64 @@
                   ]
                 }
               ]
+            },
+            {
+              "name": "Sunburst",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_sunburst",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Aurora",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_aurora",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -3681,6 +4092,64 @@
                     {
                       "hasCustomCollisionMask": false,
                       "image": "tip_shadow",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Sunburst",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_sunburst",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Aurora",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_aurora",
                       "points": [],
                       "originPoint": {
                         "name": "origine",
@@ -3989,7 +4458,20 @@
             {
               "type": {
                 "inverted": false,
-                "value": "ScalableCapability::ScalableBehavior::SetValue"
+                "value": "ScalableCapability::ScalableBehavior::SetX"
+              },
+              "parameters": [
+                "ShopCard",
+                "Scale",
+                "=",
+                "0.7"
+              ],
+              "subInstructions": []
+            },
+            {
+              "type": {
+                "inverted": false,
+                "value": "ScalableCapability::ScalableBehavior::SetY"
               },
               "parameters": [
                 "ShopCard",
@@ -4021,7 +4503,7 @@
                 "ShopTrail",
                 "Scale",
                 "=",
-                "6.5"
+                "5.4"
               ],
               "subInstructions": []
             },
@@ -4119,7 +4601,7 @@
               "parameters": [
                 "ShopCard",
                 "=",
-                "(SceneWindowHeight() / 2 - 205 + floor(ShopCard.StyleIndex / 2) * 170) + 0"
+                "(SceneWindowHeight() / 2 - 205 + floor(ShopCard.StyleIndex / 3) * 170) + 0"
               ],
               "subInstructions": []
             },
@@ -4131,7 +4613,7 @@
               "parameters": [
                 "ShopCard",
                 "=",
-                "(190 + mod(ShopCard.StyleIndex, 2) * 340) + 0"
+                "(125 + mod(ShopCard.StyleIndex, 3) * 235) + 0"
               ],
               "subInstructions": []
             },
@@ -4143,7 +4625,7 @@
               "parameters": [
                 "ShopTrail",
                 "=",
-                "(SceneWindowHeight() / 2 - 205 + floor(ShopTrail.StyleIndex / 2) * 170) + -6"
+                "(SceneWindowHeight() / 2 - 205 + floor(ShopTrail.StyleIndex / 3) * 170) + -6"
               ],
               "subInstructions": []
             },
@@ -4155,7 +4637,7 @@
               "parameters": [
                 "ShopTrail",
                 "=",
-                "(190 + mod(ShopTrail.StyleIndex, 2) * 340) + -104"
+                "(125 + mod(ShopTrail.StyleIndex, 3) * 235) + -86"
               ],
               "subInstructions": []
             },
@@ -4167,7 +4649,7 @@
               "parameters": [
                 "ShopTip",
                 "=",
-                "(SceneWindowHeight() / 2 - 205 + floor(ShopTip.StyleIndex / 2) * 170) + -6"
+                "(SceneWindowHeight() / 2 - 205 + floor(ShopTip.StyleIndex / 3) * 170) + -6"
               ],
               "subInstructions": []
             },
@@ -4179,7 +4661,7 @@
               "parameters": [
                 "ShopTip",
                 "=",
-                "(190 + mod(ShopTip.StyleIndex, 2) * 340) + 0"
+                "(125 + mod(ShopTip.StyleIndex, 3) * 235) + 0"
               ],
               "subInstructions": []
             },
@@ -4373,6 +4855,25 @@
             },
             {
               "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetStringVariable"
+                  },
+                  "parameters": [
+                    "OwnedStyles",
+                    "=",
+                    "OwnedStyles + StrRepeat(\"0\", max(0, 8 - StrLength(OwnedStyles)))"
+                  ],
+                  "subInstructions": []
+                }
+              ],
+              "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
               "conditions": [
                 {
                   "type": {
@@ -4463,7 +4964,7 @@
               "parameters": [
                 "ShopName",
                 "=",
-                "(SceneWindowHeight() / 2 - 205 + floor(ShopName.StyleIndex / 2) * 170) + -66"
+                "(SceneWindowHeight() / 2 - 205 + floor(ShopName.StyleIndex / 3) * 170) + -66"
               ],
               "subInstructions": []
             },
@@ -4475,7 +4976,7 @@
               "parameters": [
                 "ShopName",
                 "=",
-                "(190 + mod(ShopName.StyleIndex, 2) * 340) + 0"
+                "(125 + mod(ShopName.StyleIndex, 3) * 235) + 0"
               ],
               "subInstructions": []
             }
@@ -4539,7 +5040,7 @@
                     "ShopPrice",
                     "Text",
                     "=",
-                    "\"OWNED: TAP TO USE\""
+                    "\"OWNED\""
                   ],
                   "subInstructions": []
                 },
@@ -4614,7 +5115,7 @@
                   "parameters": [
                     "ShopPrice",
                     "=",
-                    "(SceneWindowHeight() / 2 - 205 + floor(ShopPrice.StyleIndex / 2) * 170) + 34"
+                    "(SceneWindowHeight() / 2 - 205 + floor(ShopPrice.StyleIndex / 3) * 170) + 34"
                   ],
                   "subInstructions": []
                 },
@@ -4626,7 +5127,7 @@
                   "parameters": [
                     "ShopPrice",
                     "=",
-                    "(190 + mod(ShopPrice.StyleIndex, 2) * 340) + 0"
+                    "(125 + mod(ShopPrice.StyleIndex, 3) * 235) + 0"
                   ],
                   "subInstructions": []
                 }
@@ -5376,6 +5877,12 @@
             },
             {
               "name": "BgFrost"
+            },
+            {
+              "name": "BgMagma"
+            },
+            {
+              "name": "BgUmbra"
             }
           ]
         },
@@ -5685,7 +6192,7 @@
         {
           "name": "ThemeCount",
           "type": "number",
-          "value": 3
+          "value": 5
         },
         {
           "name": "PlanetDifficultyStart",
@@ -5715,12 +6222,12 @@
         {
           "name": "GemChance",
           "type": "number",
-          "value": 0.5
+          "value": 0.4
         },
         {
           "name": "RiskyGemChance",
           "type": "number",
-          "value": 0.15
+          "value": 0.12
         },
         {
           "name": "RestartFromShop",
@@ -6058,6 +6565,16 @@
           "value": 0
         },
         {
+          "name": "ThemeWormBonus",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "ThemeFissureBonus",
+          "type": "number",
+          "value": 0
+        },
+        {
           "name": "WormChance",
           "type": "number",
           "value": 0
@@ -6173,6 +6690,38 @@
           "x": 0,
           "y": -800,
           "zOrder": -10,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 3200,
+          "layer": "",
+          "locked": false,
+          "name": "BgMagma",
+          "persistentUuid": "985abec5-0e57-5d33-bafb-e991eaac64b6",
+          "width": 720,
+          "x": 0,
+          "y": -800,
+          "zOrder": -9,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 3200,
+          "layer": "",
+          "locked": false,
+          "name": "BgUmbra",
+          "persistentUuid": "c8371a11-ddb9-5308-a85e-69f9449d7d14",
+          "width": 720,
+          "x": 0,
+          "y": -800,
+          "zOrder": -8,
           "numberProperties": [],
           "stringProperties": [],
           "initialVariables": []
@@ -6686,6 +7235,28 @@
           "name": "BgFrost",
           "type": "TiledSpriteObject::TiledSprite",
           "texture": "bg_frost",
+          "width": 720,
+          "height": 3000,
+          "variables": [],
+          "effects": [],
+          "behaviors": []
+        },
+        {
+          "assetStoreId": "",
+          "name": "BgMagma",
+          "type": "TiledSpriteObject::TiledSprite",
+          "texture": "bg_magma",
+          "width": 720,
+          "height": 3000,
+          "variables": [],
+          "effects": [],
+          "behaviors": []
+        },
+        {
+          "assetStoreId": "",
+          "name": "BgUmbra",
+          "type": "TiledSpriteObject::TiledSprite",
+          "texture": "bg_umbra",
           "width": 720,
           "height": 3000,
           "variables": [],
@@ -7739,6 +8310,64 @@
                   ]
                 }
               ]
+            },
+            {
+              "name": "Sunburst",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_sunburst",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": false,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Aurora",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "trail_aurora",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "centerPoint": {
+                        "automatic": false,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 24
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -7908,6 +8537,64 @@
                     {
                       "hasCustomCollisionMask": false,
                       "image": "tip_shadow",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Sunburst",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_sunburst",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 64,
+                        "y": 64
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Aurora",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "tip_aurora",
                       "points": [],
                       "originPoint": {
                         "name": "origine",
@@ -9217,6 +9904,64 @@
                   ]
                 }
               ]
+            },
+            {
+              "name": "Magma",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_magma_left",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Umbra",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_umbra_left",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -9316,6 +10061,64 @@
                   ]
                 }
               ]
+            },
+            {
+              "name": "Magma",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_magma_right",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Umbra",
+              "useMultipleDirections": false,
+              "directions": [
+                {
+                  "looping": false,
+                  "timeBetweenFrames": 0.08,
+                  "sprites": [
+                    {
+                      "hasCustomCollisionMask": false,
+                      "image": "planet_umbra_right",
+                      "points": [],
+                      "originPoint": {
+                        "name": "origine",
+                        "x": 160,
+                        "y": 160
+                      },
+                      "centerPoint": {
+                        "automatic": true,
+                        "name": "centre",
+                        "x": 0,
+                        "y": 0
+                      },
+                      "customCollisionMask": []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -9375,6 +10178,12 @@
               },
               {
                 "objectName": "BgFrost"
+              },
+              {
+                "objectName": "BgMagma"
+              },
+              {
+                "objectName": "BgUmbra"
               }
             ]
           },
@@ -10452,6 +11261,25 @@
                 },
                 {
                   "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "OwnedStyles",
+                        "=",
+                        "OwnedStyles + StrRepeat(\"0\", max(0, 8 - StrLength(OwnedStyles)))"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
                   "conditions": [
                     {
                       "type": {
@@ -10624,6 +11452,26 @@
                       },
                       "parameters": [
                         "BgFrost"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgMagma"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgUmbra"
                       ],
                       "subInstructions": []
                     }
@@ -11267,7 +12115,7 @@
             "textG": 0,
             "textR": 0
           },
-          "comment": "PLANET BREAKER \u2014 same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planet N needs N x PlanetDistanceStep metres (1000, 2000, 3000...). Themes cycle Ember -> Verdant -> Frost (ThemeCount); every planet is faster and harder (see EV_CrackMovement).",
+          "comment": "PLANET BREAKER \u2014 same engine as Endless; this sheet only adds planet themes, the surface progress bar and the planet-splitting sequence. Planet N needs N x PlanetDistanceStep metres (1000, 2000, 3000...). Themes cycle Ember -> Verdant -> Frost -> Magma (more lava gaps) -> Umbra (more worms) (ThemeCount); every planet is faster and harder (see EV_CrackMovement).",
           "comment2": ""
         },
         {
@@ -11442,6 +12290,30 @@
                         "value": "SetNumberVariable"
                       },
                       "parameters": [
+                        "ThemeWormBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeFissureBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
                         "PlanetTargetDistance",
                         "=",
                         "PlanetDistanceStep * (PlanetIndex + 1)"
@@ -11476,6 +12348,26 @@
                       },
                       "parameters": [
                         "BgFrost"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgMagma"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgUmbra"
                       ],
                       "subInstructions": []
                     }
@@ -11565,6 +12457,30 @@
                         "value": "SetNumberVariable"
                       },
                       "parameters": [
+                        "ThemeWormBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeFissureBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
                         "PlanetTargetDistance",
                         "=",
                         "PlanetDistanceStep * (PlanetIndex + 1)"
@@ -11599,6 +12515,26 @@
                       },
                       "parameters": [
                         "BgFrost"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgMagma"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgUmbra"
                       ],
                       "subInstructions": []
                     }
@@ -11688,6 +12624,30 @@
                         "value": "SetNumberVariable"
                       },
                       "parameters": [
+                        "ThemeWormBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeFissureBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
                         "PlanetTargetDistance",
                         "=",
                         "PlanetDistanceStep * (PlanetIndex + 1)"
@@ -11722,6 +12682,360 @@
                       },
                       "parameters": [
                         "BgVerdant"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgMagma"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgUmbra"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "3"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "PlanetName",
+                        "=",
+                        "\"MAGMA\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "RockTint",
+                        "=",
+                        "\"255;170;150\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeCrystalBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeWallBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeSolidBonus",
+                        "=",
+                        "0.04"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeWormBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeFissureBonus",
+                        "=",
+                        "0.06"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTargetDistance",
+                        "=",
+                        "PlanetDistanceStep * (PlanetIndex + 1)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Show"
+                      },
+                      "parameters": [
+                        "BgMagma",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgEmber"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgVerdant"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgFrost"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgUmbra"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "4"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "PlanetName",
+                        "=",
+                        "\"UMBRA\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetStringVariable"
+                      },
+                      "parameters": [
+                        "RockTint",
+                        "=",
+                        "\"215;190;255\""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeCrystalBonus",
+                        "=",
+                        "0.05"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeWallBonus",
+                        "=",
+                        "0.05"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeSolidBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeWormBonus",
+                        "=",
+                        "0.08"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "ThemeFissureBonus",
+                        "=",
+                        "0"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "SetNumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTargetDistance",
+                        "=",
+                        "PlanetDistanceStep * (PlanetIndex + 1)"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Show"
+                      },
+                      "parameters": [
+                        "BgUmbra",
+                        ""
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgEmber"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgVerdant"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgFrost"
+                      ],
+                      "subInstructions": []
+                    },
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "Hide"
+                      },
+                      "parameters": [
+                        "BgMagma"
                       ],
                       "subInstructions": []
                     }
@@ -11898,6 +13212,68 @@
                       "parameters": [
                         "ProgressFill",
                         "\"160;190;255\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "3"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ChangeColor"
+                      },
+                      "parameters": [
+                        "ProgressFill",
+                        "\"255;90;60\""
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "events": []
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "NumberVariable"
+                      },
+                      "parameters": [
+                        "PlanetTheme",
+                        "=",
+                        "4"
+                      ],
+                      "subInstructions": []
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "inverted": false,
+                        "value": "ChangeColor"
+                      },
+                      "parameters": [
+                        "ProgressFill",
+                        "\"190;140;255\""
                       ],
                       "subInstructions": []
                     }
@@ -13974,7 +15350,7 @@
                   "parameters": [
                     "WormChance",
                     "=",
-                    "lerp(WormChanceStart, WormChanceEnd, DifficultyLevel)"
+                    "lerp(WormChanceStart, WormChanceEnd, DifficultyLevel) + ThemeWormBonus"
                   ],
                   "subInstructions": []
                 },
@@ -13986,7 +15362,7 @@
                   "parameters": [
                     "FissureChance",
                     "=",
-                    "lerp(FissureChanceStart, FissureChanceEnd, DifficultyLevel)"
+                    "lerp(FissureChanceStart, FissureChanceEnd, DifficultyLevel) + ThemeFissureBonus"
                   ],
                   "subInstructions": []
                 },
