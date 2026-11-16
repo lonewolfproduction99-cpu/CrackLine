@@ -127,11 +127,15 @@ for out, root, name, pack, author in SOUNDS:
 with open(os.path.join(OUT, '..', 'CREDITS.md'), 'w') as f:
     f.write('# CRACKLINE asset credits\n\nEvery image and sound in this game is human-made, from free CC0 (public domain) packs. Credit is not required but is given here with thanks.\n\n')
     f.write('- **Kenney** (www.kenney.nl): New Platformer Pack, Space Shooter Redux, Physics Assets, Planets, Particle Pack, UI Pack, Game Icons, Board Game Icons, Impact Sounds, Sci-Fi Sounds, Interface Sounds. License: CC0 1.0.\n')
-    f.write('- **Beatscribe**: Homebrew Free Jingle and Fanfare Music Assets (github.com/Beatscribe/homebrew_vgm). License: CC0 1.0.\n\n')
+    f.write('- **Beatscribe**: Homebrew Free Jingle and Fanfare Music Assets (github.com/Beatscribe/homebrew_vgm). License: CC0 1.0.\n')
+    f.write('- **Juhani Junkala** (juhanijunkala.com): Chiptune Adventures (background music). License: CC0 1.0.\n\n')
     f.write('Only mechanical edits were made (resize, crop/split, recolour, 9-slice, tiling, layering, audio format conversion).\n\n| Game file | Source file | Pack | Author | License | Edit |\n|---|---|---|---|---|---|\n')
     for c in CREDITS:
         if len(c) == 6: f.write(f'| {c[4]} | {c[0]} | {c[1]} | {c[2]} | {c[3]} | {c[5]} |\n')
     f.write('\nPlain colour fills (crack_hitbox, ui_overlay, ui_white) are not artwork.\n')
+    f.write('\n## Music\n| File | Source file | Pack | Author | License | Changes |\n|---|---|---|---|---|---|\n'
+            '| audio/music_menu.ogg | Juhani Junkala [Chiptune Adventures] 4. Stage Select.ogg | Chiptune Adventures | Juhani Junkala (juhanijunkala.com) | CC0 1.0 | converted to mono OGG |\n'
+            '| audio/music_game.ogg | Juhani Junkala [Chiptune Adventures] 1. Stage 1.ogg | Chiptune Adventures | Juhani Junkala (juhanijunkala.com) | CC0 1.0 | converted to mono OGG |\n')
     f.write('\n## Code\n| What | Source | License |\n|---|---|---|\n'
-            '| Playgama Bridge extension v2.4.0 (leaderboard, platform messages) | github.com/playgama/bridge-gdevelop | MIT, (c) Playgama |\n')
+            '| Playgama Bridge extension v2.4.0 (storage, ads, leaderboards, pause/audio) | github.com/playgama/bridge-gdevelop | MIT, (c) Playgama |\n')
 print('credits rows', sum(1 for c in CREDITS if len(c) == 6))

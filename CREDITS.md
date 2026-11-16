@@ -4,6 +4,7 @@ Every image and sound in this game is human-made, from free CC0 (public domain) 
 
 - **Kenney** (www.kenney.nl): New Platformer Pack, Space Shooter Redux, Physics Assets, Planets, Particle Pack, UI Pack, Game Icons, Board Game Icons, Impact Sounds, Sci-Fi Sounds, Interface Sounds. License: CC0 1.0.
 - **Beatscribe**: Homebrew Free Jingle and Fanfare Music Assets (github.com/Beatscribe/homebrew_vgm). License: CC0 1.0.
+- **Juhani Junkala** (juhanijunkala.com): Chiptune Adventures (background music). License: CC0 1.0.
 
 Only mechanical edits were made (resize, crop/split, recolour, 9-slice, tiling, layering, audio format conversion).
 
@@ -56,7 +57,15 @@ Only mechanical edits were made (resize, crop/split, recolour, 9-slice, tiling, 
 
 Plain colour fills (crack_hitbox, ui_overlay, ui_white) are not artwork.
 
+## Music
+| File | Source file | Pack | Author | License | Changes |
+|---|---|---|---|---|---|
+| audio/music_menu.ogg | Juhani Junkala [Chiptune Adventures] 4. Stage Select.ogg | Chiptune Adventures | Juhani Junkala (juhanijunkala.com) | CC0 1.0 | converted to mono OGG |
+| audio/music_game.ogg | Juhani Junkala [Chiptune Adventures] 1. Stage 1.ogg | Chiptune Adventures | Juhani Junkala (juhanijunkala.com) | CC0 1.0 | converted to mono OGG |
+
 ## Code
 | What | Source | License |
 |---|---|---|
-| Playgama Bridge extension v2.4.0 (leaderboard, platform messages) | github.com/playgama/bridge-gdevelop | MIT, (c) Playgama |
+| Playgama Bridge extension v2.4.0 (storage, ads, leaderboards, pause/audio) | github.com/playgama/bridge-gdevelop | MIT, (c) Playgama |
+
+All the above is also shown in the game on the **CREDITS** screen (main menu).

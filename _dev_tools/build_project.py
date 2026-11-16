@@ -85,7 +85,7 @@ STYLE_PRICES = [0, 150, 300, 500, 800, 1200, 1600, 2000]
 STYLE_SPARKS = ["255;210;110", "150;230;255", "180;255;120", "220;160;255", "255;130;90", "170;120;255", "255;240;120", "120;255;210"]
 def arr(n, typ, vals): return {"name": n, "type": "array", "children": [{"type": typ, "value": v} for v in vals]}
 global_vars = [st("GameMode", "Endless"), num("BestEndlessDistance", 0), num("BestPlanetsBroken", 0),
-               num("CrystalWallet", 0), num("EquippedStyle", 0), num("Muted", 0), st("OwnedStyles", "10000000"), num("GameReadySent", 0), num("LeaderboardSynced", 0),
+               num("CrystalWallet", 0), num("EquippedStyle", 0), num("Muted", 0), st("OwnedStyles", "10000000"), st("CurrentMusic", ""), num("GameReadySent", 0), num("LeaderboardSynced", 0), num("ProfileRequested", 0), num("ProfileLoaded", 0), num("SaveOk", 0), num("SaveRequested", 0), num("PlatformAudioOn", 1), num("PlatformPaused", 0), num("LeaderboardBoard", 0),
                arr("StyleNames", "string", [s.upper() for s in STYLES]), arr("StylePrices", "number", STYLE_PRICES), arr("StyleSparkColors", "string", STYLE_SPARKS)]
 
 # ---------------------------------------------------------------- resources & objects
@@ -97,6 +97,13 @@ resources = [{"alwaysLoaded": False, "file": f"assets/{n}.png", "kind": "image",
 SOUNDS = ["sfx_branch", "sfx_break", "sfx_crash", "sfx_fissure", "sfx_crystal", "sfx_powerup", "sfx_click", "sfx_error", "sfx_buy", "sfx_revive", "jingle_gameover", "jingle_planet"]
 resources += [{"file": "playgama-bridge-config.json", "kind": "json", "metadata": "", "name": "playgama-bridge-config", "userAdded": True, "disablePreload": True}]
 resources += [{"file": f"audio/{n}.ogg", "kind": "audio", "metadata": "", "name": n, "preloadAsMusic": False, "preloadAsSound": True, "preloadInCache": False, "userAdded": True} for n in SOUNDS]
+MUSIC = ["music_menu", "music_game"]   # Juhani Junkala, Chiptune Adventures (CC0)
+resources += [{"file": f"audio/{n}.ogg", "kind": "audio", "metadata": "", "name": n, "preloadAsMusic": True, "preloadAsSound": False, "preloadInCache": False, "userAdded": True} for n in MUSIC]
+MUSIC_VOLUME = "45"
+def music(name):
+    """Loop a music track on channel 0 unless it is already the one playing (music keeps going across scene changes)."""
+    return ev([C("BuiltinCommonInstructions::CompareStrings", "CurrentMusic", "!=", f'"{name}"')],
+              [sets("CurrentMusic", f'"{name}"'), A("PlayMusicOnChannel", "", name, "0", "yes", MUSIC_VOLUME, "1")])
 def snd(name, vol="100", pitch="1"): return A("PlaySound", "", name, "", vol, pitch)
 
 import math
@@ -166,7 +173,7 @@ objects = [
     sprite("RestartButton", "ui_button", origin=(180, 55)),
     textobj("RestartLabel", "RESTART", 48, rgb="80;26;6"),
     sprite("ReviveButton", "ui_button_blue", origin=(180, 55)),
-    textobj("ReviveLabel", "SIMULATE AD REVIVE (TEST)", 20, rgb="255;255;255"),
+    textobj("ReviveLabel", "REVIVE - WATCH AD", 30, rgb="255;255;255"),
     sprite("MenuButton", "ui_button", origin=(180, 55)),
     textobj("MenuLabel", "MAIN MENU", 40, rgb="80;26;6"),
     textobj("GameOverPlanetsText", "PLANETS BROKEN: 0", 34, rgb="255;240;214"),
@@ -232,37 +239,30 @@ def screen_y(world): return f"TipScreenY - ({world} - CrackWorldY)"
 def pad4(v): return f'StrRepeat("0", max(0, 4 - StrLength(ToString({v})))) + ToString({v})'
 SAVE, KEY, KEYP = '"CracklineSave"', '"BestEndlessDistance"', '"BestPlanetsBroken"'
 KW, KO, KE, KM = '"CrystalWallet"', '"OwnedStyles"', '"EquippedStyle"', '"Muted"'
+def request_save(): return setv("SaveRequested", "=", "1")   # EV_Platform sends every key in one Bridge storage call
 def load_profile():
-    """Loads everything saved on the device (shared by MainMenu, Shop and Gameplay)."""
-    return [
-        ev([C("GroupExists", SAVE, KEY)], [A("ReadNumberFromStorage", SAVE, KEY, "", "BestEndlessDistance")]),
-        ev([C("GroupExists", SAVE, KEYP)], [A("ReadNumberFromStorage", SAVE, KEYP, "", "BestPlanetsBroken")]),
-        ev([C("GroupExists", SAVE, KW)], [A("ReadNumberFromStorage", SAVE, KW, "", "CrystalWallet")]),
-        ev([C("GroupExists", SAVE, KE)], [A("ReadNumberFromStorage", SAVE, KE, "", "EquippedStyle")]),
-        ev([C("GroupExists", SAVE, KO)], [A("ReadStringFromStorage", SAVE, KO, "", "OwnedStyles")]),
-        ev([], [sets("OwnedStyles", f'OwnedStyles + StrRepeat("0", max(0, {len(STYLES)} - StrLength(OwnedStyles)))')]),   # older saves had fewer styles
-        ev([C("GroupExists", SAVE, KM)], [A("ReadNumberFromStorage", SAVE, KM, "", "Muted")]),
-        ev([], [A("SetGlobalVolume", "", "=", "100 * (1 - Muted)")]),
-    ]
-def mute_events(layer='""'):
-    """Speaker button: toggles all sound on/off, saved on the device (Playgama requires a mute button)."""
+    """Progress lives in global variables, loaded once from Playgama Bridge storage by the MainMenu (group "Load progress")."""
+    return []
+def mute_events(layer='""', extra=()):
+    """Speaker button: toggles all sound on/off, saved (Playgama requires a mute button). The volume itself is applied by EV_Platform."""
     return [ev([isv("Muted", "=", "0")], [A("AnimatableCapability::AnimatableBehavior::SetIndex", "MuteButton", "Animation", "=", "0")]),
             ev([isv("Muted", "=", "1")], [A("AnimatableCapability::AnimatableBehavior::SetIndex", "MuteButton", "Animation", "=", "1")]),
-            ev([C("HasAnyTouchOrMouseStarted", ""), C("CollisionPoint", "MuteButton", f'TouchX(StartedTouchOrMouseId(0), {layer})', f'TouchY(StartedTouchOrMouseId(0), {layer})')],
-               [setv("Muted", "=", "1 - Muted"), A("EcrireFichierExp", SAVE, KM, "Muted"), A("SetGlobalVolume", "", "=", "100 * (1 - Muted)"), snd("sfx_click", "80")])]
-def save_wallet(): return A("EcrireFichierExp", SAVE, KW, "CrystalWallet")
+            ev(list(extra) + [C("HasAnyTouchOrMouseStarted", ""), C("CollisionPoint", "MuteButton", f'TouchX(StartedTouchOrMouseId(0), {layer})', f'TouchY(StartedTouchOrMouseId(0), {layer})')],
+               [setv("Muted", "=", "1 - Muted"), request_save(), snd("sfx_click", "80")])]
+def save_wallet(): return request_save()
 ENDLESS = iss("GameMode", '"Endless"')
 def color(obj, rgb): return A("ChangeColor", obj, f'"{rgb}"')
 
 # ---------------------------------------------------------------- Playgama Bridge (official GDevelop extension)
-LB_ID = "best_distance"                           # leaderboard tag created in the Playgama console
+LB_ENDLESS, LB_PLANETS = "best_distance", "planets_broken"   # leaderboard tags created in the Playgama console
+LB_ID = LB_ENDLESS
 PLAYGAMA_PUBLIC_TOKEN = "cmwhmnqg52ls2lz0hkxna96av"  # CRACKLINE's public token (SaaS leaderboards)
 def pg(name, *params, inv=False): return ins("PlaygamaBridge::" + name, "", *params, "", inv=inv)
 BRIDGE_READY = pg("IsInitialized")
 BRIDGE_CONFIG = {   # one config for both places the Bridge may read it (the file wins when it is found)
     "advertisement": {"interstitial": {"preloadOnStart": True}, "rewarded": {"preloadOnStart": True}, "useBuiltInErrorPopup": True, "backfillId": ""},
     "payments": [],
-    "leaderboards": [{"id": LB_ID, "isMain": True}],
+    "leaderboards": [{"id": LB_ENDLESS, "isMain": True}, {"id": LB_PLANETS}],
     "saas": {"publicToken": PLAYGAMA_PUBLIC_TOKEN, "leaderboards": {"platforms": ["playgama", "qa_tool"]}},
     "sendAnalyticsEvents": True,
 }
@@ -275,10 +275,11 @@ def load_bridge_extension():
     return ext
 def write_bridge_config(folder):
     with open(os.path.join(folder, "playgama-bridge-config.json"), "w") as f: json.dump(BRIDGE_CONFIG, f, indent=2)
-def submit_best():
-    """Send the saved Endless best to the Playgama leaderboard (only where the platform has one)."""
-    return ev([BRIDGE_READY, pg("LeaderboardsTypeNotAvailable", inv=True), cmp("BestEndlessDistance", ">", "0")],
-              [pg("LeaderboardsSetScore", f'"{LB_ID}"', "BestEndlessDistance")])
+def submit_best(var="BestEndlessDistance", lb=LB_ENDLESS):
+    """Send a saved best to its Playgama leaderboard (only where the platform has one)."""
+    return ev([BRIDGE_READY, pg("LeaderboardsTypeNotAvailable", inv=True), cmp(var, ">", "0")],
+              [pg("LeaderboardsSetScore", f'"{lb}"', var)])
+SAVE_KEYS = [("BestEndlessDistance", "n"), ("BestPlanetsBroken", "n"), ("CrystalWallet", "n"), ("EquippedStyle", "n"), ("OwnedStyles", "s"), ("Muted", "n")]
 
 spark_burst = lambda count, vx, vy, x="CrackWorldX", y="TipScreenY": repeat(count, [
     create("Spark", x, y), A("ChangeColor", "Spark", "StyleSparkColors[EquippedStyle]"), setov("Spark", "VX", "=", vx), setov("Spark", "VY", "=", vy),
@@ -307,14 +308,14 @@ ev_gamestate = [
             sety("NewBestText", "SceneWindowHeight() / 2 - 73"),
             sety("RestartButton", "SceneWindowHeight() / 2 + 86"), scale("RestartButton", "=", "0.9"), scale("ReviveButton", "=", "0.9"), scale("MenuButton", "=", "0.9"),
             sety("RestartLabel", "RestartButton.Y() - 32"), A("SetCenterX", "RestartLabel", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "MenuLabel", "=", "SceneWindowWidth() / 2"),
-            sety("ReviveButton", "SceneWindowHeight() / 2 + 193"), sety("ReviveLabel", "ReviveButton.Y() - 12"),
+            sety("ReviveButton", "SceneWindowHeight() / 2 + 193"), sety("ReviveLabel", "ReviveButton.Y() - 19"),
             sety("MenuButton", "SceneWindowHeight() / 2 + 300"), sety("MenuLabel", "MenuButton.Y() - 24"),
             sety("GameOverPlanetsText", "SceneWindowHeight() / 2 - 222"), sety("GameOverGemsText", "SceneWindowHeight() / 2 - 23"),
             color("ProgressBack", "40;20;12"), opacity("ProgressBack", "=", "170"),
         ], [
             ev([iss("GameMode", '""')], [sets("GameMode", '"Endless"')]),
-            comment("Load the personal best saved on this device (GDevelop storage). NOTE: Playgama requires its Bridge storage instead; this gets swapped when the SDK is integrated."),
-            *load_profile(),
+            music("music_game"),
+                        *load_profile(),
             comment("Equipped crack style (bought in the Shop) recolours the tip, trail and sparks."),
             ev([], [A("AnimatableCapability::AnimatableBehavior::SetIndex", "CrackTip", "Animation", "=", "EquippedStyle"), scale("GemIcon", "=", "0.36")]),
             comment("Planet-mode HUD (surface progress bar) only in Planet Breaker; Endless shows only the Ember background."),
@@ -330,14 +331,23 @@ ev_gamestate = [
         comment("Restart: tap/click the RESTART button. Restarting the scene resets every scene variable; global variables (best score, mode) persist."),
         ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("HasAnyTouchOrMouseStarted", ""),
             C("CollisionPoint", "RestartButton", 'TouchX(StartedTouchOrMouseId(0), "GameOver")', 'TouchY(StartedTouchOrMouseId(0), "GameOver")')],
-           [snd("sfx_click", "80"), A("Scene", "", '"Gameplay"', "")]),
+           [snd("sfx_click", "80"), A("Scene", "", '"Gameplay"', "")], [ev([BRIDGE_READY, pg("IsInterstitialSupported")], [pg("ShowInterstitial", '""')])]),
         ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("HasAnyTouchOrMouseStarted", ""),
             C("CollisionPoint", "MenuButton", 'TouchX(StartedTouchOrMouseId(0), "GameOver")', 'TouchY(StartedTouchOrMouseId(0), "GameOver")')],
-           [snd("sfx_click", "80"), A("Scene", "", '"MainMenu"', "")]),
-        comment("SIMULATE AD REVIVE (TEST) button: it only REQUESTS a revive (RequestRevive = true); EV_Revive does the work. A future Playgama rewarded-ad 'rewarded' callback should set RequestRevive the same way. No ad is shown or faked here."),
-        ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("BooleanVariable", "ReviveUsed", "False", ""), C("HasAnyTouchOrMouseStarted", ""),
+           [snd("sfx_click", "80"), A("Scene", "", '"MainMenu"', "")], [ev([BRIDGE_READY, pg("IsInterstitialSupported")], [pg("ShowInterstitial", '""')])]),
+        comment("ADS — leaving the game-over screen (RESTART / MAIN MENU) asks for an interstitial; Playgama decides whether one actually shows (first-ad delay, minimum gap). REVIVE asks for a rewarded ad: the revive happens only when the platform reports the ad was watched to the end (On Rewarded Rewarded), then EV_Revive does the work through RequestRevive. The button is hidden where rewarded ads are not available."),
+        ev([GAMEOVER], [], [
+            ev([BRIDGE_READY, pg("IsRewardedSupported", inv=True)], [A("Hide", "ReviveButton"), A("Hide", "ReviveLabel")]),
+            ev([pg("IsInitialized", inv=True)], [A("Hide", "ReviveButton"), A("Hide", "ReviveLabel")]),
+        ]),
+        ev([GAMEOVER, isv("GameOverTime", ">=", "RestartDelay"), C("BooleanVariable", "ReviveUsed", "False", ""), BRIDGE_READY, pg("IsRewardedSupported"),
+            C("BuiltinCommonInstructions::CompareStrings", "PlaygamaBridge::RewardedState()", "!=", '"opened"'),
+            C("BuiltinCommonInstructions::CompareStrings", "PlaygamaBridge::RewardedState()", "!=", '"loading"'), C("HasAnyTouchOrMouseStarted", ""),
             C("CollisionPoint", "ReviveButton", 'TouchX(StartedTouchOrMouseId(0), "GameOver")', 'TouchY(StartedTouchOrMouseId(0), "GameOver")')],
-           [snd("sfx_click", "80"), A("SetBooleanVariable", "RequestRevive", "True", "")]),
+           [snd("sfx_click", "80"), text("ReviveLabel", '"LOADING AD..."'), pg("ShowRewarded", '"revive"')]),
+        ev([pg("OnRewardedRewarded")], [A("SetBooleanVariable", "RequestRevive", "True", "")]),
+        ev([pg("OnRewardedFailed")], [text("ReviveLabel", '"NO AD RIGHT NOW"')]),
+        ev([pg("OnRewardedClosed"), C("BooleanVariable", "ReviveUsed", "False", "")], [text("ReviveLabel", '"REVIVE - WATCH AD"')]),
         comment("Impact flash fades out and grows."),
         ev([], [opacity("ImpactFlash", "-", "900 * TimeDelta()"), scale("ImpactFlash", "+", "4 * TimeDelta()")]),
         ev([C("OpacityCapability::OpacityBehavior::Value", "ImpactFlash", "Opacity", "<=", "0")], [delete("ImpactFlash")]),
@@ -615,18 +625,19 @@ ev_collisions = [
     ], [
         spark_burst("12", "RandomFloatInRange(-260, 260)", "RandomFloatInRange(-320, 120)"),
         ev([C("BooleanVariable", "ReviveUsed", "True", "")], [A("Hide", "ReviveButton"), A("Hide", "ReviveLabel")]),
-        comment("Endless: best distance. Planet Breaker: best planets broken. Both saved locally."),
+        comment("Endless: best distance. Planet Breaker: best planets broken. Saved through Playgama Bridge storage and sent to the matching Playgama leaderboard."),
         ev([ENDLESS], [A("Hide", "GameOverPlanetsText"), text("GameOverBestText", '"BEST: " + ToString(BestEndlessDistance) + " m"')],
            [ev([cmp("Distance", ">", "BestEndlessDistance")], [
-                setv("BestEndlessDistance", "=", "Distance"), A("EcrireFichierExp", SAVE, KEY, "BestEndlessDistance"),
+                setv("BestEndlessDistance", "=", "Distance"), request_save(),
                 A("Show", "NewBestText", ""), text("GameOverBestText", '"BEST: " + ToString(BestEndlessDistance) + " m"')],
                 [submit_best()])]),
         ev([iss("GameMode", '"Planet"')], [A("Show", "GameOverPlanetsText", ""), text("GameOverPlanetsText", '"PLANETS BROKEN: " + ToString(PlanetsBroken)'),
                  text("FinalDistanceText", '"TOTAL DISTANCE: " + ToString(Distance) + " m"'),
                  text("GameOverBestText", '"BEST: " + ToString(BestPlanetsBroken) + " PLANETS"')],
            [ev([cmp("PlanetsBroken", ">", "BestPlanetsBroken")], [
-                setv("BestPlanetsBroken", "=", "PlanetsBroken"), A("EcrireFichierExp", SAVE, KEYP, "BestPlanetsBroken"),
-                A("Show", "NewBestText", ""), text("GameOverBestText", '"BEST: " + ToString(BestPlanetsBroken) + " PLANETS"')])]),
+                setv("BestPlanetsBroken", "=", "PlanetsBroken"), request_save(),
+                A("Show", "NewBestText", ""), text("GameOverBestText", '"BEST: " + ToString(BestPlanetsBroken) + " PLANETS"')],
+                [submit_best("BestPlanetsBroken", LB_PLANETS)])]),
         ev([], [A("SetCenterX", "GameOverPlanetsText", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "GameOverGemsText", "=", "SceneWindowWidth() / 2"), A("SetCenterX", "ReviveLabel", "=", "SceneWindowWidth() / 2"),
                 A("SetCenterX", "FinalDistanceText", "=", "SceneWindowWidth() / 2"),
                 A("SetCenterX", "GameOverBestText", "=", "SceneWindowWidth() / 2"),
@@ -739,7 +750,18 @@ ev_revive = [
     ev([isv("InvulnerabilityRemaining", "<=", "0")], [A("Hide", "ShieldGlow")]),
 ]
 
-external_events = [("EV_GameState", ev_gamestate), ("EV_PlanetMode", ev_planet), ("EV_CrackMovement", ev_movement), ("EV_ObstacleSpawner", ev_spawner),
+ev_platform = [
+    comment("PLAYGAMA PLATFORM — linked from every scene. (1) Sound: the volume is 0 when the player muted the game, when the platform says audio is off, or while the platform has the game paused (tab hidden, ad open). (2) Pause: the game's time stops while the platform has it paused. (3) Saving: any change sets SaveRequested; all progress keys then go to Playgama Bridge storage in one call (only once the saved progress was loaded, so an empty profile never overwrites a real one)."),
+    ev([], [setv("PlatformAudioOn", "=", "1"), setv("PlatformPaused", "=", "0")]),
+    ev([BRIDGE_READY, pg("PlatformIsAudioEnabled", inv=True)], [setv("PlatformAudioOn", "=", "0")]),
+    ev([BRIDGE_READY, pg("PlatformIsPaused")], [setv("PlatformPaused", "=", "1")]),
+    ev([], [A("SetGlobalVolume", "", "=", "100 * (1 - Muted) * PlatformAudioOn * (1 - PlatformPaused)")]),
+    ev([isv("PlatformPaused", "=", "1")], [A("ChangeTimeScale", "", "0")]),
+    ev([isv("PlatformPaused", "=", "0")], [A("ChangeTimeScale", "", "1")]),
+    ev([BRIDGE_READY, isv("SaveRequested", "=", "1"), isv("SaveOk", "=", "1")], [setv("SaveRequested", "=", "0")] +
+       [pg("AppendStorageDataSetRequest", f'"{k}"', f"ToString({k})" if t == "n" else k) for k, t in SAVE_KEYS] + [pg("SendStorageDataSetRequest")]),
+]
+external_events = [("EV_Platform", ev_platform), ("EV_GameState", ev_gamestate), ("EV_PlanetMode", ev_planet), ("EV_CrackMovement", ev_movement), ("EV_ObstacleSpawner", ev_spawner),
                    ("EV_Powerups", ev_powerups), ("EV_Trail", ev_trail), ("EV_Collisions", ev_collisions), ("EV_Revive", ev_revive), ("EV_Scoring", ev_scoring)]
 scene_events = [comment("CRACKLINE — Phase 3. Endless Depth and Planet Breaker share this one scene (GameMode global). Each system lives in its own external events sheet (Project manager > External events). Order matters.")] + \
     [link(n) for n, _ in external_events]
@@ -764,6 +786,7 @@ menu_objects = [
     sprite("PlanetButton", "ui_button", origin=(180, 55)), textobj("PlanetLabel", "PLANET BREAKER", 38, rgb="80;26;6"),
     sprite("ShopButton", "ui_button_blue", origin=(180, 55)), textobj("ShopLabel", "SHOP", 44, rgb="255;255;255"),
     sprite("RankButton", "ui_button_blue", origin=(180, 55)), textobj("RankLabel", "LEADERBOARD", 25, rgb="255;255;255"),
+    sprite("CreditsButton", "ui_button", origin=(180, 55)), textobj("CreditsLabel", "CREDITS", 22, rgb="80;26;6"),
     sprite("MuteButton", "icon_audio_on", origin=(50, 50), anims=[("On", "icon_audio_on"), ("Off", "icon_audio_off")]),
 ]
 menu_instances = [inst("MenuBg", 0, -800, z=-10, w=720, h=3200), inst("TitleText", 60, 220, z=2), inst("SubtitleText", 210, 350, z=2),
@@ -771,32 +794,53 @@ menu_instances = [inst("MenuBg", 0, -800, z=-10, w=720, h=3200), inst("TitleText
                   inst("EndlessButton", 360, 620, z=2), inst("EndlessLabel", 210, 594, z=3),
                   inst("PlanetButton", 360, 750, z=2), inst("PlanetLabel", 200, 725, z=3),
                   inst("ShopButton", 360, 880, z=2), inst("ShopLabel", 300, 852, z=3), inst("MuteButton", 670, 50, z=4),
-                  inst("RankButton", 360, 1000, z=2), inst("RankLabel", 260, 980, z=3)]
+                  inst("RankButton", 360, 1000, z=2), inst("RankLabel", 260, 980, z=3),
+                  inst("CreditsButton", 360, 1100, z=2), inst("CreditsLabel", 300, 1090, z=3)]
 def tapped(obj, layer='""'): return [C("HasAnyTouchOrMouseStarted", ""), C("CollisionPoint", obj, f'TouchX(StartedTouchOrMouseId(0), {layer})', f'TouchY(StartedTouchOrMouseId(0), {layer})')]
 def center_all(*objs): return [A("SetCenterX", o, "=", "SceneWindowWidth() / 2") for o in objs]
+LOADED = isv("ProfileLoaded", "=", "1")
+def mtap(obj): return [LOADED] + tapped(obj)
 menu_events = [
-    comment("MAIN MENU — pick a mode or open the Shop. Both modes open the same Gameplay scene; only the global GameMode differs."),
+    comment("MAIN MENU — pick a mode, or open the Shop, Leaderboard or Credits. Both modes open the same Gameplay scene; only the global GameMode differs. Buttons work once the saved progress has loaded (a moment after start)."),
     comment("Positions are offsets from the screen centre so the menu fits any portrait height (and a square window)."),
+    link("EV_Platform"),
     ev([C("SceneJustBegins", "")], [
+        A("EnableMetrics", "", "no"),
         sety("TitleText", f"{CY} - 340"), sety("SubtitleText", f"{CY} - 205"),
         sety("MenuBestText", f"{CY} - 145"), sety("MenuWalletText", f"{CY} - 100"),
-        sety("EndlessButton", f"{CY} + 25"), sety("EndlessLabel", "EndlessButton.Y() - 24"),
-        sety("PlanetButton", f"{CY} + 150"), sety("PlanetLabel", "PlanetButton.Y() - 24"),
-        sety("ShopButton", f"{CY} + 275"), sety("ShopLabel", "ShopButton.Y() - 27"),
-        sety("MuteButton", f"{CY} + 275"), scale("MuteButton", "=", "0.75"),
-    ], load_profile() + [
+        sety("EndlessButton", f"{CY} + 15"), sety("EndlessLabel", "EndlessButton.Y() - 24"),
+        sety("PlanetButton", f"{CY} + 130"), sety("PlanetLabel", "PlanetButton.Y() - 24"),
+        sety("ShopButton", f"{CY} + 242"), sety("ShopLabel", "ShopButton.Y() - 27"),
+        sety("MuteButton", f"{CY} + 242"), scale("MuteButton", "=", "0.75"),
+        scalex("CreditsButton", "=", "0.5"), scaley("CreditsButton", "=", "0.5"), sety("CreditsButton", f"{CY} + 327"), sety("CreditsLabel", "CreditsButton.Y() - 14"),
+    ], [music("music_menu")]),
+    group("Load progress", [
+        comment("Saved progress comes from Playgama Bridge storage (cloud saves where the platform has them): every key in one request, once per session. If loading fails, the game still plays but does not save, so it can never overwrite a real save with an empty one."),
+        ev([BRIDGE_READY, isv("ProfileRequested", "=", "0")], [setv("ProfileRequested", "=", "1")] +
+           [pg("AppendStorageDataGetRequest", f'"{k}"') for k, _ in SAVE_KEYS] + [pg("SendStorageDataGetRequest")]),
+        ev([pg("OnStorageDataGetRequestCompleted"), isv("ProfileLoaded", "=", "0")], [setv("ProfileLoaded", "=", "1")], [
+            ev([pg("IsLastActionCompletedSuccessfully")], [setv("SaveOk", "=", "1")]),
+            *[ev([pg("HasStorageData", f'"{k}"')], [setv(k, "=", f'ToNumber(PlaygamaBridge::StorageData("{k}"))') if t == "n" else sets(k, f'PlaygamaBridge::StorageData("{k}")')])
+              for k, t in SAVE_KEYS],
+            ev([], [sets("OwnedStyles", f'OwnedStyles + StrRepeat("0", max(0, {len(STYLES)} - StrLength(OwnedStyles)))')]),   # older saves had fewer styles
+        ]),
         ev([], [text("MenuBestText", '"BEST: " + ToString(BestEndlessDistance) + " m   |   " + ToString(BestPlanetsBroken) + " PLANETS"'),
                 text("MenuWalletText", '"CRYSTALS: " + ToString(CrystalWallet)')]),
-    ]),
+        ev([isv("ProfileLoaded", "=", "0")], [text("MenuWalletText", '"LOADING..."')] + [opacity(o, "=", "110") for o in ("EndlessButton", "PlanetButton", "ShopButton", "RankButton", "CreditsButton")]),
+        ev([isv("ProfileLoaded", "=", "0")], [A("SetGlobalVolume", "", "=", "0")]),   # silent until the saved mute setting is known
+        ev([LOADED], [opacity(o, "=", "255") for o in ("EndlessButton", "PlanetButton", "ShopButton", "RankButton", "CreditsButton")]),
+    ], rgb=(140, 80, 220)),
     ev([], [A("TiledSpriteObject::YOffset", "MenuBg", "=", "-TimeFromStart() * 60")] +
-            center_all("TitleText", "SubtitleText", "EndlessLabel", "PlanetLabel", "MenuBestText", "MenuWalletText")),
-    ev(tapped("EndlessButton"), [snd("sfx_click", "80"), sets("GameMode", '"Endless"'), A("Scene", "", '"Gameplay"', "")]),
-    ev(tapped("PlanetButton"), [snd("sfx_click", "80"), sets("GameMode", '"Planet"'), A("Scene", "", '"Gameplay"', "")]),
-    ev(tapped("ShopButton"), [snd("sfx_click", "80"), A("Scene", "", '"Shop"', "")]),
+            center_all("TitleText", "SubtitleText", "EndlessLabel", "PlanetLabel", "MenuBestText", "MenuWalletText", "CreditsButton", "CreditsLabel")),
+    ev(mtap("EndlessButton"), [snd("sfx_click", "80"), sets("GameMode", '"Endless"'), A("Scene", "", '"Gameplay"', "")]),
+    ev(mtap("PlanetButton"), [snd("sfx_click", "80"), sets("GameMode", '"Planet"'), A("Scene", "", '"Gameplay"', "")]),
+    ev(mtap("ShopButton"), [snd("sfx_click", "80"), A("Scene", "", '"Shop"', "")]),
+    ev(mtap("CreditsButton"), [snd("sfx_click", "80"), A("Scene", "", '"Credits"', "")]),
     group("Playgama", [
-        comment("PLAYGAMA BRIDGE — once the Bridge is ready: tell the platform the game is ready (once per session), send the saved Endless best to the leaderboard (once per session, so older bests count too), and show the LEADERBOARD button only where the platform has a leaderboard we can show. When it is hidden, SHOP stays a full-width button."),
-        ev([BRIDGE_READY, isv("GameReadySent", "=", "0")], [setv("GameReadySent", "=", "1"), pg("SendMessage", '"GAME_READY"')]),
-        ev([BRIDGE_READY, isv("LeaderboardSynced", "=", "0")], [setv("LeaderboardSynced", "=", "1")], [submit_best()]),
+        comment("PLAYGAMA BRIDGE — once progress has loaded: tell the platform the game is ready (once per session), send the saved bests to both leaderboards (once per session, so older bests count too), and show the LEADERBOARD button only where the platform has a leaderboard we can show. When it is hidden, SHOP stays a full-width button."),
+        ev([BRIDGE_READY, LOADED, isv("GameReadySent", "=", "0")], [setv("GameReadySent", "=", "1"), pg("SendMessage", '"GAME_READY"')]),
+        ev([BRIDGE_READY, LOADED, isv("LeaderboardSynced", "=", "0")], [setv("LeaderboardSynced", "=", "1")],
+           [submit_best(), submit_best("BestPlanetsBroken", LB_PLANETS)]),
         ev([], [setv("LeaderboardAvailable", "=", "0")]),
         ev([BRIDGE_READY, pg("LeaderboardsTypeInGame")], [setv("LeaderboardAvailable", "=", "1")]),
         ev([BRIDGE_READY, pg("LeaderboardsTypeNativePopup")], [setv("LeaderboardAvailable", "=", "1")]),
@@ -806,12 +850,11 @@ menu_events = [
             scale("ShopButton", "=", "0.62"), scale("RankButton", "=", "0.62"), sety("RankButton", "ShopButton.Y()"), sety("RankLabel", "RankButton.Y() - 16"),
             A("SetCenterX", "ShopButton", "=", "SceneWindowWidth() / 2 - 118"), A("SetCenterX", "ShopLabel", "=", "ShopButton.CenterX()"),
             A("SetCenterX", "RankButton", "=", "SceneWindowWidth() / 2 + 118"), A("SetCenterX", "RankLabel", "=", "RankButton.CenterX()")]),
-        ev([isv("LeaderboardAvailable", "=", "1")] + tapped("RankButton"), [snd("sfx_click", "80")], [
+        ev([isv("LeaderboardAvailable", "=", "1")] + mtap("RankButton"), [snd("sfx_click", "80")], [
             ev([pg("LeaderboardsTypeInGame")], [A("Scene", "", '"Leaderboard"', "")]),
             ev([pg("LeaderboardsTypeNativePopup")], [pg("LeaderboardsShowNativePopup", f'"{LB_ID}"')])]),
     ], rgb=(140, 80, 220)),
-] + mute_events() + [
-]
+] + mute_events(extra=[LOADED])
 def simple_layout(name, objs, insts, events, groups=(), variables=()):
     return {"b": 40, "disableInputWhenNotFocused": True, "mangledName": name, "name": name, "r": 110, "standardSortMethod": True,
             "stopSoundsOnStartup": False, "title": "", "v": 60, "uiSettings": ui_settings, "objectsGroups": list(groups), "variables": list(variables),
@@ -849,6 +892,7 @@ def place(o, dx, dy, center=False):
     acts.append(A("SetCenterX", o, "=", COLX.format(o=o) + f" + {dx}") if center else setx(o, COLX.format(o=o) + f" + {dx}"))
     return acts
 shop_events = [
+    link("EV_Platform"),
     comment("SHOP — crack styles. Prices and names live in the global arrays StylePrices / StyleNames (index = StyleIndex 0-5). Owned styles are a string of 0/1 flags (OwnedStyles, e.g. \"110000\"); EquippedStyle is the index in use. Everything is saved on the device. NOTE: Playgama will require its Bridge storage instead."),
     ev([C("SceneJustBegins", "")], [scalex("ShopCard", "=", "0.7"), scaley("ShopCard", "=", "0.8"), scale("ShopTip", "=", "0.55"), scalex("ShopTrail", "=", "5.4"), scaley("ShopTrail", "=", "0.55"),
         scale("BackButton", "=", "0.7"), sety("ShopTitle", f"{CY} - 352"), sety("WalletText", f"{CY} - 342"),
@@ -870,13 +914,13 @@ shop_events = [
     comment("Tap a card: equip it if owned; otherwise buy it if you have enough crystals (then equip and save); otherwise say how many more you need."),
     ev(tapped("ShopCard"), [setv("ShopSel", "=", "ShopCard.StyleIndex"), setv("ShopOwned", "=", "0"), setv("MsgTime", "=", "1.8")], [
         ev([C("BuiltinCommonInstructions::CompareStrings", "SubStr(OwnedStyles, ShopSel, 1)", "=", '"1"')], [setv("ShopOwned", "=", "1")]),
-        ev([isv("ShopOwned", "=", "1")], [setv("EquippedStyle", "=", "ShopSel"), A("EcrireFichierExp", SAVE, KE, "EquippedStyle"),
+        ev([isv("ShopOwned", "=", "1")], [setv("EquippedStyle", "=", "ShopSel"), request_save(),
                                           text("ShopMsg", 'StyleNames[ShopSel] + " EQUIPPED"'), snd("sfx_click", "80")]),
         ev([isv("ShopOwned", "=", "0"), cmp("CrystalWallet", ">=", "StylePrices[ShopSel]")], [
             setv("CrystalWallet", "-", "StylePrices[ShopSel]"),
             sets("OwnedStyles", 'SubStr(OwnedStyles, 0, ShopSel) + "1" + SubStr(OwnedStyles, ShopSel + 1, 99)'),
             setv("EquippedStyle", "=", "ShopSel"),
-            A("EcrireFichierExp", SAVE, KW, "CrystalWallet"), A("EcrireFichierTxt", SAVE, KO, "OwnedStyles"), A("EcrireFichierExp", SAVE, KE, "EquippedStyle"),
+            request_save(), request_save(), request_save(),
             text("ShopMsg", '"UNLOCKED " + StyleNames[ShopSel] + "!"'), snd("sfx_buy", "75")]),
         ev([isv("ShopOwned", "=", "0"), cmp("CrystalWallet", "<", "StylePrices[ShopSel]")], [
             text("ShopMsg", '"NEED " + ToString(StylePrices[ShopSel] - CrystalWallet) + " MORE CRYSTALS"'), snd("sfx_error", "80")]),
@@ -894,8 +938,9 @@ LB_ROWS = 10
 def rowvar(): return [num("Row", 0)]
 lb_objects = [
     {"assetStoreId": "", "name": "LbBg", "type": "TiledSpriteObject::TiledSprite", "texture": "bg_soil", "width": 720, "height": 3000, "variables": [], "effects": [], "behaviors": []},
-    textobj("LbTitle", "TOP DEPTHS", 54, rgb="255;214;120"),
-    textobj("LbSubtitle", "ENDLESS DEPTH - BEST DISTANCE", 26, rgb="255;240;214"),
+    textobj("LbTitle", "LEADERBOARD", 48, rgb="255;214;120"),
+    sprite("LbTabDepth", "ui_button_blue", origin=(180, 55)), textobj("LbTabDepthLabel", "DEPTH", 28, rgb="255;255;255"),
+    sprite("LbTabPlanets", "ui_button_blue", origin=(180, 55)), textobj("LbTabPlanetsLabel", "PLANETS", 28, rgb="255;255;255"),
     sprite("LbPanel", "ui_card", origin=(150, 100)),
     textobj("LbName", "", 26, rgb="255;240;214", align="left"),
     textobj("LbScore", "", 26, rgb="160;240;255", align="left"),
@@ -908,30 +953,44 @@ for o in lb_objects:
 def lbinst(name, k):
     d = inst(name, 0, 0, z=3); d["persistentUuid"] = uid(f"lb-{name}-{k}")
     d["initialVariables"] = [{"name": "Row", "type": "number", "value": k}]; return d
-lb_instances = [inst("LbBg", 0, -800, z=-10, w=720, h=3200), inst("LbTitle", 200, 100, z=2), inst("LbSubtitle", 150, 180, z=2),
+lb_instances = [inst("LbBg", 0, -800, z=-10, w=720, h=3200), inst("LbTitle", 200, 100, z=2),
+                inst("LbTabDepth", 240, 200, z=2), inst("LbTabDepthLabel", 140, 190, z=3), inst("LbTabPlanets", 480, 200, z=2), inst("LbTabPlanetsLabel", 380, 190, z=3),
                 inst("LbPanel", 360, 640, z=1), inst("LbStatus", 260, 620, z=4), inst("LbYourBest", 230, 1060, z=2),
                 inst("LbBackButton", 360, 1180, z=2), inst("LbBackLabel", 300, 1150, z=3)] + \
                [lbinst(n, k) for k in range(LB_ROWS) for n in ("LbName", "LbScore")]
-ROW_Y = f"{CY} - 228 + {{o}}.Row * 43"
+ROW_Y = f"{CY} - 218 + {{o}}.Row * 41"
+BOARD_ID = "LbBoardId"
+def lb_request():
+    return [text("LbName", '""'), text("LbScore", '""'), text("LbStatus", '"LOADING..."'), setv("LbWait", "=", "0"), setv("LbRequested", "=", "0")]
 lb_events = [
-    comment("LEADERBOARD — the top Endless Depth distances from Playgama's leaderboard (tag \"%s\"). Scores are sent from Gameplay on a new best and from the menu once per session. Only reached from the menu when the platform has an in-game leaderboard." % LB_ID),
-    ev([C("SceneJustBegins", "")], [scalex("LbPanel", "=", "2.1"), scaley("LbPanel", "=", "2.3"), sety("LbPanel", CY + " - 15"),
-        sety("LbTitle", f"{CY} - 358"), sety("LbSubtitle", f"{CY} - 282"), sety("LbStatus", f"{CY} - 20"),
-        sety("LbYourBest", f"{CY} + 210"), scale("LbBackButton", "=", "0.65"), sety("LbBackButton", f"{CY} + 308"), sety("LbBackLabel", "LbBackButton.Y() - 27"),
-        sety("LbName", ROW_Y.format(o="LbName")), sety("LbScore", ROW_Y.format(o="LbScore")), text("LbName", '""'), text("LbScore", '""'),
-        text("LbStatus", '"LOADING..."'), setv("LbWait", "=", "0")], load_profile() + [
-        ev([], [text("LbYourBest", '"YOUR BEST: " + ToString(BestEndlessDistance) + " m"')])]),
-    ev([], [A("TiledSpriteObject::YOffset", "LbBg", "=", "-TimeFromStart() * 30"), A("SetCenterX", "LbPanel", "=", "SceneWindowWidth() / 2")] +
-            center_all("LbTitle", "LbSubtitle", "LbStatus", "LbYourBest", "LbBackButton", "LbBackLabel") +
-            [A("SetX", "LbName", "=", "SceneWindowWidth() / 2 - 290"), A("SetX", "LbScore", "=", "SceneWindowWidth() / 2 + 290 - LbScore.Width()")]),
-    comment("Ask for the entries once the Bridge is ready (it may still be starting when this scene opens)."),
-    ev([BRIDGE_READY, isv("LbRequested", "=", "0")], [setv("LbRequested", "=", "1")], [
-        ev([pg("LeaderboardsTypeInGame")], [pg("LeaderboardsGetEntries", f'"{LB_ID}"')]),
+    comment("LEADERBOARD — two Playgama leaderboards: \"%s\" (Endless Depth, best distance) and \"%s\" (Planet Breaker, most planets broken). The tabs switch between them (LeaderboardBoard 0 / 1). Scores are sent from Gameplay on a new best and from the menu once per session. Only reached from the menu when the platform has an in-game leaderboard." % (LB_ENDLESS, LB_PLANETS)),
+    link("EV_Platform"),
+    ev([C("SceneJustBegins", "")], [scalex("LbPanel", "=", "2.1"), scaley("LbPanel", "=", "2.2"), sety("LbPanel", CY + " - 6"),
+        sety("LbTitle", f"{CY} - 360"), scalex("LbTabDepth", "=", "0.6"), scaley("LbTabDepth", "=", "0.55"), scalex("LbTabPlanets", "=", "0.6"), scaley("LbTabPlanets", "=", "0.55"),
+        sety("LbTabDepth", f"{CY} - 256"), sety("LbTabPlanets", f"{CY} - 256"), sety("LbTabDepthLabel", "LbTabDepth.Y() - 18"), sety("LbTabPlanetsLabel", "LbTabPlanets.Y() - 18"),
+        sety("LbStatus", f"{CY} - 20"),
+        sety("LbYourBest", f"{CY} + 215"), scale("LbBackButton", "=", "0.65"), sety("LbBackButton", f"{CY} + 308"), sety("LbBackLabel", "LbBackButton.Y() - 27"),
+        sety("LbName", ROW_Y.format(o="LbName")), sety("LbScore", ROW_Y.format(o="LbScore")),
+        setv("LeaderboardBoard", "=", "0")] + lb_request(), [
+        ev([iss("GameMode", '"Planet"')], [setv("LeaderboardBoard", "=", "1")])]),
+    ev([], [A("TiledSpriteObject::YOffset", "LbBg", "=", "-TimeFromStart() * 30"), A("SetCenterX", "LbPanel", "=", "SceneWindowWidth() / 2"),
+            A("SetCenterX", "LbTabDepth", "=", "SceneWindowWidth() / 2 - 115"), A("SetCenterX", "LbTabPlanets", "=", "SceneWindowWidth() / 2 + 115"),
+            A("SetCenterX", "LbTabDepthLabel", "=", "LbTabDepth.CenterX()"), A("SetCenterX", "LbTabPlanetsLabel", "=", "LbTabPlanets.CenterX()")] +
+            center_all("LbTitle", "LbStatus", "LbYourBest", "LbBackButton", "LbBackLabel") +
+            [A("SetX", "LbName", "=", "SceneWindowWidth() / 2 - 290"), A("SetX", "LbScore", "=", "SceneWindowWidth() / 2 + 290 - LbScore.Width()"),
+             color("LbTabDepth", "110;110;130"), color("LbTabPlanets", "110;110;130")]),
+    ev([isv("LeaderboardBoard", "=", "1")] + tapped("LbTabDepth"), [snd("sfx_click", "80"), setv("LeaderboardBoard", "=", "0")] + lb_request()),
+    ev([isv("LeaderboardBoard", "=", "0")] + tapped("LbTabPlanets"), [snd("sfx_click", "80"), setv("LeaderboardBoard", "=", "1")] + lb_request()),
+    ev([isv("LeaderboardBoard", "=", "0")], [sets("LbBoardId", '"%s"' % LB_ENDLESS), sets("LbUnit", '" m"'), color("LbTabDepth", "255;255;255"), text("LbYourBest", '"YOUR BEST: " + ToString(BestEndlessDistance) + " m"')]),
+    ev([isv("LeaderboardBoard", "=", "1")], [sets("LbBoardId", '"%s"' % LB_PLANETS), sets("LbUnit", '""'), color("LbTabPlanets", "255;255;255"), text("LbYourBest", '"YOUR BEST: " + ToString(BestPlanetsBroken) + " PLANETS"')]),
+    comment("Ask for the entries once the Bridge is ready (it may still be starting when this scene opens), and again after switching tabs."),
+    ev([BRIDGE_READY, isv("LbRequested", "=", "0")], [setv("LbRequested", "=", "1"), setv("LbShownBoard", "=", "LeaderboardBoard")], [
+        ev([pg("LeaderboardsTypeInGame")], [pg("LeaderboardsGetEntries", BOARD_ID)]),
         ev([pg("LeaderboardsTypeInGame", inv=True)], [text("LbStatus", '"LEADERBOARD NOT AVAILABLE HERE"'), setv("LbRequested", "=", "2")])]),
     ev([isv("LbRequested", "<", "2")], [setv("LbWait", "+", "TimeDelta()")], [
         ev([isv("LbWait", ">", "10")], [text("LbStatus", '"COULDN\'T LOAD THE LEADERBOARD"'), setv("LbRequested", "=", "2")])]),
-    comment("Fill the rows: rank. name on the left, distance on the right. Your own row is green. Up to %d rows." % LB_ROWS),
-    ev([pg("OnLeaderboardsGetEntriesCompleted")], [setv("LbRequested", "=", "2")], [
+    comment("Fill the rows: rank. name on the left, score on the right. Your own row is green. Up to %d rows. Answers for a tab you already left are ignored." % LB_ROWS),
+    ev([pg("OnLeaderboardsGetEntriesCompleted"), isv("LbRequested", "=", "1"), cmp("LbShownBoard", "=", "LeaderboardBoard")], [setv("LbRequested", "=", "2")], [
         ev([pg("IsLastActionCompletedSuccessfully", inv=True)], [text("LbStatus", '"COULDN\'T LOAD THE LEADERBOARD"')]),
         ev([pg("IsLastActionCompletedSuccessfully")], [text("LbStatus", '""'), setv("LbIndex", "=", "0")], [
             ev([cmp("PlaygamaBridge::LeaderboardEntriesCount()", "=", "0")], [text("LbStatus", '"NO SCORES YET - BE THE FIRST!"')]),
@@ -941,7 +1000,7 @@ lb_events = [
                 ev([C("NumberObjectVariable", "LbName", "Row", "=", "LbIndex")],
                    [text("LbName", 'PlaygamaBridge::LeaderboardEntryRank(LbIndex) + ".  " + ToUpperCase(LbEntryName)'), A("TextObject::ChangeColor", "LbName", '"255;240;214"')]),
                 ev([C("NumberObjectVariable", "LbScore", "Row", "=", "LbIndex")],
-                   [text("LbScore", 'PlaygamaBridge::LeaderboardEntryScore(LbIndex) + " m"'), A("TextObject::ChangeColor", "LbScore", '"160;240;255"')]),
+                   [text("LbScore", 'PlaygamaBridge::LeaderboardEntryScore(LbIndex) + LbUnit'), A("TextObject::ChangeColor", "LbScore", '"160;240;255"')]),
                 ev([C("BuiltinCommonInstructions::CompareStrings", "PlaygamaBridge::LeaderboardEntryId(LbIndex)", "=", "PlaygamaBridge::PlayerId()"),
                     C("BuiltinCommonInstructions::CompareStrings", "PlaygamaBridge::PlayerId()", "!=", '""')], [], [
                     ev([C("NumberObjectVariable", "LbName", "Row", "=", "LbIndex")], [A("TextObject::ChangeColor", "LbName", '"120;255;160"')]),
@@ -950,7 +1009,60 @@ lb_events = [
     ev(tapped("LbBackButton"), [snd("sfx_click", "80"), A("Scene", "", '"MainMenu"', "")]),
 ]
 lb_layout = simple_layout("Leaderboard", lb_objects, lb_instances, lb_events,
-                          variables=[num("LbRequested", 0), num("LbWait", 0), num("LbIndex", 0), st("LbEntryName", "")])
+                          variables=[num("LbRequested", 0), num("LbWait", 0), num("LbIndex", 0), num("LbShownBoard", 0), st("LbEntryName", ""), st("LbUnit", " m"), st("LbBoardId", "best_distance")])
+
+# ---------------------------------------------------------------- CREDITS scene
+CREDITS_TEXT = "\n".join([
+    "CRACKLINE",
+    "A game by Lone Wolf Production",
+    "",
+    "ART & SOUND EFFECTS - KENNEY (kenney.nl)",
+    "Planets, New Platformer Pack, Particle Pack,",
+    "UI Pack, Space Shooter Redux, Physics Assets,",
+    "Game Icons, Board Game Icons, Impact Sounds,",
+    "Interface Sounds, Sci-Fi Sounds",
+    "License: CC0 (public domain)",
+    "",
+    "JINGLES - BEATSCRIBE",
+    "Homebrew Free Jingle and Fanfare",
+    "Music Assets (NES)",
+    "License: CC0 (public domain)",
+    "",
+    "PLAYGAMA BRIDGE - (c) Playgama",
+    "License: MIT",
+    "",
+    "MUSIC - JUHANI JUNKALA",
+    "Chiptune Adventures",
+    "License: CC0 (public domain)",
+    "",
+    "MADE WITH GDEVELOP (gdevelop.io)",
+    "Game engine license: MIT",
+    "",
+    "Thank you all for sharing your work!",
+])
+credits_objects = [
+    {"assetStoreId": "", "name": "CreditsBg", "type": "TiledSpriteObject::TiledSprite", "texture": "bg_soil", "width": 720, "height": 3000, "variables": [], "effects": [], "behaviors": []},
+    sprite("CreditsPanel", "ui_card", origin=(150, 100)),
+    textobj("CreditsTitle", "CREDITS", 48, rgb="255;214;120"),
+    textobj("CreditsBody", CREDITS_TEXT, 18, rgb="255;240;214"),
+    sprite("CreditsBackButton", "ui_button", origin=(180, 55)), textobj("CreditsBackLabel", "BACK", 44, rgb="80;26;6"),
+]
+credits_instances = [inst("CreditsBg", 0, -800, z=-10, w=720, h=3200), inst("CreditsPanel", 360, 640, z=1), inst("CreditsTitle", 250, 90, z=2),
+                     inst("CreditsBody", 100, 200, z=2), inst("CreditsBackButton", 360, 1180, z=2), inst("CreditsBackLabel", 300, 1150, z=3)]
+credits_events = [
+    comment("CREDITS — everyone whose work is in the game. The full file-by-file list is CREDITS.md in the project folder."),
+    link("EV_Platform"),
+    comment("The text grows on tall screens (up to 1.4x) so it stays readable, and everything is laid out around it."),
+    ev([C("SceneJustBegins", "")], [scale("CreditsBody", "=", "min(1.4, (SceneWindowHeight() - 245) / CreditsBody.Height())"),
+        sety("CreditsBody", f"{CY} - CreditsBody.Height() / 2 + 2"),
+        scalex("CreditsPanel", "=", "(CreditsBody.Width() + 60) / 300"), scaley("CreditsPanel", "=", "(CreditsBody.Height() + 34) / 200"), sety("CreditsPanel", "CreditsBody.CenterY()"),
+        sety("CreditsTitle", "CreditsPanel.Y() - CreditsPanel.Height() / 2 - 78"),
+        scale("CreditsBackButton", "=", "0.6"), sety("CreditsBackButton", "CreditsPanel.Y() + CreditsPanel.Height() / 2 + 44"), sety("CreditsBackLabel", "CreditsBackButton.Y() - 27")]),
+    ev([], [A("TiledSpriteObject::YOffset", "CreditsBg", "=", "-TimeFromStart() * 30")] +
+            center_all("CreditsPanel", "CreditsTitle", "CreditsBody", "CreditsBackButton", "CreditsBackLabel")),
+    ev(tapped("CreditsBackButton"), [snd("sfx_click", "80"), A("Scene", "", '"MainMenu"', "")]),
+]
+credits_layout = simple_layout("Credits", credits_objects, credits_instances, credits_events)
 
 project = {
     "firstLayout": "MainMenu",
@@ -970,8 +1082,8 @@ project = {
         "authorIds": [], "authorUsernames": [], "categories": [], "playableDevices": ["mobile"], "extensionProperties": [],
         "platforms": [{"name": "GDevelop JS platform"}], "currentPlatform": "GDevelop JS platform"},
     "resources": {"resources": resources, "resourceFolders": []},
-    "objects": [], "objectsGroups": [], "variables": global_vars, "layouts": [menu_layout, shop_layout, lb_layout, layout],
-    "externalEvents": [{"associatedLayout": "Gameplay", "lastChangeTimeStamp": 0, "name": n, "events": e} for n, e in external_events],
+    "objects": [], "objectsGroups": [], "variables": global_vars, "layouts": [menu_layout, shop_layout, lb_layout, credits_layout, layout],
+    "externalEvents": [{"associatedLayout": "MainMenu" if n == "EV_Platform" else "Gameplay", "lastChangeTimeStamp": 0, "name": n, "events": e} for n, e in external_events],
     "eventsFunctionsExtensions": [load_bridge_extension()], "externalLayouts": [], "externalSourceFiles": [],
 }
 os.makedirs(OUT, exist_ok=True)

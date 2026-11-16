@@ -26,11 +26,9 @@ async def click_card(page, k):
     js = "() => { %s const o = sc.getObjects('ShopCard').find(o => o.getVariables().get('StyleIndex').getAsNumber() === %d); return [o.getCenterXInScene(), o.getCenterYInScene(), sc.getGame().getGameResolutionWidth()]; }" % (PRE, k)
     x, y, gw = await page.evaluate(js); kk = page.viewport_size['width'] / gw
     await page.mouse.click(x * kk, y * kk); await asyncio.sleep(0.3)
-async def bridge_ready(page):   # wait for the Playgama Bridge to finish starting (it loads while the menu is shown)
-    for _ in range(200):
-        if await page.evaluate("() => !!(window.bridge && window.bridge.isInitialized)"): return
-        await asyncio.sleep(0.05)
+async def bridge_ready(page): await prep(page)
 async def to_scene(page, name, btn):
+    await prep(page)
     await click_obj(page, btn); await waitg(page, lambda s: s['scene'] == name, 5); await asyncio.sleep(0.4)
 def gem(value, scale, ahead, dx=0):
     return '''() => { %s const o = sc.createObject('Crystal'); o.setX(V('CrackWorldX').getAsNumber() + %f); o.setScale(%f);
@@ -103,10 +101,7 @@ async def main():
         await page.reload(); await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await bridge_ready(page); await asyncio.sleep(0.4)
         await to_scene(page, 'Shop', 'ShopButton'); s = await Gs(page)
         check('purchases + equipped style survive a reload', s['wallet'] == 50 and s['owned'] == '11001000' and s['equipped'] == 1 and s['prices'][1] == 'EQUIPPED')
-        await page.evaluate("() => { const s = JSON.parse(localStorage.getItem('GDJS_CracklineSave') || '{}'); }")
-        keys = await page.evaluate("() => Object.keys(localStorage)")
-        k = [x for x in keys if 'CracklineSave' in x][0]
-        await page.evaluate("(k) => { const s = JSON.parse(localStorage.getItem(k)); s.OwnedStyles = {value: '', str: '110010'}; s.CrystalWallet = {value: 2100}; localStorage.setItem(k, JSON.stringify(s)); }", k)
+        await page.evaluate("() => { localStorage.setItem('OwnedStyles', '110010'); localStorage.setItem('CrystalWallet', '2100'); }")
         await page.reload(); await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await bridge_ready(page); await asyncio.sleep(0.4)
         await to_scene(page, 'Shop', 'ShopButton'); s = await Gs(page)
         check('older 6-style save is upgraded to 8 flags', s['owned'] == '11001000', s['owned'])
@@ -119,7 +114,7 @@ async def main():
         await page.screenshot(path=f'{SHOTS}/p5_frostbite.png')
         allerr += errors; await ctx.close()
         # layouts
-        ok_pairs = {frozenset(p) for p in [('EndlessButton', 'EndlessLabel'), ('PlanetButton', 'PlanetLabel'), ('ShopButton', 'ShopLabel'), ('BackButton', 'BackLabel')]}
+        ok_pairs = {frozenset(p) for p in [('EndlessButton', 'EndlessLabel'), ('PlanetButton', 'PlanetLabel'), ('ShopButton', 'ShopLabel'), ('BackButton', 'BackLabel'), ('CreditsButton', 'CreditsLabel')]}
         for (w, h, label) in [(405, 720, '9x16'), (360, 800, '9x20'), (768, 1024, '3x4'), (600, 600, '1x1')]:
             ctx = await browser.new_context(viewport={'width': w, 'height': h}); page = await ctx.new_page()
             await page.goto('http://127.0.0.1:8765/index.html'); await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await bridge_ready(page); await asyncio.sleep(0.6)

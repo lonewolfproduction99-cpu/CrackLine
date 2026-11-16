@@ -14,6 +14,9 @@
     {
       "id": "best_distance",
       "isMain": true
+    },
+    {
+      "id": "planets_broken"
     }
   ],
   "saas": {

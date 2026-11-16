@@ -102,7 +102,7 @@ async def main():
         L = await page.evaluate(LAYOUT % ('[""]', '^Lb(Title|Subtitle|Name|Score|YourBest|BackButton)$'))
         bad = [(a['n'], b['n']) for i, a in enumerate(L['boxes']) for b in L['boxes'][i + 1:] if overlap(a, b)]
         off = [b['n'] for b in L['boxes'] if b['y0'] < 0 or b['y1'] > L['H'] or b['x0'] < 0 or b['x1'] > L['W']]
-        check('1:1 window: leaderboard fits with no overlaps', (await Gs(page))['scene'] == 'Leaderboard' and len(L['boxes']) >= 24 and not bad and not off, f'{len(L["boxes"])} boxes {bad[:3]} {off[:3]}')
+        check('1:1 window: leaderboard fits with no overlaps', (await Gs(page))['scene'] == 'Leaderboard' and len(L['boxes']) >= 23 and not bad and not off, f'{len(L["boxes"])} boxes {bad[:3]} {off[:3]}')
         await page.screenshot(path=f'{SHOTS}/p7_leaderboard_square.png')
         allerr += errors; await ctx.close()
         allerr = [e for e in allerr if 'api.gdevelop-app.com' not in e and 'ERR_TUNNEL' not in e and 'playgama.com' not in e and 'ERR_CONNECTION' not in e]

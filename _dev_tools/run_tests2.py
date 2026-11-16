@@ -44,14 +44,29 @@ async def boot(browser, w=405, h=720, touch=False, ctx=None):
     await page.goto('http://127.0.0.1:8765/index.html')
     await enter(page, 'Endless')
     return ctx, page, errors
+# Playgama Bridge: wait until it has started and the saved progress has loaded (menu buttons work from then on, like for a real player).
+# The local test platform has no ads, so rewarded/interstitial ads are stubbed: a rewarded ad "is watched" ~0.3 s after it is requested.
+AD_STUB = '''() => { if (window.__ads) return; const ad = window.bridge.advertisement; const ext = gdjs._playgamaBridgeExtension;
+  window.__ads = {rewarded: 0, interstitial: 0, mode: 'watch'};
+  Object.defineProperty(ad, 'isRewardedSupported', {get: () => true, configurable: true});
+  Object.defineProperty(ad, 'isInterstitialSupported', {get: () => true, configurable: true});
+  Object.defineProperty(ad, 'rewardedState', {get: () => window.__ads.state || 'closed', configurable: true});
+  const push = st => { window.__ads.state = st; ext.rewardedStateStack.push(st); };
+  ad.showRewarded = () => { window.__ads.rewarded++; push('loading');
+    setTimeout(() => { if (window.__ads.mode === 'fail') { push('failed'); return; } push('opened');
+      setTimeout(() => { if (window.__ads.mode === 'watch') push('rewarded'); push('closed'); }, 300); }, 50); };
+  ad.showInterstitial = () => { window.__ads.interstitial++; }; }'''
+async def prep(page):
+    for _ in range(300):
+        if await page.evaluate("() => !!(window.bridge && window.bridge.isInitialized && window.__game && window.__game.getVariables().get('ProfileLoaded').getAsNumber() === 1)"): break
+        await asyncio.sleep(0.05)
+    await page.evaluate(AD_STUB)
 async def enter(page, mode):
     js = "() => { const sc = window.__game && window.__game.getSceneStack().getCurrentScene(); return sc ? sc.getName() : null }"
     for _ in range(300):
         if await page.evaluate(js) == 'MainMenu': break
         await asyncio.sleep(0.05)
-    for _ in range(200):   # let the Playgama Bridge finish starting (it loads on the menu, like a real player would wait there)
-        if await page.evaluate("() => !!(window.bridge && window.bridge.isInitialized)"): break
-        await asyncio.sleep(0.05)
+    await prep(page)
     await asyncio.sleep(0.3)
     btn = "() => { const sc = window.__game.getSceneStack().getCurrentScene(); const b = sc.getObjects('%sButton')[0]; return [b.getCenterXInScene(), b.getCenterYInScene(), sc.getGame().getGameResolutionWidth()] }" % mode
     bx, by, gw = await page.evaluate(btn); k = page.viewport_size['width'] / gw

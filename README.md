@@ -8,9 +8,9 @@ On a tablet or in a browser, open
 and press **Preview** (▶). To keep your own editable copy, use **File → Save as** and choose cloud.
 
 ## How to play
-The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER**, or open the **SHOP**.
+The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER**, or open the **SHOP**, **LEADERBOARD** or **CREDITS**. The buttons wake up a moment after start, once your saved progress has loaded.
 - **Planet Breaker:** you start at the planet's core and travel up to its surface. The progress bar shows how far you have left. Planet 1 needs **1,000 m**, planet 2 needs 2,000 m, planet 3 needs 3,000 m, and so on. Each planet starts noticeably harder. When you reach the surface, the planet splits in two and the next one begins. The planets cycle Ember → Verdant (more crystals) → Frost (more barriers) → **Magma** (more lava gaps) → **Umbra** (more worms), then start again.
-- **Game over:** you can RESTART, go back to the MAIN MENU, or use **SIMULATE AD REVIVE (TEST)** once per run. The revive clears nearby obstacles and gives you 2 seconds of protection, shown as a cyan ring. You keep your score.
+- **Game over:** you can RESTART, go back to the MAIN MENU, or tap **REVIVE - WATCH AD** once per run. You are revived only if the ad is watched to the end. The revive clears nearby obstacles and gives you 2 seconds of protection, shown as a cyan ring, and you keep your score. The revive button only appears where the platform has rewarded ads (not in the GDevelop preview).
 - **Hold** the left or right half of the screen and the crack travels diagonally that way. Let go and it goes straight up. You can slide your finger across the middle to switch direction.
 - The game gets **25% faster every 250 m** (180 → 225 → 281 → 352 px/s and so on). Endless tops out at 420 px/s, and Planet Breaker tops out at 520 px/s. Survive as long as you can and try to beat your best distance.
 - **Blue clock (Slow Time):** the world moves 40% slower for 4 seconds.
@@ -19,7 +19,7 @@ The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER*
 - **Crystals are points**, and the colour always tells you the value: **pink** (small, hardest to grab) = 5, **purple** (medium) = 3, **blue** (large) = 1. Most appear in the safe path; some riskier ones sit between obstacles. Verdant planets have more of them. Your crystal total is saved on the device.
 - **Shop:** spend crystals on crack styles. Classic is free, then Frostbite 150, Venom 300, Amethyst 500, Inferno 800, Shadow 1200, **Sunburst 1600** and **Aurora 2000**. Tap a style to buy it, or tap one you own to use it. The style recolours the trail, tip and sparks.
 - **Ground gaps (fissures)** stretch across the whole screen. Touching one jolts your crack into a branch in a random direction. Nothing spawns just after a gap, so you can always recover.
-- **Leaderboard:** your best **Endless Depth** distance goes on Playgama's online leaderboard. Tap **LEADERBOARD** on the menu to see the top 10, with your own row in green. The button only appears where the platform has a leaderboard (on Playgama, and in Playgama's QA tool). It stays hidden in the GDevelop preview, so there SHOP keeps its usual full-width button.
+- **Leaderboards:** your best **Endless Depth** distance and your most **planets broken** go on Playgama's online leaderboards. Tap **LEADERBOARD** on the menu to see the top 10 for either mode (tabs at the top), with your own row in green. The button only appears where the platform has a leaderboard (on Playgama, and in Playgama's QA tool). It stays hidden in the GDevelop preview, so there SHOP keeps its usual full-width button.
 - **Burrowing worms** tunnel sideways back and forth across a row. They kill on contact, but Crack Strength can smash them. They are tinted to match each planet.
 
 ## Where things are
@@ -27,7 +27,11 @@ The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER*
 |---|---|
 | Main menu | Scene `MainMenu` (its own events) |
 | Shop (buy and equip crack styles) | Scene `Shop` (its own events) |
-| Leaderboard screen (top 10) | Scene `Leaderboard` (its own events) |
+| Leaderboard screen (top 10, two tabs) | Scene `Leaderboard` (its own events) |
+| Credits screen | Scene `Credits` (its own events) |
+| Loading saved progress | `MainMenu`, group "Load progress" |
+| Saving, platform pause and sound, every scene | External events `EV_Platform` |
+| Ads (interstitial, rewarded revive) | `EV_GameState`, group "Game over" |
 | Leaderboard button, game-ready message, sending your saved best | `MainMenu`, group "Playgama" |
 | Sending a new best after a run | `EV_Collisions`, inside "new best" (Endless) |
 | Crystal pickups and counter | `EV_Powerups` (group "Crystals (points)") |
@@ -98,20 +102,23 @@ Style names, prices and spark colours are in the global arrays `StyleNames`, `St
 5. Add one more `0` to the `OwnedStyles` default. Older saves are padded automatically.
 
 ## Art and sound
-All art and sound is **human-made**, from free CC0 (public domain) packs: **Kenney** (kenney.nl) art and sound effects, and **Beatscribe** jingles. See `CREDITS.md` for which pack each file comes from and what was changed. Changes were limited to resizing, recolouring, cutting the planets in half and similar edits.
+All art and sound is **human-made**, from free CC0 (public domain) packs: **Kenney** (kenney.nl) art and sound effects, **Beatscribe** jingles and **Juhani Junkala** music. See `CREDITS.md` for which pack each file comes from and what was changed. Changes were limited to resizing, recolouring, cutting the planets in half and similar edits.
 - Images are in `assets/` and sounds are in `audio/`. To replace one, overwrite it with a file of the same name.
 - **Speaker button** (main menu and top-left of the HUD): mutes or unmutes everything. The setting is saved.
 - Sounds play for branching, ground gaps, crystals, power-ups, smashing, crashing (plus a game-over jingle), breaking a planet (plus a victory jingle), the revive, and the shop.
-- **No background music yet.** I couldn't download from itch.io or OpenGameArt here. Add a looping `.ogg` and wire it up with a "Play music" action.
+- **Music:** two looping chiptune tracks by **Juhani Junkala** (CC0), one for the menus and one for runs. They play on channel 0 at volume 45; change `MUSIC_VOLUME` in the builder, or the "Play music on channel" actions in `MainMenu` and `EV_GameState`.
 
-## Playgama leaderboard
-- The leaderboard is called **best_distance** ("Endless Depth - Best Distance (m)") in the Playgama console. The highest score ranks first.
-- It uses the official **Playgama Bridge** GDevelop extension (v2.4.0), which is already in the project under Extensions. Its settings live in the extension's `onFirstSceneLoaded` function, and in `playgama-bridge-config.json` next to `game.json`. Playgama requires that file in every build, so keep both in step.
-- A score is sent only when you beat your best, and once per session from the menu so bests from before this update count too. Planet Breaker isn't on the board yet.
-- The game also tells Playgama when it is ready (`GAME_READY`), which Playgama requires.
+## Playgama integration
+Everything Playgama requires is wired up through its official **Playgama Bridge** GDevelop extension (v2.4.0, under Extensions). Its settings live in the extension's `onFirstSceneLoaded` function and in `playgama-bridge-config.json` next to `game.json`. Playgama requires that file in every build, so keep both in step.
+- **Saving:** progress (bests, crystals, owned and equipped styles, mute) is saved only through Bridge storage, which uses cloud saves where the platform has them. It loads once at start in one request and saves when something changes, in one request. If loading fails, the game still plays but doesn't save, so it can never wipe a real save.
+- **Pause and sound:** when the platform pauses the game (tab hidden, browser minimised, an ad open), the game's time stops and the sound goes silent. When the platform says audio is off, the game stays silent. Your own mute button still works on top.
+- **Ads:** an interstitial is requested when you leave the game-over screen (RESTART or MAIN MENU); Playgama decides whether one shows and how often. The revive uses a rewarded ad. Both are skipped quietly where ads aren't available.
+- **Leaderboards:** `best_distance` (Endless Depth, metres) and `planets_broken` (Planet Breaker). A score is sent when you beat your best, and once per session from the menu so older bests count too. The LEADERBOARD button shows only where the platform has a leaderboard (on Playgama, and in Playgama's QA tool), so it is hidden in the GDevelop preview.
+- **Game ready:** sent once saved progress has loaded and the menu can be used.
+- **Analytics:** GDevelop's own anonymous usage ping is switched off (main menu, first action), as Playgama doesn't allow outside analytics.
 
-## Notes for publishing on Playgama later
-- The best scores, crystals and owned styles are saved with GDevelop storage. Playgama requires its Bridge storage instead, so this will be swapped when the SDK is added.
-- GDevelop's exported builds send an anonymous session ping to `api.gdevelop-app.com`. Playgama does not allow external analytics, so this needs to be switched off at export time.
-- The "Made with GDevelop" watermark (bottom left) can only be removed with a GDevelop subscription. On a square window it sits near the MAIN MENU button.
+## Notes for publishing on Playgama
+- The game is English only. Playgama takes the player's language from the Bridge; when you fill in the publication form, declare English as the only language.
+- The "Made with GDevelop" watermark (bottom left) can only be removed with a GDevelop subscription. On a square window it sits near the bottom buttons.
 - Phone notches and safe areas are not handled specifically. The HUD starts about 40 px from the top.
+- Saves made before this update (stored by GDevelop on your device) are not carried over to Bridge storage, since the game isn't published yet.
