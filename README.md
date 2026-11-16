@@ -1,6 +1,6 @@
 # CRACKLINE: Phase 3 (Endless Depth + Planet Breaker), GDevelop
 
-This is a portrait 720×1280 arcade game. All gameplay is built with native GDevelop events, with no JavaScript.
+This is a portrait 720×1280 arcade game. All gameplay is built with native GDevelop events, with no JavaScript. The only code is Playgama's official **Playgama Bridge** extension, used for the online leaderboard.
 
 ## Open it
 On a tablet or in a browser, open
@@ -19,6 +19,7 @@ The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER*
 - **Crystals are points**, and the colour always tells you the value: **pink** (small, hardest to grab) = 5, **purple** (medium) = 3, **blue** (large) = 1. Most appear in the safe path; some riskier ones sit between obstacles. Verdant planets have more of them. Your crystal total is saved on the device.
 - **Shop:** spend crystals on crack styles. Classic is free, then Frostbite 150, Venom 300, Amethyst 500, Inferno 800, Shadow 1200, **Sunburst 1600** and **Aurora 2000**. Tap a style to buy it, or tap one you own to use it. The style recolours the trail, tip and sparks.
 - **Ground gaps (fissures)** stretch across the whole screen. Touching one jolts your crack into a branch in a random direction. Nothing spawns just after a gap, so you can always recover.
+- **Leaderboard:** your best **Endless Depth** distance goes on Playgama's online leaderboard. Tap **LEADERBOARD** on the menu to see the top 10, with your own row in green. The button only appears where the platform has a leaderboard (on Playgama, and in Playgama's QA tool). It stays hidden in the GDevelop preview, so there SHOP keeps its usual full-width button.
 - **Burrowing worms** tunnel sideways back and forth across a row. They kill on contact, but Crack Strength can smash them. They are tinted to match each planet.
 
 ## Where things are
@@ -26,6 +27,9 @@ The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER*
 |---|---|
 | Main menu | Scene `MainMenu` (its own events) |
 | Shop (buy and equip crack styles) | Scene `Shop` (its own events) |
+| Leaderboard screen (top 10) | Scene `Leaderboard` (its own events) |
+| Leaderboard button, game-ready message, sending your saved best | `MainMenu`, group "Playgama" |
+| Sending a new best after a run | `EV_Collisions`, inside "new best" (Endless) |
 | Crystal pickups and counter | `EV_Powerups` (group "Crystals (points)") |
 | Scene setup, best-score loading, game-over buttons | External events `EV_GameState` |
 | Planet themes, surface progress, planet-split animation | `EV_PlanetMode` |
@@ -99,6 +103,12 @@ All art and sound is **human-made**, from free CC0 (public domain) packs: **Kenn
 - **Speaker button** (main menu and top-left of the HUD): mutes or unmutes everything. The setting is saved.
 - Sounds play for branching, ground gaps, crystals, power-ups, smashing, crashing (plus a game-over jingle), breaking a planet (plus a victory jingle), the revive, and the shop.
 - **No background music yet.** I couldn't download from itch.io or OpenGameArt here. Add a looping `.ogg` and wire it up with a "Play music" action.
+
+## Playgama leaderboard
+- The leaderboard is called **best_distance** ("Endless Depth - Best Distance (m)") in the Playgama console. The highest score ranks first.
+- It uses the official **Playgama Bridge** GDevelop extension (v2.4.0), which is already in the project under Extensions. Its settings live in the extension's `onFirstSceneLoaded` function, and in `playgama-bridge-config.json` next to `game.json`. Playgama requires that file in every build, so keep both in step.
+- A score is sent only when you beat your best, and once per session from the menu so bests from before this update count too. Planet Breaker isn't on the board yet.
+- The game also tells Playgama when it is ready (`GAME_READY`), which Playgama requires.
 
 ## Notes for publishing on Playgama later
 - The best scores, crystals and owned styles are saved with GDevelop storage. Playgama requires its Bridge storage instead, so this will be swapped when the SDK is added.

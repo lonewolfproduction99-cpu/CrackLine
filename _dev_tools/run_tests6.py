@@ -46,7 +46,7 @@ async def main():
         s = await snd(page); a = s['count']; check('crash + game-over jingle play', 'sfx_crash' in s['played'][b:] and 'jingle_gameover' in s['played'][b:], ', '.join(s['played'][b:]))
         await page.screenshot(path=f'{SHOTS}/p6_gameover.png')
         allerr += errors; await ctx.close()
-        allerr = [e for e in allerr if 'api.gdevelop-app.com' not in e and 'ERR_TUNNEL' not in e]
+        allerr = [e for e in allerr if 'api.gdevelop-app.com' not in e and 'bridge.playgama.com' not in e and 'ERR_TUNNEL' not in e]
         check('no runtime errors in console', not allerr, '; '.join(allerr[:3]))
         await browser.close()
     srv.shutdown()

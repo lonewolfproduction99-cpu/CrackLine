@@ -132,4 +132,6 @@ with open(os.path.join(OUT, '..', 'CREDITS.md'), 'w') as f:
     for c in CREDITS:
         if len(c) == 6: f.write(f'| {c[4]} | {c[0]} | {c[1]} | {c[2]} | {c[3]} | {c[5]} |\n')
     f.write('\nPlain colour fills (crack_hitbox, ui_overlay, ui_white) are not artwork.\n')
+    f.write('\n## Code\n| What | Source | License |\n|---|---|---|\n'
+            '| Playgama Bridge extension v2.4.0 (leaderboard, platform messages) | github.com/playgama/bridge-gdevelop | MIT, (c) Playgama |\n')
 print('credits rows', sum(1 for c in CREDITS if len(c) == 6))

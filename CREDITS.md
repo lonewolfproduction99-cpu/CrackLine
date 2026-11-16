@@ -55,3 +55,8 @@ Only mechanical edits were made (resize, crop/split, recolour, 9-slice, tiling, 
 | audio/jingle_planet.ogg | victory.ogg | Homebrew Free Jingle and Fanfare Music Assets (NES) | Beatscribe | CC0 1.0 | converted to mono OGG (4.0s) |
 
 Plain colour fills (crack_hitbox, ui_overlay, ui_white) are not artwork.
+
+## Code
+| What | Source | License |
+|---|---|---|
+| Playgama Bridge extension v2.4.0 (leaderboard, platform messages) | github.com/playgama/bridge-gdevelop | MIT, (c) Playgama |

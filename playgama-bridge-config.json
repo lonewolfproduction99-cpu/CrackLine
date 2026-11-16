@@ -1,0 +1,29 @@
+{
+  "advertisement": {
+    "interstitial": {
+      "preloadOnStart": true
+    },
+    "rewarded": {
+      "preloadOnStart": true
+    },
+    "useBuiltInErrorPopup": true,
+    "backfillId": ""
+  },
+  "payments": [],
+  "leaderboards": [
+    {
+      "id": "best_distance",
+      "isMain": true
+    }
+  ],
+  "saas": {
+    "publicToken": "cmwhmnqg52ls2lz0hkxna96av",
+    "leaderboards": {
+      "platforms": [
+        "playgama",
+        "qa_tool"
+      ]
+    }
+  },
+  "sendAnalyticsEvents": true
+}

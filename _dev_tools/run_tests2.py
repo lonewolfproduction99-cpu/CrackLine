@@ -49,6 +49,9 @@ async def enter(page, mode):
     for _ in range(300):
         if await page.evaluate(js) == 'MainMenu': break
         await asyncio.sleep(0.05)
+    for _ in range(200):   # let the Playgama Bridge finish starting (it loads on the menu, like a real player would wait there)
+        if await page.evaluate("() => !!(window.bridge && window.bridge.isInitialized)"): break
+        await asyncio.sleep(0.05)
     await asyncio.sleep(0.3)
     btn = "() => { const sc = window.__game.getSceneStack().getCurrentScene(); const b = sc.getObjects('%sButton')[0]; return [b.getCenterXInScene(), b.getCenterYInScene(), sc.getGame().getGameResolutionWidth()] }" % mode
     bx, by, gw = await page.evaluate(btn); k = page.viewport_size['width'] / gw
@@ -215,7 +218,7 @@ async def main():
         ctx, page, errors = await boot(browser, 800, 1280); allerr += errors
         st = await S(page); check('tablet portrait: width 720, tip at 70%', st['w'] == 720 and abs(st['tipY'] - st['h'] * 0.7) < 0.5, f"{st['w']}x{st['h']:.0f}")
         await page.screenshot(path=f'{SHOTS}/p2_05_tablet.png'); await ctx.close()
-        allerr = [e for e in allerr if 'api.gdevelop-app.com/analytics' not in e and 'ERR_TUNNEL_CONNECTION_FAILED' not in e]
+        allerr = [e for e in allerr if 'api.gdevelop-app.com/analytics' not in e and 'bridge.playgama.com' not in e and 'ERR_TUNNEL_CONNECTION_FAILED' not in e]
         check('no runtime errors in console (ignoring GDevelop analytics ping blocked by sandbox)', not allerr, '; '.join(allerr[:3]))
         await browser.close()
     srv.shutdown()

@@ -24,6 +24,11 @@
 #include "GDJS/Extensions/JsPlatform.h"
 #include "GDJS/IDE/Exporter.h"
 #include "GDJS/IDE/ExporterHelper.h"
+#include "GDCore/Extensions/Metadata/MultipleInstructionMetadata.h"
+#include "GDJS/Events/CodeGeneration/MetadataDeclarationHelper.h"
+#include "GDJS/Events/CodeGeneration/EventsFunctionsExtensionCodeGenerator.h"
+#include "GDCore/Project/EventsFunctionsExtension.h"
+#include "GDCore/Project/EventsFunction.h"
 namespace fs = std::filesystem;
 
 class NativeFS : public gd::AbstractFileSystem {
@@ -117,6 +122,38 @@ int main(int argc, char** argv) {
   project.SetProjectFile(gd::String::FromUTF8(fs::absolute(argv[1]).string()));
   std::cout << "Loaded project: " << project.GetName() << " scenes=" << project.GetLayoutsCount()
             << " externalEvents=" << project.GetExternalEventsCount() << " externalLayouts=" << project.GetExternalLayoutsCount() << "\n";
+
+  // Events-functions extensions (e.g. Playgama Bridge): declare their metadata and generate
+  // their code like the GDevelop editor does (EventsFunctionsExtensionsLoader).
+  fs::create_directories("/tmp/gdexport_ext");
+  for (std::size_t x = 0; x < project.GetEventsFunctionsExtensionsCount(); ++x) {
+    auto& efx = project.GetEventsFunctionsExtension(x);
+    auto pe = std::make_shared<gd::PlatformExtension>();
+    gdjs::MetadataDeclarationHelper::DeclareExtension(*pe, efx);
+    gdjs::MetadataDeclarationHelper helper;
+    gd::String prefix = gdjs::MetadataDeclarationHelper::GetExtensionCodeNamespacePrefix(efx);
+    std::vector<std::pair<const gd::EventsFunction*, gd::AbstractFunctionMetadata*>> fns;
+    for (auto& f : efx.GetEventsFunctions().GetInternalVector())
+      fns.push_back({f.get(), &helper.GenerateFreeFunctionMetadata(project, *pe, efx, *f)});
+    js.AddExtension(pe);
+    std::vector<gd::String> lifecycleFiles;
+    gdjs::EventsFunctionsExtensionCodeGenerator gen(project);
+    int n = 0;
+    for (auto& [f, md] : fns) {
+      gd::String ns = gdjs::MetadataDeclarationHelper::GetFreeFunctionCodeNamespace(*f, prefix);
+      std::set<gd::String> includes;
+      gd::String code = gen.GenerateFreeEventsFunctionCompleteCode(efx, *f, ns, includes, true);
+      std::string path = "/tmp/gdexport_ext/" + ns.ToLocale() + ".js";
+      std::ofstream(path) << code.Raw();
+      for (auto& inc : includes) md->AddIncludeFile(inc);
+      md->AddIncludeFile(gd::String::FromUTF8(path));
+      if (gd::EventsFunctionsExtension::IsExtensionLifecycleEventsFunction(f->GetName())) lifecycleFiles.push_back(gd::String::FromUTF8(path));
+      n++;
+    }
+    // Lifecycle functions are never called by events: ship their code with every instruction of the extension.
+    for (auto& [f, md] : fns) for (auto& lf : lifecycleFiles) md->AddIncludeFile(lf);
+    std::cout << "  extension " << efx.GetName() << ": functions=" << n << " lifecycle=" << lifecycleFiles.size() << "\n";
+  }
 
   for (std::size_t i = 0; i < project.GetLayoutsCount(); ++i) {
     auto& l = project.GetLayout(i);

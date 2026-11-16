@@ -147,7 +147,7 @@ async def main():
             issues = layout_ok(Lm, ok_pairs) + layout_ok(Lh, ok_pairs) + layout_ok(Lg, ok_pairs)
             check(f'{label} ({w}x{h}): menu, HUD and game-over UI on screen, no overlaps', not issues and not errs, '; '.join(issues[:4]) or f"game res {Lg['W']}x{Lg['H']:.0f}")
             await ctx.close()
-        allerr = [e for e in allerr if 'api.gdevelop-app.com' not in e and 'ERR_TUNNEL' not in e]
+        allerr = [e for e in allerr if 'api.gdevelop-app.com' not in e and 'bridge.playgama.com' not in e and 'ERR_TUNNEL' not in e]
         check('no runtime errors in console', not allerr, '; '.join(allerr[:3]))
         await browser.close()
     srv.shutdown()

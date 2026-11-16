@@ -92,7 +92,7 @@ async def main():
         viol = [o for o in objs.values() for fy in seen_f.values() if fy + 40 < o['wy'] < fy + 1000 - 80 and not o['t'].startswith('Power')]
         check('nothing spawns in the clearance after a fissure', not viol, f'{len(viol)} violations')
         allerr += errors; await ctx.close()
-        allerr = [e for e in allerr if 'api.gdevelop-app.com' not in e and 'ERR_TUNNEL' not in e]
+        allerr = [e for e in allerr if 'api.gdevelop-app.com' not in e and 'bridge.playgama.com' not in e and 'ERR_TUNNEL' not in e]
         check('no runtime errors in console', not allerr, '; '.join(allerr[:3]))
         await browser.close()
     srv.shutdown()

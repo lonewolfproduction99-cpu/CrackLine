@@ -26,6 +26,10 @@ async def click_card(page, k):
     js = "() => { %s const o = sc.getObjects('ShopCard').find(o => o.getVariables().get('StyleIndex').getAsNumber() === %d); return [o.getCenterXInScene(), o.getCenterYInScene(), sc.getGame().getGameResolutionWidth()]; }" % (PRE, k)
     x, y, gw = await page.evaluate(js); kk = page.viewport_size['width'] / gw
     await page.mouse.click(x * kk, y * kk); await asyncio.sleep(0.3)
+async def bridge_ready(page):   # wait for the Playgama Bridge to finish starting (it loads while the menu is shown)
+    for _ in range(200):
+        if await page.evaluate("() => !!(window.bridge && window.bridge.isInitialized)"): return
+        await asyncio.sleep(0.05)
 async def to_scene(page, name, btn):
     await click_obj(page, btn); await waitg(page, lambda s: s['scene'] == name, 5); await asyncio.sleep(0.4)
 def gem(value, scale, ahead, dx=0):
@@ -38,7 +42,7 @@ async def main():
         browser = await pw.chromium.launch(args=['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'])
         ctx = await browser.new_context(viewport={'width': 405, 'height': 720}); page = await ctx.new_page(); errors = []
         page.on('console', lambda m: errors.append(m.text) if m.type == 'error' else None); page.on('pageerror', lambda e: errors.append(str(e)))
-        await page.goto('http://127.0.0.1:8765/index.html'); s = await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await asyncio.sleep(0.5); s = await Gs(page)
+        await page.goto('http://127.0.0.1:8765/index.html'); s = await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await bridge_ready(page); await asyncio.sleep(0.5); s = await Gs(page)
         check('fresh device: 0 crystals, only Classic owned and equipped', s['wallet'] == 0 and s['owned'] == '10000000' and s['equipped'] == 0 and s['walletText'] == 'CRYSTALS: 0')
         await to_scene(page, 'Shop', 'ShopButton'); s = await Gs(page)
         check('SHOP button opens the Shop with 8 styles', s['scene'] == 'Shop' and s['names'] == ['CLASSIC', 'FROSTBITE', 'VENOM', 'AMETHYST', 'INFERNO', 'SHADOW', 'SUNBURST', 'AURORA'], ', '.join(s['names']))
@@ -96,14 +100,14 @@ async def main():
         await click_card(page, 1); await asyncio.sleep(2.2); s = await Gs(page)
         check('message fades out', s['msgOpacity'] == 0 and s['equipped'] == 1)
         await page.screenshot(path=f'{SHOTS}/p5_shop_bought.png')
-        await page.reload(); await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await asyncio.sleep(0.4)
+        await page.reload(); await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await bridge_ready(page); await asyncio.sleep(0.4)
         await to_scene(page, 'Shop', 'ShopButton'); s = await Gs(page)
         check('purchases + equipped style survive a reload', s['wallet'] == 50 and s['owned'] == '11001000' and s['equipped'] == 1 and s['prices'][1] == 'EQUIPPED')
         await page.evaluate("() => { const s = JSON.parse(localStorage.getItem('GDJS_CracklineSave') || '{}'); }")
         keys = await page.evaluate("() => Object.keys(localStorage)")
         k = [x for x in keys if 'CracklineSave' in x][0]
         await page.evaluate("(k) => { const s = JSON.parse(localStorage.getItem(k)); s.OwnedStyles = {value: '', str: '110010'}; s.CrystalWallet = {value: 2100}; localStorage.setItem(k, JSON.stringify(s)); }", k)
-        await page.reload(); await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await asyncio.sleep(0.4)
+        await page.reload(); await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await bridge_ready(page); await asyncio.sleep(0.4)
         await to_scene(page, 'Shop', 'ShopButton'); s = await Gs(page)
         check('older 6-style save is upgraded to 8 flags', s['owned'] == '11001000', s['owned'])
         await click_card(page, 7); s = await Gs(page)
@@ -118,7 +122,7 @@ async def main():
         ok_pairs = {frozenset(p) for p in [('EndlessButton', 'EndlessLabel'), ('PlanetButton', 'PlanetLabel'), ('ShopButton', 'ShopLabel'), ('BackButton', 'BackLabel')]}
         for (w, h, label) in [(405, 720, '9x16'), (360, 800, '9x20'), (768, 1024, '3x4'), (600, 600, '1x1')]:
             ctx = await browser.new_context(viewport={'width': w, 'height': h}); page = await ctx.new_page()
-            await page.goto('http://127.0.0.1:8765/index.html'); await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await asyncio.sleep(0.6)
+            await page.goto('http://127.0.0.1:8765/index.html'); await waitg(page, lambda s: s['scene'] == 'MainMenu', 15); await bridge_ready(page); await asyncio.sleep(0.6)
             Lm = await page.evaluate(LAYOUT % ('[""]', 'Text|Button|Label'))
             await to_scene(page, 'Shop', 'ShopButton'); await click_card(page, 3)
             Ls = await page.evaluate(LAYOUT % ('[""]', 'Card|Title|Wallet|Button|Label|Msg'))
@@ -131,7 +135,7 @@ async def main():
             issues = layout_ok(Lm, ok_pairs) + layout_ok(Ls, ok_pairs) + [f'{x} outside card' for x in inside]
             check(f'{label} ({w}x{h}): menu + shop fit, no overlaps', not issues, '; '.join(issues[:4]))
             await ctx.close()
-        allerr = [e for e in allerr if 'api.gdevelop-app.com' not in e and 'ERR_TUNNEL' not in e]
+        allerr = [e for e in allerr if 'api.gdevelop-app.com' not in e and 'bridge.playgama.com' not in e and 'ERR_TUNNEL' not in e]
         check('no runtime errors in console', not allerr, '; '.join(allerr[:3]))
         await browser.close()
     srv.shutdown()
