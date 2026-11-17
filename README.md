@@ -12,7 +12,7 @@ The game opens on the **main menu**. Pick **ENDLESS DEPTH** or **PLANET BREAKER*
 - **Planet Breaker:** you start at the planet's core and travel up to its surface. The progress bar shows how far you have left. Planet 1 needs **1,000 m**, planet 2 needs 2,000 m, planet 3 needs 3,000 m, and so on. Each planet starts noticeably harder. When you reach the surface, the planet splits in two and the next one begins. The planets cycle Ember → Verdant (more crystals) → Frost (more barriers) → **Magma** (more lava gaps) → **Umbra** (more worms), then start again.
 - **Game over:** you can RESTART, go back to the MAIN MENU, or tap **REVIVE - WATCH AD** once per run. You are revived only if the ad is watched to the end. The revive clears nearby obstacles and gives you 2 seconds of protection, shown as a cyan ring, and you keep your score. The revive button only appears where the platform has rewarded ads (not in the GDevelop preview).
 - **Hold** the left or right half of the screen and the crack travels diagonally that way. Let go and it goes straight up. You can slide your finger across the middle to switch direction.
-- The game gets **25% faster every 250 m** (180 → 225 → 281 → 352 px/s and so on). Endless tops out at 420 px/s, and Planet Breaker tops out at 520 px/s. Survive as long as you can and try to beat your best distance.
+- The game gets **25% faster every 250 m** (180 → 225 → 281 → 352 → 439 px/s and so on), in both modes. **Endless has no practical cap**: it keeps speeding up all the way to 3,000 px/s (about 3,500 m). Planet Breaker stops at 520 px/s and gets harder through its obstacles instead. Survive as long as you can and try to beat your best distance.
 - **Blue clock (Slow Time):** the world moves 40% slower for 4 seconds.
 - **Orange bolt (Crack Strength):** gives you 3 charges. Each charge smashes one rock or one cracked barrier.
 - **Metal-banded barriers** always kill you, even when you have charges.
@@ -62,6 +62,8 @@ Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"E
   - **Scatter:** each lane outside the corridor gets an obstacle with probability `Density`.
   - **Worm:** one burrowing worm sweeps the row, and nothing else is in it.
   - **Fissure:** a full-width gap, followed by `FissureClearance` px with no obstacles.
+- With hold-to-steer, a simulation checked every possible input frame by frame in runs up to 3,000 px/s: there is always a way through. Above 520 px/s the empty stretch after each lava gap grows with speed, so you can still recover from the sideways jolt.
+- At very high speed the crack can move 100+ px in one frame, so its hidden hitbox stretches to cover everything it passed since the last frame. It can never skip over an obstacle or a crystal.
 - A simulation over 5 runs of 5 minutes each, reaching 520 px/s, checked every tap timing. It also confirmed that after each of about 100 fissures, the crack can recover from **any** position in **either** random direction.
 - As `DifficultyLevel` rises from 0 to 1 over 180 seconds, rows get denser and closer together, crystals and solid barriers appear more often, and empty rows get rarer.
 - Power-ups appear in the middle of the corridor, so they can always be reached safely.
@@ -69,7 +71,8 @@ Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"E
 ## Tuning (scene variables of `Gameplay`)
 | Variable | Default | Meaning |
 |---|---|---|
-| BaseSpeed / MaxSpeed | 180 / 420 | scroll speed range in px/s |
+| BaseSpeed / MaxSpeed | 180 / 520 | start speed, and the Planet Breaker speed cap, in px/s |
+| EndlessMaxSpeed | 3000 | Endless speed cap (practically none) |
 | SpeedStepFactor / SpeedStepDistance / SpeedRampRate | 1.25 / 250 / 120 | +25% speed every 250 m; each jump eases in at 120 px/s per second |
 | DifficultyRampTime | 180 | seconds until maximum difficulty |
 | HoldMinSpeed / HoldSpeedFactor / HoldAccel | 300 / 1.0 / 5000 | sideways steering speed = max(300, game speed × 1.0), so roughly 45°, and how fast steering ramps up |
@@ -85,7 +88,6 @@ Both modes run in the same `Gameplay` scene. The global variable `GameMode` (`"E
 | StrengthMaxCharges | 3 | charges per Crack Strength pickup |
 | PlanetDistanceStep | 1000 | planet N needs N × this many metres |
 | PlanetDifficultyStart / PlanetDifficultyStep / PlanetProgressDifficulty | 0.15 / 0.2 / 0.2 | starting difficulty, extra difficulty per planet, extra difficulty within a planet |
-| PlanetMaxSpeed | 520 | speed cap in Planet Breaker (Endless uses MaxSpeed 420) |
 | ThemeCount | 5 | number of planet themes before they repeat (raise it when you add new planets) |
 | WormChanceStart/End, WormSpeedStart/End | 0.03→0.12, 110→210 | how often worm rows appear and how fast worms move |
 | FissureChanceStart/End, FissureClearance | 0.02→0.07, 1000 | how often ground gaps appear, and the empty distance after each one |

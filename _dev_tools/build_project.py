@@ -47,7 +47,7 @@ TUNING = [
     ("DifficultyRampTime", P["DifficultyRampTime"]),
     ("BranchDuration", 0.15), ("BranchDistance", 130), ("BranchCooldown", 0),
     ("HoldMinSpeed", 300), ("HoldSpeedFactor", 1.0), ("HoldAccel", 5000),
-    ("TipScreenRatio", 0.7), ("EdgeMargin", 30), ("PixelsPerMeter", 20),
+    ("TipScreenRatio", 0.7), ("EdgeMargin", 30), ("PixelsPerMeter", 20), ("EndlessMaxSpeed", 3000), ("HitSweepY", 0), ("PrevCrackX", 360),
     ("TrailStep", 14), ("TrailJitter", 8), ("TrailMaxSegments", 160),
     ("LaneCount", LANE_COUNT), ("SpawnMargin", 100), ("FirstRowOffset", P["FirstRowOffset"]),
     ("RowGapStart", P["RowGapStart"]), ("RowGapEnd", P["RowGapEnd"]),
@@ -66,7 +66,7 @@ TUNING = [
     ("RestartDelay", 0.3),
     ("PlanetDistanceStep", 1000), ("ThemeCount", 5),
     ("PlanetDifficultyStart", 0.15), ("PlanetDifficultyStep", 0.2), ("PlanetProgressDifficulty", 0.2),
-    ("PlanetMaxSpeed", 520), ("BreakDuration", 2.0),
+    ("BreakDuration", 2.0),
     ("GemChance", 0.4), ("RiskyGemChance", 0.12), ("RestartFromShop", 0),
     ("ReviveInvulnerability", 2), ("ReviveClearBehind", 250), ("ReviveClearAhead", 750),
 ]
@@ -157,7 +157,7 @@ objects = [
     sprite("MuteButton", "icon_audio_on", origin=(50, 50), anims=[("On", "icon_audio_on"), ("Off", "icon_audio_off")]),
     textobj("GemText", "0", 34, rgb="160;240;255", align="left"),
     textobj("GameOverGemsText", "CRYSTALS +0", 28, rgb="160;240;255"),
-    sprite("CrackHitbox", "crack_hitbox", origin=(6, 6)),
+    sprite("CrackHitbox", "crack_hitbox", origin=(0, 0)),
     sprite("Spark", "spark", origin=(6, 6), variables=[num("VX", 0), num("VY", 0), num("Life", 0.35)]),
     sprite("ImpactFlash", "impact_flash", origin=(64, 64)),
     textobj("DistanceText", "DISTANCE: 0000 m", 38),
@@ -357,17 +357,17 @@ ev_gamestate = [
 ev_movement = [
     comment("CRACK MOVEMENT — the crack tip stays at TipScreenY; the world scrolls instead. CrackWorldY = distance travelled upward in px."),
     group("Speed and difficulty", [
-        comment("Speed jumps x SpeedStepFactor (1.25 = +25%) every SpeedStepDistance (250 m) travelled, capped at MaxSpeed (Endless) or PlanetMaxSpeed (Planet Breaker). Each jump eases in at SpeedRampRate px/s per second so it never lurches. DifficultyLevel goes 0 -> 1 over DifficultyRampTime and drives the obstacle generator. Slow Time multiplies the effective speed by SlowTimeFactor."),
+        comment("Speed jumps x SpeedStepFactor (1.25 = +25%) every SpeedStepDistance (250 m) travelled, capped at EndlessMaxSpeed in Endless (so high it is practically uncapped) and at MaxSpeed (520 px/s) in Planet Breaker. Each jump eases in at SpeedRampRate px/s per second so it never lurches. DifficultyLevel goes 0 -> 1 over DifficultyRampTime and drives the obstacle generator. Slow Time multiplies the effective speed by SlowTimeFactor."),
         ev([PLAYING], [
             setv("RunTime", "+", "TimeDelta()"),
             setv("DifficultyLevel", "=", "clamp(RunTime / DifficultyRampTime, 0, 1)"),
             setv("TotalDistance", "=", "Distance"),
-            setv("SpeedTarget", "=", "min(MaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))"),
+            setv("SpeedTarget", "=", "min(EndlessMaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))"),
         ], [
-            comment("Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and difficulty rises a little within each planet. Speed uses the same 250 m steps but may go up to PlanetMaxSpeed."),
+            comment("Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and difficulty rises a little within each planet. Speed takes the same 250 m steps as Endless but stops at MaxSpeed."),
             ev([iss("GameMode", '"Planet"')], [
                 setv("DifficultyLevel", "=", "clamp(PlanetDifficultyStart + PlanetDifficultyStep * PlanetIndex + PlanetProgressDifficulty * PlanetDistance / PlanetTargetDistance, 0, 1)"),
-                setv("SpeedTarget", "=", "min(PlanetMaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))")]),
+                setv("SpeedTarget", "=", "min(MaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))")]),
             ev([], [setv("ScrollSpeed", "=", "min(SpeedTarget, ScrollSpeed + SpeedRampRate * TimeDelta())"), setv("EffectiveSpeed", "=", "ScrollSpeed")]),
             ev([isv("SlowTimeRemaining", ">", "0")], [setv("EffectiveSpeed", "=", "ScrollSpeed * SlowTimeFactor")]),
         ]),
@@ -408,11 +408,15 @@ ev_movement = [
     ]),
     group("Forward motion and scrolling", [
         ev([PLAYING], [
-            setv("CrackWorldY", "+", "EffectiveSpeed * TimeDelta()"),
+            setv("CrackWorldY", "+", "EffectiveSpeed * TimeDelta()"), setv("HitSweepY", "=", "EffectiveSpeed * TimeDelta()"),
             setv("Distance", "=", "floor(CrackWorldY / PixelsPerMeter)"),
             A("TiledSpriteObject::YOffset", "Backgrounds", "=", "-CrackWorldY"),
         ]),
-        ev([], [setx("CrackTip", "CrackWorldX"), sety("CrackTip", "TipScreenY"), setx("CrackHitbox", "CrackWorldX"), sety("CrackHitbox", "TipScreenY")]),
+        comment("The hidden hitbox covers everything the tip passed through since the last frame (sideways and the ground scrolled past), so even at very high speed a frame can never jump over an obstacle."),
+        ev([], [setx("CrackTip", "CrackWorldX"), sety("CrackTip", "TipScreenY"),
+                setx("CrackHitbox", "min(CrackWorldX, PrevCrackX) - 6"), sety("CrackHitbox", "TipScreenY - 6"),
+                scalex("CrackHitbox", "=", "(12 + abs(CrackWorldX - PrevCrackX)) / 12"), scaley("CrackHitbox", "=", "(12 + HitSweepY) / 12"),
+                setv("PrevCrackX", "=", "CrackWorldX"), setv("HitSweepY", "=", "0")]),
         ev([PLAYING], [scale("CrackTip", "=", "1 + 0.12 * sin(TimeFromStart() * 14)")]),
     ]),
 ]
@@ -545,7 +549,7 @@ ev_spawner = [
                 ev([isv("TypeRoll", ">=", "0.5")], spawn("PowerStrength", "ObjWorldY")),
             ]),
             ev([isv("RowType", "!=", "4")], [setv("NextRowWorldY", "+", "RowGap")]),
-            ev([isv("RowType", "=", "4")], [setv("NextRowWorldY", "+", "FissureClearance")]),
+            ev([isv("RowType", "=", "4")], [setv("NextRowWorldY", "+", "FissureClearance * max(1, min(EndlessMaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(NextRowWorldY / PixelsPerMeter / SpeedStepDistance))) / 520)")]),   # longer empty stretch at very high speed
         ]),
     ]),
     group("Scroll and clean up", [

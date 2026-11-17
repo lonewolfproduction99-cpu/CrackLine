@@ -11018,7 +11018,7 @@
         {
           "name": "MaxSpeed",
           "type": "number",
-          "value": 420
+          "value": 520
         },
         {
           "name": "SpeedStepDistance",
@@ -11089,6 +11089,21 @@
           "name": "PixelsPerMeter",
           "type": "number",
           "value": 20
+        },
+        {
+          "name": "EndlessMaxSpeed",
+          "type": "number",
+          "value": 3000
+        },
+        {
+          "name": "HitSweepY",
+          "type": "number",
+          "value": 0
+        },
+        {
+          "name": "PrevCrackX",
+          "type": "number",
+          "value": 360
         },
         {
           "name": "TrailStep",
@@ -11319,11 +11334,6 @@
           "name": "PlanetProgressDifficulty",
           "type": "number",
           "value": 0.2
-        },
-        {
-          "name": "PlanetMaxSpeed",
-          "type": "number",
-          "value": 520
         },
         {
           "name": "BreakDuration",
@@ -13943,8 +13953,8 @@
                       "points": [],
                       "originPoint": {
                         "name": "origine",
-                        "x": 6,
-                        "y": 6
+                        "x": 0,
+                        "y": 0
                       },
                       "centerPoint": {
                         "automatic": true,
@@ -19666,7 +19676,7 @@
                 "textG": 0,
                 "textR": 0
               },
-              "comment": "Speed jumps x SpeedStepFactor (1.25 = +25%) every SpeedStepDistance (250 m) travelled, capped at MaxSpeed (Endless) or PlanetMaxSpeed (Planet Breaker). Each jump eases in at SpeedRampRate px/s per second so it never lurches. DifficultyLevel goes 0 -> 1 over DifficultyRampTime and drives the obstacle generator. Slow Time multiplies the effective speed by SlowTimeFactor.",
+              "comment": "Speed jumps x SpeedStepFactor (1.25 = +25%) every SpeedStepDistance (250 m) travelled, capped at EndlessMaxSpeed in Endless (so high it is practically uncapped) and at MaxSpeed (520 px/s) in Planet Breaker. Each jump eases in at SpeedRampRate px/s per second so it never lurches. DifficultyLevel goes 0 -> 1 over DifficultyRampTime and drives the obstacle generator. Slow Time multiplies the effective speed by SlowTimeFactor.",
               "comment2": ""
             },
             {
@@ -19730,7 +19740,7 @@
                   "parameters": [
                     "SpeedTarget",
                     "=",
-                    "min(MaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))"
+                    "min(EndlessMaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))"
                   ],
                   "subInstructions": []
                 }
@@ -19746,7 +19756,7 @@
                     "textG": 0,
                     "textR": 0
                   },
-                  "comment": "Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and difficulty rises a little within each planet. Speed uses the same 250 m steps but may go up to PlanetMaxSpeed.",
+                  "comment": "Planet Breaker: every planet starts harder (PlanetDifficultyStart + PlanetDifficultyStep per planet) and difficulty rises a little within each planet. Speed takes the same 250 m steps as Endless but stops at MaxSpeed.",
                   "comment2": ""
                 },
                 {
@@ -19786,7 +19796,7 @@
                       "parameters": [
                         "SpeedTarget",
                         "=",
-                        "min(PlanetMaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))"
+                        "min(MaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(Distance / SpeedStepDistance)))"
                       ],
                       "subInstructions": []
                     }
@@ -20694,6 +20704,18 @@
                     "value": "SetNumberVariable"
                   },
                   "parameters": [
+                    "HitSweepY",
+                    "=",
+                    "EffectiveSpeed * TimeDelta()"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
                     "Distance",
                     "=",
                     "floor(CrackWorldY / PixelsPerMeter)"
@@ -20714,6 +20736,19 @@
                 }
               ],
               "events": []
+            },
+            {
+              "type": "BuiltinCommonInstructions::Comment",
+              "color": {
+                "b": 109,
+                "g": 230,
+                "r": 255,
+                "textB": 0,
+                "textG": 0,
+                "textR": 0
+              },
+              "comment": "The hidden hitbox covers everything the tip passed through since the last frame (sideways and the ground scrolled past), so even at very high speed a frame can never jump over an obstacle.",
+              "comment2": ""
             },
             {
               "type": "BuiltinCommonInstructions::Standard",
@@ -20751,7 +20786,7 @@
                   "parameters": [
                     "CrackHitbox",
                     "=",
-                    "CrackWorldX"
+                    "min(CrackWorldX, PrevCrackX) - 6"
                   ],
                   "subInstructions": []
                 },
@@ -20763,7 +20798,57 @@
                   "parameters": [
                     "CrackHitbox",
                     "=",
-                    "TipScreenY"
+                    "TipScreenY - 6"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetX"
+                  },
+                  "parameters": [
+                    "CrackHitbox",
+                    "Scale",
+                    "=",
+                    "(12 + abs(CrackWorldX - PrevCrackX)) / 12"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "ScalableCapability::ScalableBehavior::SetY"
+                  },
+                  "parameters": [
+                    "CrackHitbox",
+                    "Scale",
+                    "=",
+                    "(12 + HitSweepY) / 12"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "PrevCrackX",
+                    "=",
+                    "CrackWorldX"
+                  ],
+                  "subInstructions": []
+                },
+                {
+                  "type": {
+                    "inverted": false,
+                    "value": "SetNumberVariable"
+                  },
+                  "parameters": [
+                    "HitSweepY",
+                    "=",
+                    "0"
                   ],
                   "subInstructions": []
                 }
@@ -23378,7 +23463,7 @@
                       "parameters": [
                         "NextRowWorldY",
                         "+",
-                        "FissureClearance"
+                        "FissureClearance * max(1, min(EndlessMaxSpeed, BaseSpeed * pow(SpeedStepFactor, floor(NextRowWorldY / PixelsPerMeter / SpeedStepDistance))) / 520)"
                       ],
                       "subInstructions": []
                     }

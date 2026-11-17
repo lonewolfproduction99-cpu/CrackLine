@@ -33,7 +33,7 @@ async def main():
         await page.evaluate("() => { %s V('CrackWorldY').setNumber(26000); V('PlanetStartWorldY').setNumber(26000); V('TrailLastWorldY').setNumber(26000); }" % PRE)
         await asyncio.sleep(3.5)
         s = await X(page)
-        check('Planet Breaker: same 250 m steps, capped at PlanetMaxSpeed 520 (not 420)', abs(s['speed'] - 520) < 0.01, f"{s['speed']:.0f} px/s at {s['wy'] / 20:.0f} m")
+        check('Planet Breaker: same 250 m steps and same 520 cap as Endless', abs(s['speed'] - 520) < 0.01, f"{s['speed']:.0f} px/s at {s['wy'] / 20:.0f} m")
         allerr += errors; await ctx.close()
 
         # ---------- fissures & worms (Endless, random rows suppressed) ----------

@@ -133,12 +133,12 @@ async def main():
         check('sliding the held finger across the middle switches direction', h2['x'] > h1['x'], f"{h1['x']:.0f} -> {h2['x']:.0f}")
         await page.screenshot(path=f'{SHOTS}/p2_01_start.png')
 
-        # --- speed scaling: +25% every 250 m, eased in, capped at 420 ---
+        # --- speed scaling: +25% every 250 m, eased in (cap 520 is reached at 1250 m) ---
         sp = []
-        for m in (250, 500, 750, 2000):
+        for m in (250, 500, 750, 1000):
             await page.evaluate(setvar('CrackWorldY', m * 20 + 5)); await asyncio.sleep(2.2); sp.append((await S(page))['speed'])
-        exp = [225, 281.25, 351.6, 420]
-        check('speed +25% every 250 m (225, 281, 352) and capped at 420', all(abs(a - b) < 1 for a, b in zip(sp, exp)), ', '.join(f'{v:.0f}' for v in sp))
+        exp = [225, 281.25, 351.6, 439.5]
+        check('speed +25% every 250 m (225, 281, 352, 439)', all(abs(a - b) < 1 for a, b in zip(sp, exp)), ', '.join(f'{v:.0f}' for v in sp))
         await page.evaluate(setvar('RunTime', 400)); await asyncio.sleep(0.1); st = await S(page)
         check('difficulty reaches max after DifficultyRampTime', st['diff'] == 1)
         await page.evaluate(setvar('RunTime', 0)); await asyncio.sleep(0.1)

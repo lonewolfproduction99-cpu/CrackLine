@@ -12,6 +12,8 @@ def ease(p): return 1 - (1 - p) ** 2
 def clampx(x): return max(MINX, min(MAXX, x))
 STEPS = os.environ.get("SPEED_MODE") == "steps"
 def speed_at(t): return min(MAXSPEED, P["BaseSpeed"] * P["SpeedGrowth"] ** (t / P["SpeedGrowthInterval"]))
+def fissure_clearance(wy):   # same as the game: the empty stretch after a fissure grows with speed above 520 px/s
+    return P["FissureClearance"] * max(1, speed_wy(wy, 0) / 520)
 def speed_wy(wy, t): return min(MAXSPEED, P["BaseSpeed"] * 1.25 ** math.floor(wy / 20 / 250)) if STEPS else speed_at(t)
 
 def worm_x(w, t):
@@ -43,7 +45,7 @@ class Gen:
             self.worms.append({"x0": r.uniform(P["WormMinX"], P["WormMaxX"]), "dir": r.choice([-1, 1]),
                                "v": lerp(P["WormSpeedStart"], P["WormSpeedEnd"], d), "t0": t, "wy": self.next})
         elif rowtype == 4:
-            self.fissures.append(self.next); self.next += P["FissureClearance"]; return
+            self.fissures.append(self.next); self.next += fissure_clearance(self.next); return
         crack_lane = r.randint(0, LANE_COUNT - 1)
         for lane in range(LANE_COUNT):
             if rowtype in (0, 3) or (lane - cmin) * (lane - cmax) <= 0: continue
@@ -112,7 +114,7 @@ def run(seed, duration, recovery_checks=True):
     return True, t, f"{len(g.fissures)} fissures, {len(g.worms)} worms"
 
 def recover(g, states, wy, t, f):
-    end = f + P["FissureClearance"] + 3 * P["RowGapStart"]
+    end = f + fissure_clearance(f) + 3 * P["RowGapStart"]
     while wy < end:
         while wy + TIPY + SPAWN_MARGIN >= g.next: g.row(t)
         t += dt; wy += speed_wy(wy, t) * dt

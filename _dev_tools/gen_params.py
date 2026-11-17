@@ -12,7 +12,7 @@ IMG = {"RockSmall": 76, "RockMedium": 116, "Crystal": 96, "BarrierBreakable": (1
 BREAKABLE = {"RockSmall", "RockMedium", "BarrierBreakable", "Worm"}
 
 P = dict(
-    BaseSpeed=180, MaxSpeed=420, SpeedGrowth=1.08, SpeedGrowthInterval=20,
+    BaseSpeed=180, MaxSpeed=520, SpeedGrowth=1.08, SpeedGrowthInterval=20,
     DifficultyRampTime=180,
     RowGapStart=280, RowGapEnd=210,
     DensityStart=0.40, DensityEnd=0.65,

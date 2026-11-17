@@ -62,6 +62,17 @@ async def main():
         await die(page); await asyncio.sleep(0.5); await click_obj(page, 'MenuButton'); await waitg(page, lambda s: s['scene'] == 'MainMenu', 3)
         i2 = await page.evaluate("() => window.__ads.interstitial")
         check('interstitial requested on RESTART and on MAIN MENU (Playgama decides if it shows)', i0 == 0 and i1 == 1 and i2 == 2, f'{i0} {i1} {i2}')
+        # ---- Endless has (practically) no speed cap, and a very fast frame can't skip an obstacle
+        CLEAR = "() => { %s ['RockSmall','RockMedium','BarrierSolid','BarrierBreakable','Worm','Fissure','Crystal','PowerSlow','PowerStrength'].forEach(n => sc.getObjects(n).forEach(o => o.deleteFromScene(sc))); }" % PRE
+        await to_scene(page, 'Gameplay', 'EndlessButton'); await page.evaluate(setnum('NextRowWorldY', '1e9')); await page.evaluate(CLEAR)
+        await page.evaluate(setnum('CrackWorldY', 3000 * 20)); await page.evaluate(setnum('ScrollSpeed', 2600)); await asyncio.sleep(0.8)
+        sp = (await S(page))['speed']
+        check('Endless keeps speeding up past 520 (3000 m: 2620 px/s)', abs(sp - 2620.5) < 2, f'{sp:.0f} px/s')
+        fps = await page.evaluate("() => window.__game.getSceneStack().getCurrentScene().getTimeManager().getElapsedTime()")
+        await page.evaluate(CLEAR); await page.evaluate(put('RockSmall', 0, 500))
+        s = await waitg(page, lambda s: s.get('state') == 'GameOver', 2)
+        check(f'at 2620 px/s ({sp * fps / 1000:.0f} px per frame here) a small rock is still hit, not skipped', s['state'] == 'GameOver')
+        await asyncio.sleep(0.8); await click_obj(page, 'MenuButton'); await waitg(page, lambda s: s['scene'] == 'MainMenu', 3)
         # ---- platform pause / audio
         await to_scene(page, 'Gameplay', 'EndlessButton'); await page.evaluate(setnum('NextRowWorldY', '1e9')); await asyncio.sleep(0.5)
         await platform_state(page, 'pause', True); a = (await S(page))['wy']; await asyncio.sleep(0.8); b = (await S(page))['wy']
